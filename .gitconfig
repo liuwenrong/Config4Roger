@@ -1,0 +1,23 @@
+[user]
+	email = liuwenrong@coolpad.com
+	name = liuwenrong
+[core]
+	editor = vim
+[color]
+	interactive = auto
+	[alias]
+    g=git
+	st = status
+    gs=git status
+	ci = commit -s
+	cl = config --list
+	co = checkout
+	b = branch
+	ba = branch -a
+	bd = branch -d
+	bD = branch -D
+	bv = branch -vv
+	r = remote
+	rv = remote -v
+	unstage = reset HEAD --
+	last = log -1 HEAD

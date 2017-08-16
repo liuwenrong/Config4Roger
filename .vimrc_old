@@ -1,0 +1,216 @@
+"ZladsfjdslfjlsdjlsdjfldsjlZZ
+
+
+"配置buf
+let g:miniBufExplMapWindowNavVim = 1 
+let g:miniBufExplMapWindowNavArrows = 1 
+let g:miniBufExplMapCTabSwitchBufs = 1 
+let g:miniBufExplModSelTarget = 1
+
+set encoding=utf-8 "编码格式utf-8
+"配置下载插件的vundle
+set nocompatible              " required
+filetype off                  " required
+
+" set the runtime path to include Vundle and initialize
+set rtp+=%HOME%\.vim\bundle\Vundle.vim
+set rtp+=%HOME%\.vim\bundle\nerdtree
+set rtp+=%HOME%\.vim\bundle\*
+set rtp+=%HOME%\.vim\bundle\YouCompleteMe
+set rtp+=%HOME%\.vim\bundle\vim-fugitive
+set rtp+=%HOME%\.vim\bundle\ctrlp.vim
+set rtp+=%HOME%\.vim\bundle\powerline
+call vundle#begin()
+
+	" alternatively, pass a path where Vundle should install plugins
+	"call vundle#begin('~/some/path/here')
+
+	" let Vundle manage Vundle, required
+"Plugin 'gmarik/Vundle.vim'
+"Plugin 'autoload/Vundle.vim'
+Plugin 'VundleVim/Vundle.vim'
+
+	" Add all your plugins here (note older versions of Vundle used Bundle instead of Plugin)
+
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required 必须 加载vim自带和插件相应的语法和文件类型相关脚本
+
+"自动补全YouCompleteMe
+let g:ycm_autoclose_preview_window_after_completion=1
+map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
+
+let g:pydiction_location = '%HOME%/.vim/bundle/pydiction/complete-dict'
+
+" Enable folding 代码折叠
+"set foldmethod=indent
+"set foldlevel=99
+
+set showcmd
+set backspace=indent,eol,start
+"set ai
+"syntax on
+"colo evening
+set terse
+set warn
+set number
+set mouse=a
+"set nonu
+set diffexpr=MyDiff()
+" 在搜索时，输入的词句的逐字符高亮（类似firefox的搜索） 
+set incsearch 
+" 高亮字符，让其不受100列限制 
+:highlight OverLength ctermbg=red ctermfg=white guibg=red guifg=white 
+:match OverLength '\%101v.*' 
+" 状态行颜色 
+highlight StatusLine guifg=SlateBlue guibg=Yellow 
+highlight StatusLineNC guifg=Gray guibg=White 
+set ruler "可显示最后一排的状态
+set showmode "左下角那一行的状态
+set list "显示换行符$
+" 命令行（在状态行下）的高度，默认为1，这里是2 
+set cmdheight=2 
+" 我的状态行显示的内容（包括文件类型和解码） 
+set statusline=%F%m%r%h%w\[POS=%l,%v][%p%%]\%{strftime(\"%d/%m/%y\ -\ %H:%M\")} 
+" 总是显示状态行 
+set laststatus=2
+" 自动格式化 
+"set formatoptions=tcrqn 
+
+" 继承前一行的缩进方式，特别适用于多行注释 
+"set autoindent 
+
+" 为C程序提供自动缩进 
+"set smartindent 
+
+" 使用C样式的缩进 
+"set cindent 
+"如果无法显示中文, 在~/.vimrc中增加下面这句试试
+set helplang=cn
+set fileformats=unix,dos "unix文件格式作为第一选择
+"set fileformat "查看文件格式
+"set fileformat=unix/dos "设置(转换文件格式)
+
+" Smart way to move between windows
+nmap <C-j> <C-W>j
+nmap <C-k> <C-W>k
+nmap <C-h> <C-W>h
+nmap <C-l> <C-W>l
+imap <C-i> <Esc>
+
+"删除键
+"imap <A-Backspace> <Left><Del>
+"imap <A-x> <Left><Del>
+"imap <Del> <Esc>s
+
+"配置文件管理器
+map <c-e><c-b> :BottomExplorerWindow<cr>
+map <c-e><c-f> :FirstExplorerWindow<cr>
+map <C-m> :WMToggle<cr>
+"map <F2> i{<Esc>ea}<Esc>
+map <F3> i + "--1703"<Esc>i
+" Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
+"map <Space> /
+"nmap, <C-Space> ?
+" useable
+map <F10> :<Esc>:tabnew<CR>
+nmap <F11> :browse tabnew<CR>
+map <A-j>: <C-w-j>
+" useable
+"map t :tabnew
+"map z h
+
+"在全模式中使用Shift+Insert粘贴全局剪贴板内容,选择模式先替换后粘贴
+"inoremap <C-v> <esc>:set paste<cr>mui<C-R>+<esc>mv'uV'v=:set nopaste<cr>
+vmap <S-Insert> "-d"+p
+map <S-Insert> "+p
+
+"在Visual模式中使用Ctrl+Insert复制内容到全局剪贴板
+"vnoremap <C-c> "+y
+map <C-y> "+y
+map <C-Insert> "+y
+vmap <C-Insert> "+y
+
+"在Visual模式中使用Ctrl+x剪切内容到全局剪贴板
+vnoremap <C-x> "+x
+
+imap <C-h> <Left>
+imap <C-j> <Down>
+imap <C-k> <Up>
+imap <C-l> <Right>
+
+"缩写
+iab xdate =strftime("%Y-%m-%y")
+iab xdate1 =strftime("%Y-%m-%y %H:%M:%S")
+iab xname liuwenrong.Roger
+
+"配色开
+syntax enable
+set background=dark
+colorscheme solarized
+"colorscheme Zenburn
+"if has('gui_running')
+"	set background=dark
+"	colorscheme solarized
+"else
+"	"colorscheme Zenburn
+"endif
+"call togglebg#map("<F5>")
+
+function MyDiff()
+  let opt = '-a --binary '
+  if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
+  if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
+  let arg1 = v:fname_in
+  if arg1 =~ ' ' | let arg1 = '"' . arg1 . '"' | endif
+  let arg2 = v:fname_new
+  if arg2 =~ ' ' | let arg2 = '"' . arg2 . '"' | endif
+  let arg3 = v:fname_out
+  if arg3 =~ ' ' | let arg3 = '"' . arg3 . '"' | endif
+  if $VIMRUNTIME =~ ' '
+    if &sh =~ '\<cmd'
+      if empty(&shellxquote)
+        let l:shxq_sav = ''
+        set shellxquote&
+      endif
+      let cmd = '"' . $VIMRUNTIME . '\diff"'
+    else
+      let cmd = substitute($VIMRUNTIME, ' ', '" ', '') . '\diff"'
+    endif
+  else
+    let cmd = $VIMRUNTIME . '\diff'
+  endif
+  silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3
+  if exists('l:shxq_sav')
+    let &shellxquote=l:shxq_sav
+  endif
+endfunctio
+
+"F5运行
+map <F5> :call CompileRunGcc()<CR>
+    func! CompileRunGcc()
+        exec "w"
+if &filetype == 'c'
+            exec "!g++ % -o %<"
+            exec "!time ./%<"
+elseif &filetype == 'cpp'
+            exec "!g++ % -o %<"
+            exec "!time ./%<"
+elseif &filetype == 'java'
+            exec "!javac %"
+            exec "!time java %<"
+elseif &filetype == 'sh'
+            :!time bash %
+elseif &filetype == 'python'
+            exec "! python2.7 %"
+elseif &filetype == 'html'
+            exec "!firefox % &"
+elseif &filetype == 'go'
+    "        exec "!go build %<"
+            exec "!time go run %"
+elseif &filetype == 'mkd'
+            exec "!~/.vim/markdown.pl % > %.html &"
+            exec "!firefox %.html &"
+endif
+    endfunc

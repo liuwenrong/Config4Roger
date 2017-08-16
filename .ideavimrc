@@ -1,0 +1,147 @@
+"环境配置{{{
+    
+    "基础设置{{{
+        set nocompatible    "避免进入vi模式"
+        filetype plugin on
+        set showcmd
+        set mouse=a
+        colo evening
+        set terse
+        set warn
+        "set number
+        set nonu
+        set diffexpr=MyDiff()
+        set ruler "可显示最后一排的状态
+        set showmode "左下角那一行的状态
+        set list "显示换行符$
+               "}}}
+
+        "KeyMap 键盘命令注:注释不能在语句之后{{{
+            "使用的时候要按住空格\<Space>不可用,可用 空可用 不放"
+            let mapleader=" "
+
+            "vimrc和保存退出{{{
+                nmap <silent> <leader>ev :e $MYVIMRC<CR>
+                nmap <silent> <leader>sv :so $MYVIMRC<CR>
+                nmap <leader>w :w<CR>
+                nmap <leader>q :q<CR>
+            "}}}
+
+            "光标移动{{{
+                map <CR> gg
+                imap <C-h> <Left>
+                imap <C-j> <Down>
+                imap <C-k> <Up>
+                imap <C-l> <Right>
+                "fj同时按相当于Esc退出"
+                imap fj <Esc>       
+                imap <C-i> <Esc>
+                "map <F2> i{<Esc>ea}<Esc>
+                map <F1> i + "--1703"<Esc>i
+                " Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
+                "map <Space> /
+                "nmap, <C-Space> ?
+                " useable
+                map J j
+             "}}}
+
+            "窗口移动{{{
+                " Smart way to move between windows
+                nmap <C-j> <C-W>j
+                nmap <C-k> <C-W>k
+                nmap <C-h> <C-W>h
+                nmap <C-l> <C-W>l
+                "map <F10> :<Esc>:tabnew<CR>
+                "map <A-e> :browse tabnew<CR>
+             "}}}
+
+             "复制相关{{{
+                "在插入模式中使用Ctrl+v粘贴全局剪贴板内容
+                "inoremap <C-v> <esc>l:set paste<cr>mui<C-R>+<esc>mv'uV'v=:set nopaste<cr>
+                "vmap <C-v> "-d"+p
+                "imap <C-v> <S-insert>
+                "map <C-v> "+p
+
+                "在Visual模式中使用Ctrl+c复制内容到全局剪贴板
+                vnoremap <C-c> "+y
+                map <C-y> "+y
+
+                "在Visual模式中使用Ctrl+x剪切内容到全局剪贴板
+                vnoremap <C-x> "+x
+              "}}}
+
+            "缩写{{{
+                iab xdate =strftime("%Y-%m-%y")
+                iab xdate1 =strftime("%Y-%m-%y %H:%M:%S")
+                iab xname liuwenrong.Roger
+            "}}}
+
+       "}}}
+
+"}}}
+
+"插件配置{{{
+
+    "路径设置{{{
+        "set rtp+=E:/0SoftInstall/msys2_64/usr/share/vim/vim80
+        "状态栏插件-美化-漂亮
+        "set rtp+=$VIM\bundle\vim-airline
+     "}}}
+
+    "EasyMotion配置{{{
+            "easymotion 快速定位跳转"
+            "set rtp+=$VIM\bundle\vim-easymotion     
+            "nmap <Leader><Leader>w <Plug>(easymotion-overwin-w)
+            "快速查找单词之后的word"没有bd就是之后,有bd就是前后的单词           
+            " <Leader>f{char} to move to {char}
+            "map  <Leader>f <Plug>(easymotion-bd-f)
+            "nmap <Leader>f <Plug>(easymotion-overwin-f)
+
+            "s{char}{char} to move to {char}{char}
+            "nmap <Leader><Leader>s <Plug>(easymotion-overwin-f2)
+
+            " Move to line
+            "map <Leader><leader>h <Plug>(easymotion-linebackward)
+            "map <Leader><leader>l <Plug>(easymotion-lineforward)
+            "map <Leader>L <Plug>(easymotion-bd-jk)
+            "nmap <Leader>L <Plug>(easymotion-overwin-line)
+            "map <Leader><Leader>j <Plug>(easymotion-j)
+            "map <Leader><Leader>k <Plug>(easymotion-k)
+
+            " Move to word
+            "map  <Leader>s <Plug>(easymotion-bd-w)
+            "nmap <Leader>s <Plug>(easymotion-overwin-w)
+    "}}}
+    
+ "}}}
+
+
+
+function MyDiff()
+  let opt = '-a --binary '
+  if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
+  if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
+  let arg1 = v:fname_in
+  if arg1 =~ ' ' | let arg1 = '"' . arg1 . '"' | endif
+  let arg2 = v:fname_new
+  if arg2 =~ ' ' | let arg2 = '"' . arg2 . '"' | endif
+  let arg3 = v:fname_out
+  if arg3 =~ ' ' | let arg3 = '"' . arg3 . '"' | endif
+  if $VIMRUNTIME =~ ' '
+    if &sh =~ '\<cmd'
+      if empty(&shellxquote)
+        let l:shxq_sav = ''
+        set shellxquote&
+      endif
+      let cmd = '"' . $VIMRUNTIME . '\diff"'
+    else
+      let cmd = substitute($VIMRUNTIME, ' ', '" ', '') . '\diff"'
+    endif
+  else
+    let cmd = $VIMRUNTIME . '\diff'
+  endif
+  silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3
+  if exists('l:shxq_sav')
+    let &shellxquote=l:shxq_sav
+  endif
+endfunction
