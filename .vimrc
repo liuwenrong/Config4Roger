@@ -1,181 +1,332 @@
-"环境 {{{
-    "设置{{{
-            set go=             " 不要图形按钮  
-            set ruler           " 显示标尺  
-            set showcmd         " 输入的命令显示出来，看的清楚些  
-            "set whichwrap+=<,>,h,l   " 允许backspace和光标键跨越行边界(不建议)  
-            set scrolloff=8     " 光标移动到buffer的顶部和底部时保持3行距离  
-            "set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [POS=%l,%v][%p%%]\ %{strftime(\"%d/%m/%y\ -\ %H:%M\")}   "状态行显示的内容  
-            "set laststatus=2    " 启动显示状态行(1),总是显示状态行(2)  
-            "set cmdheight=2		" 总是显示状态行
-            set nocompatible  "去掉讨厌的有关vi一致性模式，避免以前版本的一些bug和局限  
-            " 显示中文帮助
-            if version >= 603
-                "set helplang=cn
-                set encoding=utf-8
+" Modeline and Notes {
+" vim: set sw=4 ts=4 sts=4 et tw=78 foldmarker={,} foldlevel=0 foldmethod=marker spell:
+" }
+" Environment {
+
+    " Identify platform {
+        silent function! OSX()
+            return has('macunix')
+        endfunction
+        silent function! LINUX()
+            return has('unix') && !has('macunix') && !has('win32unix')
+        endfunction
+        silent function! WINDOWS()
+            return  (has('win32') || has('win64'))
+        endfunction
+    " }
+
+    " Basics {
+        set nocompatible        " Must be first line
+        if !WINDOWS()
+            set shell=/bin/sh
+        endif
+    " }
+
+    " Windows Compatible {
+        " On Windows, also use '.vim' instead of 'vimfiles'; this makes synchronization
+        " across (heterogeneous) systems easier.
+        if WINDOWS()
+          "set runtimepath=$HOME/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,$HOME/.vim/after
+        endif
+    " }
+    
+    " Arrow Key Fix {
+        " https://github.com/spf13/spf13-vim/issues/780
+        if &term[:4] == "xterm" || &term[:5] == 'screen' || &term[:3] == 'rxvt'
+            inoremap <silent> <C-[>OC <RIGHT>
+        endif
+    " }
+
+" }
+
+" Use before config if available {
+    if filereadable(expand("~/.vimrc.before"))
+        source ~/.vimrc.before
+    endif
+" }
+
+" Use bundles config {
+    if has('gui')
+        if filereadable(expand("~/.vimrc.bundles"))
+            source ~/.vimrc.bundles
+        endif
+    endif
+" }
+
+" General {
+    "安装匹配括号的插件"
+    packadd! matchit
+
+    "encoding {
+        set termencoding=utf-8
+        set encoding=utf8
+        set fileencodings=utf8,ucs-bom,gbk,cp936,gb2312,gb18030
+        scriptencoding utf-8
+        autocmd FileType python set omnifunc=pythoncomplete#Complete
+    " }
+
+    set mouse=a                 " Automatically enable mouse usage
+    set mousehide               " Hide the mouse cursor while typing
+
+    if has('clipboard')
+        if has('unnamedplus')  " When possible use + register for copy-paste
+            set clipboard=unnamed,unnamedplus
+        else         " On mac and Windows, use * register for copy-paste
+            set clipboard=unnamed
+        endif
+    endif
+
+    " Most prefer to automatically switch to the current file directory when
+    " a new buffer is opened; to prevent this behavior, add the following to
+    " your .vimrc.before.local file:
+    "   let g:spf13_no_autochdir = 1
+    if !exists('g:spf13_no_autochdir')
+        autocmd BufEnter * if bufname("") !~ "^\[A-Za-z0-9\]*://" | lcd %:p:h | endif
+        " Always switch to the current file directory
+    endif
+
+    "set autowrite                       " Automatically write a file when leaving a modified buffer
+    set shortmess+=filmnrxoOtT          " Abbrev. of messages (avoids 'hit enter')
+    set viewoptions=folds,options,cursor,unix,slash " Better Unix / Windows compatibility
+    set virtualedit=onemore             " Allow for cursor beyond last character
+    set history=1000                    " Store a ton of history (default is 20)
+    set spell                           " Spell checking on
+    set hidden                          " Allow buffer switching without saving
+    set iskeyword-=.                    " '.' is an end of word designator
+    set iskeyword-=#                    " '#' is an end of word designator
+    set iskeyword-=-                    " '-' is an end of word designator
+
+    " Instead of reverting the cursor to the last position in the buffer, we
+    " set it to the first line when editing a git commit message
+    au FileType gitcommit au! BufEnter COMMIT_EDITMSG call setpos('.', [0, 1, 1, 0])
+
+    " http://vim.wikia.com/wiki/Restore_cursor_to_file_position_in_previous_editing_session
+    " Restore cursor to file position in previous editing session
+    " To disable this, add the following to your .vimrc.before.local file:
+    "   let g:spf13_no_restore_cursor = 1
+    if !exists('g:spf13_no_restore_cursor')
+        function! ResCur()
+            if line("'\"") <= line("$")
+                silent! normal! g`"
+                return 1
             endif
-            " 自动缩进
-            "set autoindent
-            "set cindent
-            " Tab键的宽度
-            set tabstop=4
-            " 统一缩进为4
-            set softtabstop=4
-            set shiftwidth=4
-            " 使用空格代替制表符
-            set expandtab
-            " 在行和段开始处使用制表符
-            set smarttab
-            set number      " 显示行号
-            set history=1000    " 历史记录数
-            set hlsearch    "搜索逐字符高亮
-            set incsearch
-            "set langmenu=zh_CN.UTF-8	"语言设置
-            "set helplang=cn
-            set fileformats=unix,dos "unix文件格式作为第一选择
-            set viminfo+=!		" 保存全局变量
-            set iskeyword+=_,$,@,%,#,-	" 带有如下符号的单词不要被换行分割
-            " 字符间插入的像素行数目
-            "markdown配置
-            au BufRead,BufNewFile *.{md,mdown,mkd,mkdn,markdown,mdwn}   set filetype=mkd
-            au BufRead,BufNewFile *.{go}   set filetype=go
-            au BufRead,BufNewFile *.{js}   set filetype=javascript
-            "rkdown to HTML  
-            nmap md :!~/.vim/markdown.pl % > %.html <CR><CR>
-            nmap fi :!firefox %.html & <CR><CR>
-            nmap \ \cc
-            vmap \ \cc
-            "将tab替换为空格
-            nmap tt :%s/\t/    /g<CR>
-            "set foldenable      " 允许折叠              
-            set fdm=marker      "文件折叠模式 输入zf%创建折叠"
-            winpos 0 0          " 设定窗口位置  
-            set lines=52 columns=99    " 设定窗口大小   
-            set sw=4
-            set ts=4
-            set et
-            set smarttab
-            set smartindent
-            set lbr
-            set fo+=mB
-            set sm
-            set selection=inclusive
-            set wildmenu
-            set mousemodel=popup
-            let g:fencview_autodetect=0
-            set rtp+=$VIM
-            set iskeyword+=.
-            set termencoding=utf-8
-            set encoding=utf8
-            set fileencodings=utf8,ucs-bom,gbk,cp936,gb2312,gb18030
-            autocmd FileType python set omnifunc=pythoncomplete#Complete
-        "}}}
-    "Colors 颜色显示{{{{
+        endfunction
+
+        augroup resCur
+            autocmd!
+            autocmd BufWinEnter * call ResCur()
+        augroup END
+    endif
+
+    " Setting up the directories {
+        "set backup                  " Backups are nice ...
+        if has('persistent_undo')
+            set undofile                " So is persistent undo ...
+            set undolevels=1000         " Maximum number of changes that can be undone
+            set undoreload=10000        " Maximum number lines to save for undo on a buffer reload
+        endif
+
+        " To disable views add the following to your .vimrc.before.local file:
+        "   let g:spf13_no_views = 1
+        if !exists('g:spf13_no_views')
+            " Add exclusions to mkview and loadview
+            " eg: *.*, svn-commit.tmp
+            let g:skipview_files = [
+                \ '\[example pattern\]'
+                \ ]
+        endif
+    " }
+
+" }
+
+" Vim UI {
+        winpos 780 0          " 设定窗口位置  
+        set lines=52 columns=99    " 设定窗口大小 
         set rtp+=E:/0SoftInstall/msys2_64/usr/share/vim/vim80/colors
         set rtp+=E:/0SoftInstall/msys2_64/usr/share/vim/vim80
         if has('gui_running')
             "echo "is gui_runnig gvim"
-            "set background=dark    "背景黑色
+            "set background=dark         " Assume a dark background 背景黑色
             set cul "高亮光标所在行
             set cuc "高亮列"
             autocmd InsertEnter * se cul    " 用浅色高亮当前行  
             set shortmess=atI   " 启动的时候不显示那个援助乌干达儿童的提示  
             set guifont=Courier_New:h10:cANSI   " 设置字体  
             autocmd InsertLeave * se nocul  " 用浅色高亮当前行  
-            syntax on
+            filetype plugin indent on   " Automatically detect file types.
+            syntax on                   " Syntax highlighting
             colorscheme solarized   "主题黑色,很漂亮,护眼
         else
             "echo "not gui or gvim"
             "colorscheme Zenburn
             syntax off
         endif
-        call togglebg#map("<F7>")   "黑色和护眼色切换"
-    "}}}}
+        call togglebg#map("<F7>")   "switch black or light 黑色和护眼色切换"
 
-    "新文件各类型模板{{{
-        "新建.c,.h,.sh,.java文件，自动插入文件头 
-        autocmd BufNewFile *.cpp,*.[ch],*.sh,*.rb,*.java,*.py exec ":call SetTitle()" 
-        ""定义函数SetTitle，自动插入文件头 
-        func SetTitle() 
-            "如果文件类型为.sh文件 
-            if &filetype == 'sh' 
-                call setline(1,"\#!/bin/bash") 
-                call append(line("."), "") 
-            elseif &filetype == 'python'
-                call setline(1,"#!/usr/bin/python")
-                call append(line("."),"# coding=utf-8")
-                call append(line(".")+1, "") 
+        " Allow to trigger background
+        "function! ToggleBG()
+            "let s:tbg = &background
+            "" Inversion
+            "if s:tbg == "dark"
+                "set background=light
+            "else
+                "set background=dark
+            "endif
+        "endfunction
+        "noremap <leader>bg :call ToggleBG()<CR>
 
-            elseif &filetype == 'ruby'
-                call setline(1,"#!/usr/bin/env ruby")
-                call append(line("."),"# encoding: utf-8")
-                call append(line(".")+1, "")
+        " if !has('gui')
+            "set term=$TERM          " Make arrow and other keys work
+        " endif
+        set autowrite   "自动保存
+        set nobackup    "禁止生成临时文件
+        set noswapfile
+        set ignorecase  "搜索忽略大小写
+        set guioptions-=T           " 隐藏工具栏
+        set guioptions-=m           " 隐藏菜单栏
 
-                "    elseif &filetype == 'mkd'
-                "        call setline(1,"<head><meta charset=\"UTF-8\"></head>")
-            else 
-                call setline(1, "/*************************************************************************") 
-                call append(line("."), "	> File Name: ".expand("%")) 
-                call append(line(".")+1, "	> Author: ") 
-                call append(line(".")+2, "	> Mail: ") 
-                call append(line(".")+3, "	> Created Time: ".strftime("%c")) 
-                call append(line(".")+4, " ************************************************************************/") 
-                call append(line(".")+5, "")
+        "Config color solarized {
+        "if !exists('g:override_spf13_bundles') && filereadable(expand("~/.vim/bundle/vim-colors-solarized/colors/solarized.vim"))
+            "let g:solarized_termcolors=256
+            "let g:solarized_termtrans=1
+            "let g:solarized_contrast="normal"
+            "let g:solarized_visibility="normal"
+            "color solarized             " Load a colorscheme
+        "endif
+        " }
+
+    set tabpagemax=15               " Only show 15 tabs
+    set showmode                    " Display the current mode
+
+    set cursorline                  " Highlight current line
+
+    highlight clear SignColumn      " SignColumn should match background
+    highlight clear LineNr          " Current line number row will have same background color in relative mode
+    "highlight clear CursorLineNr    " Remove highlight color from current line number
+
+    if has('cmdline_info')
+        set ruler                   " Show the ruler
+        set rulerformat=%30(%=\:b%n%y%m%r%w\ %l,%c%V\ %P%) " A ruler on steroids
+        set showcmd                 " Show partial commands in status line and
+                                    " Selected characters/lines in visual mode
+    endif
+
+    if has('statusline')
+        set laststatus=2
+
+        " Broken down into easily includeable segments
+        set statusline=%<%f\                     " Filename
+        set statusline+=%w%h%m%r                 " Options
+        if !exists('g:override_spf13_bundles')
+            if has('gui')
+                set statusline+=%{fugitive#statusline()} " Git Hotness
             endif
-            if expand("%:e") == 'cpp'
-                call append(line(".")+6, "#include<iostream>")
-                call append(line(".")+7, "using namespace std;")
-                call append(line(".")+8, "")
-            endif
-            if &filetype == 'c'
-                call append(line(".")+6, "#include<stdio.h>")
-                call append(line(".")+7, "")
-            endif
-            if expand("%:e") == 'h'
-                call append(line(".")+6, "#ifndef _".toupper(expand("%:r"))."_H")
-                call append(line(".")+7, "#define _".toupper(expand("%:r"))."_H")
-                call append(line(".")+8, "#endif")
-            endif
-            if &filetype == 'java'
-                call append(line(".")+6,"public class ".expand("%:r"))
-                call append(line(".")+7,"")
-            endif
-            "新建文件后，自动定位到文件末尾
-        endfunc 
-        autocmd BufNewFile * normal G
-    "}}}
+        endif
+        set statusline+=\ [%{&ff}/%Y]            " Filetype
+        set statusline+=\ [%{getcwd()}]          " Current dir
+        set statusline+=%=%-14.(%l,%c%V%)\ %p%%  " Right aligned file nav info
+    endif
 
-        "KeyMap 键盘命令 {{{
-            let mapleader="\<Space>"     "使用的时候要按住空格 不放"
-            "vimrc和保存退出{{{
-                nmap <silent> <leader>ev :e $MYVIMRC<CR>    "按 ,ev静默(不回显信息)打开配置文件"
-                nmap <silent> <leader>sv :so $MYVIMRC<CR>   "重载 配置文件 .vimrc"
-                nmap <leader>w :w<CR>       "保存文件"
-                nmap <leader>q :q<CR>       "退出文件 但不强制退出"
-            "}}}
+    set backspace=indent,eol,start  " Backspace for dummies
+    set linespace=0                 " No extra spaces between rows
+    set number                      " Line numbers on
+    set showmatch                   " Show matching brackets/parenthesis
+    set incsearch                   " Find as you type search
+    set hlsearch                    " Highlight search terms
+    set winminheight=0              " Windows can be 0 line high
+    set ignorecase                  " Case insensitive search
+    set smartcase                   " Case sensitive when uc present
+    set wildmenu                    " Show list instead of just completing
+    set wildmode=list:longest,full  " Command <Tab> completion, list matches, then longest common part, then all.
+    set whichwrap=b,s,h,l,<,>,[,]   " Backspace and cursor keys wrap too
+    set scrolljump=5                " Lines to scroll when cursor leaves screen
+    set scrolloff=3                 " Minimum lines to keep above and below cursor
+    set foldenable                  " Auto fold code
+    set list
+    set listchars=tab:›\ ,trail:•,extends:#,nbsp:. " Highlight problematic whitespace
 
-            "光标移动{{{
-                map <CR> gg         "6 Enter 跳到第6行"
-                imap <C-h> <Left>
-                imap <C-j> <Down>
-                imap <C-l> <Right>
-                imap <C-k> <Up>
-                imap <C-i> <Esc>
-                imap fj <Esc>       "fj同时按相当于Esc退出"
-            "}}}
+" }
 
+" Formatting {
 
-            " 切换窗口Smart way to move between windows{{{
-                map <C-w> <C-w>w    "切换窗口"
-                nmap <C-j> <C-W>j
-                nmap <C-k> <C-W>k
-                map <C-h> <C-W>h
-                nmap <C-l> <C-W>l
-                "nmap <C-/> <leader>c<Space>    "无效"
-            "}}}
+    set nowrap                      " Do not wrap long lines
+    set autoindent                  " Indent at the same level of the previous line
+    set shiftwidth=4                " Use indents of 4 spaces
+    set expandtab                   " Tabs are spaces, not tabs
+    set tabstop=4                   " An indentation every four columns
+    set softtabstop=4               " Let backspace delete indent
+    set nojoinspaces                " Prevents inserting two spaces after punctuation on a join (J)
+    set splitright                  " Puts new vsplit windows to the right of the current
+    set splitbelow                  " Puts new split windows to the bottom of the current
+    "set matchpairs+=<:>             " Match, to be used with %
+    set pastetoggle=<F12>           " pastetoggle (sane indentation on pastes)
+    "set comments=sl:/*,mb:*,elx:*/  " auto format comment blocks
+    " Remove trailing whitespaces and ^M chars
+    " To disable the stripping of whitespace, add the following to your
+    " .vimrc.before.local file:
+    "   let g:spf13_keep_trailing_whitespace = 1
+    autocmd FileType c,cpp,java,go,php,javascript,puppet,python,rust,twig,xml,yml,perl,sql autocmd BufWritePre <buffer> if !exists('g:spf13_keep_trailing_whitespace') | call StripTrailingWhitespace() | endif
+    "autocmd FileType go autocmd BufWritePre <buffer> Fmt
+    autocmd BufNewFile,BufRead *.html.twig set filetype=html.twig
+    autocmd FileType haskell,puppet,ruby,yml setlocal expandtab shiftwidth=2 softtabstop=2
+    " preceding line best in a plugin but here for now.
 
+    autocmd BufNewFile,BufRead *.coffee set filetype=coffee
 
-            "复制相关{{{
+    " Workaround vim-commentary for Haskell
+    autocmd FileType haskell setlocal commentstring=--\ %s
+    " Workaround broken colour highlighting in Haskell
+    autocmd FileType haskell,rust setlocal nospell
+
+" }
+
+" Key (re)Mappings {
+
+    " The default leader is '\', but many people prefer ',' as it's in a standard
+    " location. To override this behavior and set it back to '\' (or any other
+    " character) add the following to your .vimrc.before.local file:
+    "   let g:spf13_leader='\' {
+    if !exists('g:spf13_leader')
+        let mapleader = ' '
+    else
+        let mapleader=g:spf13_leader
+    endif
+    if !exists('g:spf13_localleader')
+        let maplocalleader = '_'
+    else
+        let maplocalleader=g:spf13_localleader
+    endif
+    "}
+    "vimrc & Write & Quit {
+        nmap <silent> <leader>ev :e $MYVIMRC<CR>    "按 ,ev静默(不回显信息)打开配置文件"
+        nmap <silent> <leader>sv :so $MYVIMRC<CR>   "重载 配置文件 .vimrc"
+       "保存文件"
+        noremap <A-w> :w<CR>
+        noremap! <A-w> <Esc>:w<CR>
+        nmap <A-q> :q<CR>       "退出文件 但不强制退出"
+    "}
+    "
+    "cursor &Window move 光标窗口移动 {
+        map <CR> gg
+        imap <C-h> <Left>
+        imap <C-j> <Down>
+        imap <C-l> <Right>
+        imap <C-k> <Up>
+        imap <C-i> <Esc>
+       "fj同时按相当于临时退出编辑模式
+        inoremap fj <C-o>
+       "回到句首"   "回到句末"
+        imap <C-a> <Esc>^
+        imap <C-e> <Esc>$
+        set scrolloff=8     " 光标移动到buffer的顶部和底部时保持3行距离 
+        map <C-w> <C-w>w
+        nmap <C-j> <C-W>j
+        nmap <C-k> <C-W>k
+        map <C-h> <C-W>h
+        nmap <C-l> <C-W>l
+    " }
+    "
+    "Copy & Paste {
                 vnoremap <silent> y y`]     "自动跳转到文本的最后"
                 vnoremap <silent> p p`]     "使用pppp进行多行多次粘贴操作"
                 nnoremap <silent> p p`]
@@ -196,26 +347,20 @@
 
                 :nmap <silent> <F9> <ESC>:Tlist<RETURN>
                 map! <C-Z> <Esc>zzi
-                "map! <C-O> <C-Y>,
-                map <C-A> ggVG$"+y  "全选复制
-                map <F12> gg=G      "全屏identited 缩进
-                imap <C-k> <C-y>,
+                "map! <C-O> <C-Y>,  
+                "全选复制
+                map <Leader>a ggVG$"+y
+                "全屏identited 缩进
+                map <F12> gg=G
+                "imap <C-k> <C-y>,
                 "imap <C-t> <C-q><TAB>
                 "imap <C-j> <ESC>
                 " 选中状态下 Ctrl+c 复制
                 "map <C-v> "*pa
                 "imap <C-v> <Esc>"*pa
-                imap <C-a> <Esc>^   "回到句首"
-                imap <C-e> <Esc>$   "回到句末"
-                set mouse=v
-                "set clipboard=unnamed
-            "}}}
-
-            """"""""""""""""""""""""
-            """"Alt 映射 Alt键可以使用<M-key>或<A-key>来表示
-            """"""""""""""""""""""""
-            imap <M-/> <C-n>
-            "tab 标签{{{
+            "}
+    "
+    "tab Config{
                 " keymap to switch tab in gui
                 if has('gui_running') 
                     set winaltkeys=no
@@ -323,452 +468,971 @@
                     return s  
                 endfunction
 
-                " set terminal and map alt+n or alt+shift+n to "<ESC>]{0}n~"
-                " 终端Alt得用自定义按键发送特定字符串
-                if !has('gui_running')
-                    noremap <silent><ESC>]{0}1~ :tabn 1<cr>
-                    noremap <silent><ESC>]{0}2~ :tabn 2<cr>
-                    noremap <silent><ESC>]{0}3~ :tabn 3<cr>
-                    noremap <silent><ESC>]{0}4~ :tabn 4<cr>
-                    noremap <silent><ESC>]{0}5~ :tabn 5<cr>
-                    noremap <silent><ESC>]{0}6~ :tabn 6<cr>
-                    noremap <silent><ESC>]{0}7~ :tabn 7<cr>
-                    noremap <silent><ESC>]{0}8~ :tabn 8<cr>
-                    noremap <silent><ESC>]{0}9~ :tabn 9<cr>
-                    noremap <silent><ESC>]{0}0~ :tabn 10<cr>
-                    inoremap <silent><ESC>]{0}1~ <ESC>:tabn 1<cr>
-                    inoremap <silent><ESC>]{0}2~ <ESC>:tabn 2<cr>
-                    inoremap <silent><ESC>]{0}3~ <ESC>:tabn 3<cr>
-                    inoremap <silent><ESC>]{0}4~ <ESC>:tabn 4<cr>
-                    inoremap <silent><ESC>]{0}5~ <ESC>:tabn 5<cr>
-                    inoremap <silent><ESC>]{0}6~ <ESC>:tabn 6<cr>
-                    inoremap <silent><ESC>]{0}7~ <ESC>:tabn 7<cr>
-                    inoremap <silent><ESC>]{0}8~ <ESC>:tabn 8<cr>
-                    inoremap <silent><ESC>]{0}9~ <ESC>:tabn 9<cr>
-                    inoremap <silent><ESC>]{0}0~ <ESC>:tabn 10<cr>
-                endif
-            "}}}
+            "}
 
-            "去空行  
-            nnoremap <F2> :g/^\s*$/d<CR> 
-            nnoremap <C-d> :vert diffsplit      "比较文件  
-            "nnoremap <Leader>fu :CtrlPFunky<Cr>
-            "nnoremap <C-n> :CtrlPFunky<Cr>
-            :autocmd BufRead,BufNewFile *.dot map <F5> :w<CR>:!dot -Tjpg -o %<.jpg % && eog %<.jpg  <CR><CR> && exec "redr!"
+    " The default mappings for editing and applying the spf13 configuration
+    " are <leader>ev and <leader>sv respectively. Change them to your preference
+    " by adding the following to your .vimrc.before.local file:
+    "   let g:spf13_edit_config_mapping='<leader>ec'
+    "   let g:spf13_apply_config_mapping='<leader>sc'
+    if !exists('g:spf13_edit_config_mapping')
+        let s:spf13_edit_config_mapping = '<leader>ev'
+    else
+        let s:spf13_edit_config_mapping = g:spf13_edit_config_mapping
+    endif
+    if !exists('g:spf13_apply_config_mapping')
+        let s:spf13_apply_config_mapping = '<leader>sv'
+    else
+        let s:spf13_apply_config_mapping = g:spf13_apply_config_mapping
+    endif
 
-            "}}}
+    " Easier moving in tabs and windows
+    " The lines conflict with the default digraph mapping of <C-K>
+    " If you prefer that functionality, add the following to your
+    " .vimrc.before.local file:
+    "   let g:spf13_no_easyWindows = 1
+    if !exists('g:spf13_no_easyWindows')
+        map <C-J> <C-W>j<C-W>_
+        map <C-K> <C-W>k<C-W>_
+        map <C-L> <C-W>l<C-W>_
+        map <C-H> <C-W>h<C-W>_
+    endif
 
-"C，C++ py 按F5编译运行{{{
-            map <F5> :call CompileRunGcc()<CR>
-            func! CompileRunGcc()
-                exec "w"
-                if &filetype == 'c'
-                    exec "!g++ % -o %<"
-                    exec "!time ./%<"
-                elseif &filetype == 'cpp'
-                    exec "!g++ % -std=c++11 -o %<"
-                    exec "!time ./%<"
-                elseif &filetype == 'java' 
-                    exec "!javac %" 
-                    exec "!time java %<"
-                elseif &filetype == 'sh'
-                    :!time bash %
-                elseif &filetype == 'python'
-                    exec "! python2.7 %"
-                    "exec "!time python2.7 %"
-                elseif &filetype == 'html'
-                    exec "!firefox % &"
-                elseif &filetype == 'go'
-                    "        exec "!go build %<"
-                    exec "!time go run %"
-                elseif &filetype == 'mkd'
-                    exec "!~/.vim/markdown.pl % > %.html &"
-                    exec "!firefox %.html &"
-                endif
-            endfunc
-            "C,C++的调试
-            map <F8> :call Rungdb()<CR>
-            func! Rungdb()
-                exec "w"
-                exec "!g++ % -std=c++11 -g -o %<"
-                exec "!gdb ./%<"
-            endfunc
-       "}}}
+    " Wrapped lines goes down/up to next row, rather than next line in file.
+    noremap j gj
+    noremap k gk
 
-        "F6代码格式优化 {{{
-            map <F6> :call FormartSrc()<CR><CR>
-
-            "定义FormartSrc()
-            func FormartSrc()
-                exec "w"
-                if &filetype == 'c'
-                    exec "!astyle --style=ansi -a --suffix=none %"
-                elseif &filetype == 'cpp' || &filetype == 'hpp'
-                    exec "r !astyle --style=ansi --one-line=keep-statements -a --suffix=none %> /dev/null 2>&1"
-                elseif &filetype == 'perl'
-                    exec "!astyle --style=gnu --suffix=none %"
-                elseif &filetype == 'py'||&filetype == 'python'
-                    exec "r !autopep8 -i --aggressive %"
-                elseif &filetype == 'java'
-                    exec "!astyle --style=java --suffix=none %"
-                elseif &filetype == 'jsp'
-                    exec "!astyle --style=gnu --suffix=none %"
-                elseif &filetype == 'xml'
-                    exec "!astyle --style=gnu --suffix=none %"
-                else
-                    exec "normal gg=G"
-                    return
-                endif
-                exec "e! %"
-            endfunc
-            "结束定义FormartSrc
-        "}}}
-
-        ""实用设置{{{
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-            " 设置当文件被改动时自动载入
-            set autoread
-            " quickfix模式
-            autocmd FileType c,cpp map <buffer> <leader><space> :w<cr>:make<cr>
-            "代码补全 
-            set completeopt=preview,menu 
-            "共享剪贴板  
-            "set clipboard+=unnamed 
-
-            set autowrite  			"自动保存
-            "set ruler                   " 打开状态栏标尺
-            "set cursorline              " 突出显示当前行
-            set magic                   " 设置魔术
-            set guioptions-=T           " 隐藏工具栏
-            set guioptions-=m           " 隐藏菜单栏
-            ""set foldcolumn=0
-            ""set foldmethod=indent 
-            ""set foldlevel=3 
-
-            set nocompatible		" 不要使用vi的键盘模式，而是vim自己的
-
-            set noeb		" 去掉输入错误的提示声音
-
-            set confirm		" 在处理未保存或只读文件的时候，弹出确认
-
-            set nobackup	"禁止生成临时文件
-            set noswapfile
-
-            set ignorecase	"搜索忽略大小写
-
-            set linespace=0
-            " 增强模式中的命令行自动完成操作
-            set wildmenu
-            " 使回格键（backspace）正常处理indent, eol, start等
-            set backspace=2
-            " 允许backspace和光标键跨越行边界
-            set whichwrap+=<,>,h,l
-            " 可以在buffer的任何地方使用鼠标（类似office中在工作区双击鼠标定位）
-            set mouse=a
-            set selection=exclusive
-            set selectmode=mouse,key
-            " 通过使用: commands命令，告诉我们文件的哪一行被改变过
-            set report=0
-            " 在被分割的窗口间显示空白，便于阅读
-            set fillchars=vert:\ ,stl:\ ,stlnc:\
-            " 高亮显示匹配的括号
-            set showmatch
-            " 匹配括号高亮的时间（单位是十分之一秒）
-            set matchtime=1
-        "}}}
-
-        "自动补全括号,引号{{{
-            inoremap ( ()<Esc>i
-            inoremap [ []<Esc>i
-            inoremap { {<CR>}<Esc>O
-            autocmd Syntax html,vim inoremap < <lt>><Esc>i| inoremap > <c-r>=ClosePair('>')<CR>
-            inoremap ) <c-r>=ClosePair(')')<CR>
-            inoremap ] <c-r>=ClosePair(']')<CR>
-            inoremap } <c-r>=CloseBracket()<CR>
-            inoremap " <c-r>=QuoteDelim('"')<CR>
-            inoremap ' <c-r>=QuoteDelim("'")<CR>
-
-            function ClosePair(char)
-                if getline('.')[col('.') - 1] == a:char
-                    return "\<Right>"
-                else
-                    return a:char
-                endif
-            endf
-
-            function CloseBracket()
-                if match(getline(line('.') + 1), '\s*}') < 0
-                    return "\<CR>}"
-                else
-                    return "\<Esc>j0f}a"
-                endif
-            endf
-
-            function QuoteDelim(char)
-                let line = getline('.')
-                let col = col('.')
-                if line[col - 2] == "\\"
-                    return a:char
-                elseif line[col - 1] == a:char
-                    return "\<Right>"
-                else
-                    return a:char.a:char."\<Esc>i"
-                endif
-            endf
-            filetype plugin indent on 
-            "打开文件类型检测, 加了这句才可以用智能补全
-            set completeopt=longest,menu
-        "}}}
-
-    "}}}
-"Bundle插件配置{{{
-    "路径配置{{{
-        set nocompatible               " be iMproved
-        filetype off                   " required!
-
-        " 插件配置
-        set rtp+=$VIM\bundle\vundle
-        set rtp+=$VIM\bundle\python-imports.vim
-        set rtp+=$VIM\bundle\pydiction      "代码补全工具, Tab自动出提示"
-
-        "set rtp+=$VIM\bundle\*
-        set rtp+=$VIM\bundle\vim-fugitive
-        set rtp+=$VIM\bundle\ctrlp.vim      "快速搜索文件"
-        "set rtp+=$VIM\bundle\powerline      "状态栏插件
-        set rtp+=$VIM\bundle\vim-airline      "状态栏插件-美化-漂亮
-
-        set rtp+=$VIM\bundle\python-mode      "强大的python编辑器"
-        set rtp+=$VIM\bundle\The-NERD-Commenter     "快速注释 <leader>c<SPACE> 运行 <leader>cc 注释， <leader>cu 反注释
-    "}}}
-
-        "EasyMotion配置{{{
-            set rtp+=$VIM\bundle\vim-easymotion     "easymotion 快速定位跳转"
-            nmap <Leader><Leader>w <Plug>(easymotion-overwin-w)
-            "快速查找单词之后的word"没有bd就是之后,有bd就是前后的单词           
-            " <Leader>f{char} to move to {char}
-            "map  <Leader>f <Plug>(easymotion-bd-f)
-            nmap <Leader>; <Plug>(easymotion-overwin-f)
-            "nmap <Leader>f <Plug>(easymotion-overwin-f)
-
-            "s{char}{char} to move to {char}{char}
-            nmap <Leader>f <Plug>(easymotion-overwin-f2)
-
-            " Move to line
-            map <Leader><leader>h <Plug>(easymotion-linebackward)
-            map <Leader><leader>l <Plug>(easymotion-lineforward)
-            "map <Leader>L <Plug>(easymotion-bd-jk)
-            "nmap <Leader>L <Plug>(easymotion-overwin-line)
-            "map <Leader><Leader>j <Plug>(easymotion-j)
-            "map <Leader><Leader>k <Plug>(easymotion-k)
-
-            " Move to word
-            "map  <Leader>s <Plug>(easymotion-bd-w)
-            "nmap <Leader>s <Plug>(easymotion-overwin-w)
-        "}}}
-
-    "启动Bundle{{{
-        " Pathogen load  python-mdoe 配置
-        "call pathogen#infect()
-        "call pathogen#helptags()       "pathogen 插件管理利器 类似vundle"
-        "
-        "Plugin 'easymotion/vim-easymotion'     "安装easymotion 快速定位跳转"
-
-
-        "call vundle#rc()           "旧版"
-        "call vundle#begin()        "新版"
-
-        "Bundle 'gmarik/vundle'      " let Vundle manage Vundle  必须 required!
-
-        " My Bundles here:
-        "
-        " original repos on github  用户名/仓库名
-        "Bundle 'easymotion/vim-easymotion'     "安装easymotion 快速定位跳转"
-        "Bundle 'tpope/vim-fugitive'
-        "Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
-        "Bundle 'Yggdroot/indentLine'
-        "let g:indentLine_char = '┊'
-        "ndle 'tpope/vim-rails.git'
-
-        " vim-scripts repos
-        "Bundle 'L9'
-        "Bundle 'FuzzyFinder'
-        " non github repos
-        "Bundle 'https://github.com/wincent/command-t.git'
-        "Bundle 'Auto-Pairs'
-        "Bundle 'python-imports.vim'
-        "Bundle 'CaptureClipboard'
-        "Bundle 'ctrlp-modified.vim'
-        "Bundle 'last_edit_marker.vim'
-        "Bundle 'synmark.vim'
-        "Bundle 'Python-mode-klen'
-        "Bundle 'SQLComplete.vim'
-        "Bundle 'Javascript-OmniCompletion-with-YUI-and-j'
-        "Bundle 'JavaScript-Indent'
-        "Bundle 'Better-Javascript-Indentation'
-        "Bundle 'jslint.vim'
-        "Bundle "pangloss/vim-javascript"
-        "Bundle 'Vim-Script-Updater'
-        "Bundle 'ctrlp.vim'
-        "Bundle 'tacahiroy/ctrlp-funky'
-        "Bundle 'jsbeautify'
-        "Bundle 'The-NERD-Commenter'
-        "django
-        "Bundle 'django_templates.vim'
-        "Bundle 'Django-Projects'
-
-        "Bundle 'FredKSchott/CoVim'
-        "Bundle 'djangojump'
-        " ...
-        "let g:html_indent_inctags = "html,body,head,tbody"
-        "let g:html_indent_script1 = "inc"
-        "let g:html_indent_style1 = "inc"
-        filetype on			" 侦测文件类型
-        filetype plugin on	" 载入文件类型插件
-        filetype indent on	" 为特定文件类型载入相关缩进文件
-    "}}}
-
-    "v选择扩展{{{
-        set rtp+=$VIM\bundle\vim-expand-region  "快速扩展选择 字符-单词-段落"
-        vmap v <Plug>(expand_region_expand)
-        vmap <A-v> <Plug>(expand_region_shrink)
-    "}}}
-
-        "NerdTree{{{
-            set rtp+=$VIM\bundle\nerdtree       "左侧文件夹管理"
-            set rtp+=$VIM\bundle\vim-nerdtree-tabs       "左侧文件夹tab插件,tab共享"
-            " 显示行号
-            let NERDTreeShowLineNumbers=1
-            let NERDTreeAutoCenter=1
-            " 显示书签列表
-            let NERDTreeShowBookmarks=1
-            " 是否显示隐藏文件
-            let NERDTreeShowHidden=1
-            " 设置宽度
-            let NERDTreeWinSize=31
-            " 在终端启动vim时，共享NERDTree
-            let g:nerdtree_tabs_open_on_console_startup=1
-            "列出当前目录文件  
-            map <F3> :NERDTreeToggle<CR>
-            map! <F3> <ESC> :NERDTreeToggle<CR>
-            "退出时只剩NerdTree时退出Vim"
-            autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") &&b:NERDTreeType == "primary") | q | endif
-            "打开树状文件目录  
-            map <C-F3> \be  
-            let NERDTreeIgnore=['\.pyc']
-            autocmd vimenter * NERDTree     "打开Vim自动打开NerdTree"
-            if has("autocmd")
-                autocmd BufReadPost *
-                            \ if line("'\"") > 0 && line("'\"") <= line("$") |
-                            \   exe "normal g`\"" |
-                            \ endif
+    " End/Start of line motion keys act relative to row/wrap width in the
+    " presence of `:set wrap`, and relative to line for `:set nowrap`.
+    " Default vim behaviour is to act relative to text line in both cases
+    " If you prefer the default behaviour, add the following to your
+    " .vimrc.before.local file:
+    "   let g:spf13_no_wrapRelMotion = 1
+    if !exists('g:spf13_no_wrapRelMotion')
+        " Same for 0, home, end, etc
+        function! WrapRelativeMotion(key, ...)
+            let vis_sel=""
+            if a:0
+                let vis_sel="gv"
             endif
-            "当打开vim且没有文件时自动打开NERDTree
-            autocmd vimenter * if !argc() | NERDTree | endif
-        "}}}
+            if &wrap
+                execute "normal!" vis_sel . "g" . a:key
+            else
+                execute "normal!" vis_sel . a:key
+            endif
+        endfunction
 
-    "superSearch{{{
-        "放在vim/plugin中才有效
-        "set rtp+=$VIM\bundle\supersearch    "插件搜索貌似单独一个.vim 放在bundle中没用"
-        nnoremap ,s :call KeySearch()<cr>
-        vnoremap ,s :call SelectSearch()<cr>
-        nnoremap ,f :call FormatFile()<cr>
-        map <F8> :call TestProject()<CR>
-        map <F9> :call MakeProject()<CR>
-    "}}}
+        " Map g* keys in Normal, Operator-pending, and Visual+select
+        noremap $ :call WrapRelativeMotion("$")<CR>
+        noremap <End> :call WrapRelativeMotion("$")<CR>
+        noremap 0 :call WrapRelativeMotion("0")<CR>
+        noremap <Home> :call WrapRelativeMotion("0")<CR>
+        noremap ^ :call WrapRelativeMotion("^")<CR>
+        " Overwrite the operator pending $/<End> mappings from above
+        " to force inclusive motion with :execute normal!
+        onoremap $ v:call WrapRelativeMotion("$")<CR>
+        onoremap <End> v:call WrapRelativeMotion("$")<CR>
+        " Overwrite the Visual+select mode mappings from above
+        " to ensure the correct vis_sel flag is passed to function
+        vnoremap $ :<C-U>call WrapRelativeMotion("$", 1)<CR>
+        vnoremap <End> :<C-U>call WrapRelativeMotion("$", 1)<CR>
+        vnoremap 0 :<C-U>call WrapRelativeMotion("0", 1)<CR>
+        vnoremap <Home> :<C-U>call WrapRelativeMotion("0", 1)<CR>
+        vnoremap ^ :<C-U>call WrapRelativeMotion("^", 1)<CR>
+    endif
 
-    "Gundo历史记录回退<F4>{{{
-        set rtp+=$VIM\bundle\gundo.vim          "历史记录 版本控制
-        map <F4> :GundoToggle<CR>     "历史记录 版本控制
-        map! <F4> <Esc>:GundoToggle<CR>     "历史记录 版本控制
-        "nnoremap <Leader>u :GundoToggle<CR>     "历史记录 版本控制
-    "}}}
+    " The following two lines conflict with moving to top and
+    " bottom of the screen
+    " If you prefer that functionality, add the following to your
+    " .vimrc.before.local file:
+    "   let g:spf13_no_fastTabs = 1
+    if !exists('g:spf13_no_fastTabs')
+        map <S-H> gT
+        map <S-L> gt
+    endif
 
-    "ctrlp设置{{{
-        set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*.png,*.jpg,*.gif     " MacOSX/Linux
-        set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe,*.pyc,*.png,*.jpg,*.gif  " Windows
-        let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
-        let g:ctrlp_custom_ignore = '\v\.(exe|so|dll)$'
-        let g:ctrlp_extensions = ['funky']
-    "}}}
+    " Stupid shift key fixes
+    if !exists('g:spf13_no_keyfixes')
+        if has("user_commands")
+            command! -bang -nargs=* -complete=file E e<bang> <args>
+            command! -bang -nargs=* -complete=file W w<bang> <args>
+            command! -bang -nargs=* -complete=file Wq wq<bang> <args>
+            command! -bang -nargs=* -complete=file WQ wq<bang> <args>
+            command! -bang Wa wa<bang>
+            command! -bang WA wa<bang>
+            command! -bang Q q<bang>
+            command! -bang QA qa<bang>
+            command! -bang Qa qa<bang>
+        endif
 
-        " CTags & TagList的设定 {{{ 
-            let Tlist_Sort_Type = "name"    " 按照名称排序  
-            let Tlist_Use_Right_Window = 1  " 在右侧显示窗口  
-            let Tlist_Compart_Format = 1    " 压缩方式  
-            let Tlist_Exist_OnlyWindow = 1  " 如果只有一个buffer，kill窗口也kill掉buffer  
-            ""let Tlist_File_Fold_Auto_Close = 0  " 不要关闭其他文件的tags  
-            ""let Tlist_Enable_Fold_Column = 0    " 不要显示折叠树  
-            "let Tlist_Show_One_File=1            "不同时显示多个文件的tag，只显示当前文件的
-            "设置tags  
-            set tags=tags;  
-            set autochdir 
+        cmap Tabe tabe
+    endif
 
-            "默认打开Taglist 
-            let Tlist_Auto_Open=0 
-            """""""""""""""""""""""""""""" 
-            " Tag list (ctags) 
-            """""""""""""""""""""""""""""""" 
-            let Tlist_Ctags_Cmd = 'ctags' 
-            let Tlist_Show_One_File = 1 "不同时显示多个文件的tag，只显示当前文件的 
-            let Tlist_File_Fold_Auto_Close = 1
-            let Tlist_Exit_OnlyWindow = 1 "如果taglist窗口是最后一个窗口，则退出vim 
-            let Tlist_Use_Right_Window = 1 "在右侧窗口中显示taglist窗口
-            nmap tl :Tlist<cr>
-        "}}}
+    " Yank from the cursor to the end of the line, to be consistent with C and D.
+    nnoremap Y y$
 
-        " minibufexpl插件的一般设置{{{
-            "let g:miniBufExplMapWindowNavVim = 1
-            "let g:miniBufExplMapWindowNavArrows = 1
-            "let g:miniBufExplMapCTabSwitchBufs = 1
-            "let g:miniBufExplModSelTarget = 1  
-        "}}}
+    " Code folding options {
+        "nmap <leader>f0 :set foldlevel=0<CR>
+        "nmap <leader>f1 :set foldlevel=1<CR>
+        "nmap <leader>f2 :set foldlevel=2<CR>
+        "nmap <leader>f3 :set foldlevel=3<CR>
+        "nmap <leader>f4 :set foldlevel=4<CR>
+        "nmap <leader>f5 :set foldlevel=5<CR>
+        "nmap <leader>f6 :set foldlevel=6<CR>
+        "nmap <leader>f7 :set foldlevel=7<CR>
+        "nmap <leader>f8 :set foldlevel=8<CR>
+        "nmap <leader>f9 :set foldlevel=9<CR>
+    "}
 
-        "python补全{{{
-            let g:pydiction_location = '$VIM/bundle/pydiction/complete-dict'
-            let g:pydiction_menu_height = 20
-            let Tlist_Ctags_Cmd='$MSYS2_HOME/usr/bin/ctags'
-        "}}}
+    "nohlsearch & invhlserach {
+    " Most prefer to toggle search highlighting rather than clear the current
+    " search results. To clear search highlighting rather than toggle it on
+    " and off, add the following to your .vimrc.before.local file:
+    "   let g:spf13_clear_search_highlight = 1
+    "if exists('g:spf13_clear_search_highlight')
+        "nmap <silent> <leader>/ :nohlsearch<CR>
+    "else
+        "nmap <silent> <leader>/ :set invhlsearch<CR>
+    "endif
+    "}
 
-        "YouCompleteMe{{{ "自动补全 配置"
-            "set rtp+=$VIM\bundle\YouCompleteMe  "自动补全"
-            "let g:ycm_keep_logfiles = 1
-            "let g:ycm_log_level = 'debug'
-        "}}}
+    " Find merge conflict markers
+    map <leader>fc /\v^[<\|=>]{7}( .*\|$)<CR>
 
-    "配置python-mode{{{
-            let g:pymod = 1 "Turn on the whole plugin"
-            let g:pymode_warnings = 1   "When =1, Turn off plugin's warnigs"
-            let g:pymod_paths = []      "add paths to sys.path"
-            let g:pymode_trim_whitespaces = 1 "保存时去空格"
-            let g:pymode_python = 'python'    "配置python 版本为python 或者python3"
-            let g:pymode_indent = 1           "配置缩进 PEP8风格"
-            let g:pymode_motion = 1           "移动方式 ]] ]M aC "
-            let g:pymode_doc = 1 " 通过命令:PymodeDoc arg查阅文档
-        "　　let g:pymode_doc_bind = ‘K‘ "Help Doc光标移到参数上面按快捷键K 没有该命令
-            "let g:pymode_rope_ropefolder=‘pythonSrc‘ “项目文件在的目录
-            "光标下单词查阅文档 '''显示注释的内容'''
-            let g:pymode_rope_show_doc_bind = '<leader>d'
-            "项目修改后重新生成缓存
-            let g:pymode_rope_regenerate_on_write = 1
-            "开启补全，并设置<A-\>为默认快捷键
-            let g:pymode_rope_completion = 1
-            let g:pymode_rope_complete_on_dot = 1
-            let g:pymode_rope_completion_bind = '<C+/>'
-            "跳转到定义处，同时新建竖直窗口打开
-            let g:pymode_rope_goto_definition_bind = '<C-]>'
-            let g:pymode_rope_goto_definition_cmd = 'tabnew' "or vnew"
-            "重命名光标下的函数，方法，变量及类名
-            let g:pymode_rope_rename_bind = '<leader>n'
-            "重命名光标下的模块或包
-            let g:pymode_rope_rename_module_bind = '<leader>nm'
-            "开启python所有的语法高亮
-            let g:pymode_syntax = 1
-            let g:pymode_syntax_all = 1
-            "高亮缩进错误
-            let g:pymode_syntax_indent_errors = g:pymode_syntax_all
-            "高亮空格错误
-            let g:pymode_syntax_space_errors = g:pymode_syntax_all
-    "}}}
-"}}}
+    " Shortcuts
+    " Change Working Directory to that of the current file
+    cmap cwd lcd %:p:h
+    cmap cd. lcd %:p:h
 
+    " Visual shifting (does not exit Visual mode)
+    vnoremap < <gv
+    vnoremap > >gv
+
+    " Allow using the repeat operator with a visual selection (!)
+    " http://stackoverflow.com/a/8064607/127816
+    vnoremap . :normal .<CR>
+
+    " For when you forget to sudo.. Really Write the file.
+    cmap w!! w !sudo tee % >/dev/null
+
+    " Some helpers to edit mode
+    " http://vimcasts.org/e/14
+    cnoremap %% <C-R>=fnameescape(expand('%:h')).'/'<cr>
+    map <leader>ew :e %%
+    map <leader>es :sp %%
+    map <leader>ev :vsp %%
+    map <leader>et :tabe %%
+
+    " Adjust viewports to the same size
+    map <Leader>= <C-w>=
+
+    " Map <Leader>ff to display all lines with keyword under cursor
+    " and ask which one to jump to
+    nmap <Leader>ff [I:let nr = input("Which one: ")<Bar>exe "normal " . nr ."[\t"<CR>
+
+    " Easier horizontal scrolling
+    map zl zL
+    map zh zH
+
+    " Easier formatting
+    nnoremap <silent> <leader>q gwip
+
+    " FIXME: Revert this f70be548
+    " fullscreen mode for GVIM and Terminal, need 'wmctrl' in you PATH
+    map <silent> <F11> :call system("wmctrl -ir " . v:windowid . " -b toggle,fullscreen")<CR>
+
+" }
+
+" Plugins {
+
+    " GoLang {
+        "if count(g:spf13_bundle_groups, 'go')
+            "let g:go_highlight_functions = 1
+            "let g:go_highlight_methods = 1
+            "let g:go_highlight_structs = 1
+            "let g:go_highlight_operators = 1
+            "let g:go_highlight_build_constraints = 1
+            "let g:go_fmt_command = "goimports"
+            "let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
+            "let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
+            "au FileType go nmap <Leader>s <Plug>(go-implements)
+            "au FileType go nmap <Leader>i <Plug>(go-info)
+            "au FileType go nmap <Leader>e <Plug>(go-rename)
+            "au FileType go nmap <leader>r <Plug>(go-run)
+            "au FileType go nmap <leader>b <Plug>(go-build)
+            "au FileType go nmap <leader>t <Plug>(go-test)
+            "au FileType go nmap <Leader>gd <Plug>(go-doc)
+            "au FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
+            "au FileType go nmap <leader>co <Plug>(go-coverage)
+        "endif
+        " }
+
+
+    " TextObj Sentence {
+        "if count(g:spf13_bundle_groups, 'writing')
+            "augroup textobj_sentence
+              "autocmd!
+              "autocmd FileType markdown call textobj#sentence#init()
+              "autocmd FileType textile call textobj#sentence#init()
+              "autocmd FileType text call textobj#sentence#init()
+            "augroup END
+        "endif
+    " }
+
+    " TextObj Quote {
+        "if count(g:spf13_bundle_groups, 'writing')
+            "augroup textobj_quote
+                "autocmd!
+                "autocmd FileType markdown call textobj#quote#init()
+                "autocmd FileType textile call textobj#quote#init()
+                "autocmd FileType text call textobj#quote#init({'educate': 0})
+            "augroup END
+        "endif
+    " }
+
+    " PIV {
+        "if isdirectory(expand("~/.vim/bundle/PIV"))
+            "let g:DisableAutoPHPFolding = 0
+            "let g:PIVAutoClose = 0
+        "endif
+    " }
+
+    " Misc {
+        "if isdirectory(expand("~/.vim/bundle/nerdtree"))
+            "let g:NERDShutUp=1
+        "endif
+        "if isdirectory(expand("~/.vim/bundle/matchit.zip"))
+            "let b:match_ignorecase = 1
+        "endif
+    " }
+
+    " OmniComplete {
+        " To disable omni complete, add the following to your .vimrc.before.local file:
+        "   let g:spf13_no_omni_complete = 1
+        "if !exists('g:spf13_no_omni_complete')
+            "if has("autocmd") && exists("+omnifunc")
+                "autocmd Filetype *
+                    "\if &omnifunc == "" |
+                    "\setlocal omnifunc=syntaxcomplete#Complete |
+                    "\endif
+            "endif
+
+            "hi Pmenu  guifg=#000000 guibg=#F8F8F8 ctermfg=black ctermbg=Lightgray
+            "hi PmenuSbar  guifg=#8A95A7 guibg=#F8F8F8 gui=NONE ctermfg=darkcyan ctermbg=lightgray cterm=NONE
+            "hi PmenuThumb  guifg=#F8F8F8 guibg=#8A95A7 gui=NONE ctermfg=lightgray ctermbg=darkcyan cterm=NONE
+
+            "" Some convenient mappings
+            ""inoremap <expr> <Esc>      pumvisible() ? "\<C-e>" : "\<Esc>"
+            "if exists('g:spf13_map_cr_omni_complete')
+                "inoremap <expr> <CR>     pumvisible() ? "\<C-y>" : "\<CR>"
+            "endif
+            "inoremap <expr> <Down>     pumvisible() ? "\<C-n>" : "\<Down>"
+            "inoremap <expr> <Up>       pumvisible() ? "\<C-p>" : "\<Up>"
+            "inoremap <expr> <C-d>      pumvisible() ? "\<PageDown>\<C-p>\<C-n>" : "\<C-d>"
+            "inoremap <expr> <C-u>      pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<C-u>"
+
+            "" Automatically open and close the popup menu / preview window
+            "au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
+            "set completeopt=menu,preview,longest
+        "endif
+    " }
+
+    " Ctags {
+        "set tags=./tags;/,~/.vimtags
+
+        "" Make tags placed in .git/tags file available in all levels of a repository
+        "let gitroot = substitute(system('git rev-parse --show-toplevel'), '[\n\r]', '', 'g')
+        "if gitroot != ''
+            "let &tags = &tags . ',' . gitroot . '/.git/tags'
+        "endif
+    " }
+
+    " AutoCloseTag {
+        " Make it so AutoCloseTag works for xml and xhtml files as well
+        "au FileType xhtml,xml ru ftplugin/html/autoclosetag.vim
+        "nmap <Leader>ac <Plug>ToggleAutoCloseMappings
+    " }
+
+    " SnipMate {
+        " Setting the author var
+        " If forking, please overwrite in your .vimrc.local file
+        "let g:snips_author = 'Steve Francia <steve.francia@gmail.com>'
+    " }
+
+    " NerdTree {
+        "if isdirectory(expand("~/.vim/bundle/nerdtree"))
+            "map <C-e> <plug>NERDTreeTabsToggle<CR>
+            "map <leader>e :NERDTreeFind<CR>
+            "nmap <leader>nt :NERDTreeFind<CR>
+
+            "let NERDTreeShowBookmarks=1
+            "let NERDTreeIgnore=['\.py[cd]$', '\~$', '\.swo$', '\.swp$', '^\.git$', '^\.hg$', '^\.svn$', '\.bzr$']
+            "let NERDTreeChDirMode=0
+            "let NERDTreeQuitOnOpen=1
+            "let NERDTreeMouseMode=2
+            "let NERDTreeShowHidden=1
+            "let NERDTreeKeepTreeInNewTab=1
+            "let g:nerdtree_tabs_open_on_gui_startup=0
+        "endif
+    " }
+
+    " Tabularize {
+        "if isdirectory(expand("~/.vim/bundle/tabular"))
+            "nmap <Leader>a& :Tabularize /&<CR>
+            "vmap <Leader>a& :Tabularize /&<CR>
+            "nmap <Leader>a= :Tabularize /^[^=]*\zs=<CR>
+            "vmap <Leader>a= :Tabularize /^[^=]*\zs=<CR>
+            "nmap <Leader>a=> :Tabularize /=><CR>
+            "vmap <Leader>a=> :Tabularize /=><CR>
+            "nmap <Leader>a: :Tabularize /:<CR>
+            "vmap <Leader>a: :Tabularize /:<CR>
+            "nmap <Leader>a:: :Tabularize /:\zs<CR>
+            "vmap <Leader>a:: :Tabularize /:\zs<CR>
+            "nmap <Leader>a, :Tabularize /,<CR>
+            "vmap <Leader>a, :Tabularize /,<CR>
+            "nmap <Leader>a,, :Tabularize /,\zs<CR>
+            "vmap <Leader>a,, :Tabularize /,\zs<CR>
+            "nmap <Leader>a<Bar> :Tabularize /<Bar><CR>
+            "vmap <Leader>a<Bar> :Tabularize /<Bar><CR>
+        "endif
+    " }
+
+    " Session List {
+        "set sessionoptions=blank,buffers,curdir,folds,tabpages,winsize
+        "if isdirectory(expand("~/.vim/bundle/sessionman.vim/"))
+            "nmap <leader>sl :SessionList<CR>
+            "nmap <leader>ss :SessionSave<CR>
+            "nmap <leader>sc :SessionClose<CR>
+        "endif
+    " }
+
+    " JSON {
+        "nmap <leader>jt <Esc>:%!python -m json.tool<CR><Esc>:set filetype=json<CR>
+        "let g:vim_json_syntax_conceal = 0
+    " }
+
+    " PyMode {
+        " Disable if python support not present
+        "if !has('python') && !has('python3')
+            "let g:pymode = 0
+        "endif
+
+        "if isdirectory(expand("~/.vim/bundle/python-mode"))
+            "let g:pymode_lint_checkers = ['pyflakes']
+            "let g:pymode_trim_whitespaces = 0
+            "let g:pymode_options = 0
+            "let g:pymode_rope = 0
+        "endif
+    " }
+
+    " ctrlp {
+        "if isdirectory(expand("~/.vim/bundle/ctrlp.vim/"))
+            "let g:ctrlp_working_path_mode = 'ra'
+            "nnoremap <silent> <D-t> :CtrlP<CR>
+            "nnoremap <silent> <D-r> :CtrlPMRU<CR>
+            "let g:ctrlp_custom_ignore = {
+                "\ 'dir':  '\.git$\|\.hg$\|\.svn$',
+                "\ 'file': '\.exe$\|\.so$\|\.dll$\|\.pyc$' }
+
+            "if executable('ag')
+                "let s:ctrlp_fallback = 'ag %s --nocolor -l -g ""'
+            "elseif executable('ack-grep')
+                "let s:ctrlp_fallback = 'ack-grep %s --nocolor -f'
+            "elseif executable('ack')
+                "let s:ctrlp_fallback = 'ack %s --nocolor -f'
+            "" On Windows use "dir" as fallback command.
+            "elseif WINDOWS()
+                "let s:ctrlp_fallback = 'dir %s /-n /b /s /a-d'
+            "else
+                "let s:ctrlp_fallback = 'find %s -type f'
+            "endif
+            "if exists("g:ctrlp_user_command")
+                "unlet g:ctrlp_user_command
+            "endif
+            "let g:ctrlp_user_command = {
+                "\ 'types': {
+                    "\ 1: ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others'],
+                    "\ 2: ['.hg', 'hg --cwd %s locate -I .'],
+                "\ },
+                "\ 'fallback': s:ctrlp_fallback
+            "\ }
+
+            "if isdirectory(expand("~/.vim/bundle/ctrlp-funky/"))
+                "" CtrlP extensions
+                "let g:ctrlp_extensions = ['funky']
+
+                ""funky
+                "nnoremap <Leader>fu :CtrlPFunky<Cr>
+            "endif
+        "endif
+    "}
+
+    " TagBar {
+        "if isdirectory(expand("~/.vim/bundle/tagbar/"))
+            "nnoremap <silent> <leader>tt :TagbarToggle<CR>
+        "endif
+    "}
+
+    " Rainbow {
+        "if isdirectory(expand("~/.vim/bundle/rainbow/"))
+            "let g:rainbow_active = 1 "0 if you want to enable it later via :RainbowToggle
+        "endif
+    "}
+
+    " Fugitive {
+        "if isdirectory(expand("~/.vim/bundle/vim-fugitive/"))
+            "nnoremap <silent> <leader>gs :Gstatus<CR>
+            "nnoremap <silent> <leader>gd :Gdiff<CR>
+            "nnoremap <silent> <leader>gc :Gcommit<CR>
+            "nnoremap <silent> <leader>gb :Gblame<CR>
+            "nnoremap <silent> <leader>gl :Glog<CR>
+            "nnoremap <silent> <leader>gp :Git push<CR>
+            "nnoremap <silent> <leader>gr :Gread<CR>
+            "nnoremap <silent> <leader>gw :Gwrite<CR>
+            "nnoremap <silent> <leader>ge :Gedit<CR>
+            "" Mnemonic _i_nteractive
+            "nnoremap <silent> <leader>gi :Git add -p %<CR>
+            "nnoremap <silent> <leader>gg :SignifyToggle<CR>
+        "endif
+    "}
+
+    " YouCompleteMe {
+        "if count(g:spf13_bundle_groups, 'youcompleteme')
+            "let g:acp_enableAtStartup = 0
+
+            "" enable completion from tags
+            "let g:ycm_collect_identifiers_from_tags_files = 1
+
+            "" remap Ultisnips for compatibility for YCM
+            "let g:UltiSnipsExpandTrigger = '<C-j>'
+            "let g:UltiSnipsJumpForwardTrigger = '<C-j>'
+            "let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
+
+            "" Enable omni completion.
+            "autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+            "autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+            "autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+            "autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+            "autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+            "autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
+            "autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
+
+            "" Haskell post write lint and check with ghcmod
+            "" $ `cabal install ghcmod` if missing and ensure
+            "" ~/.cabal/bin is in your $PATH.
+            "if !executable("ghcmod")
+                "autocmd BufWritePost *.hs GhcModCheckAndLintAsync
+            "endif
+
+            "" For snippet_complete marker.
+            "if !exists("g:spf13_no_conceal")
+                "if has('conceal')
+                    "set conceallevel=2 concealcursor=i
+                "endif
+            "endif
+
+            "" Disable the neosnippet preview candidate window
+            "" When enabled, there can be too much visual noise
+            "" especially when splits are used.
+            "set completeopt-=preview
+        "endif
+    " }
+
+    " neocomplete {
+        "if count(g:spf13_bundle_groups, 'neocomplete')
+            "let g:acp_enableAtStartup = 0
+            "let g:neocomplete#enable_at_startup = 1
+            "let g:neocomplete#enable_smart_case = 1
+            "let g:neocomplete#enable_auto_delimiter = 1
+            "let g:neocomplete#max_list = 15
+            "let g:neocomplete#force_overwrite_completefunc = 1
+
+
+            "" Define dictionary.
+            "let g:neocomplete#sources#dictionary#dictionaries = {
+                        "\ 'default' : '',
+                        "\ 'vimshell' : $HOME.'/.vimshell_hist',
+                        "\ 'scheme' : $HOME.'/.gosh_completions'
+                        "\ }
+
+            "" Define keyword.
+            "if !exists('g:neocomplete#keyword_patterns')
+                "let g:neocomplete#keyword_patterns = {}
+            "endif
+            "let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+
+            "" Plugin key-mappings {
+                "" These two lines conflict with the default digraph mapping of <C-K>
+                "if !exists('g:spf13_no_neosnippet_expand')
+                    "imap <C-k> <Plug>(neosnippet_expand_or_jump)
+                    "smap <C-k> <Plug>(neosnippet_expand_or_jump)
+                "endif
+                "if exists('g:spf13_noninvasive_completion')
+                    "inoremap <CR> <CR>
+                    "" <ESC> takes you out of insert mode
+                    "inoremap <expr> <Esc>   pumvisible() ? "\<C-y>\<Esc>" : "\<Esc>"
+                    "" <CR> accepts first, then sends the <CR>
+                    "inoremap <expr> <CR>    pumvisible() ? "\<C-y>\<CR>" : "\<CR>"
+                    "" <Down> and <Up> cycle like <Tab> and <S-Tab>
+                    "inoremap <expr> <Down>  pumvisible() ? "\<C-n>" : "\<Down>"
+                    "inoremap <expr> <Up>    pumvisible() ? "\<C-p>" : "\<Up>"
+                    "" Jump up and down the list
+                    "inoremap <expr> <C-d>   pumvisible() ? "\<PageDown>\<C-p>\<C-n>" : "\<C-d>"
+                    "inoremap <expr> <C-u>   pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<C-u>"
+                "else
+                    "" <C-k> Complete Snippet
+                    "" <C-k> Jump to next snippet point
+                    "imap <silent><expr><C-k> neosnippet#expandable() ?
+                                "\ "\<Plug>(neosnippet_expand_or_jump)" : (pumvisible() ?
+                                "\ "\<C-e>" : "\<Plug>(neosnippet_expand_or_jump)")
+                    "smap <TAB> <Right><Plug>(neosnippet_jump_or_expand)
+
+                    "inoremap <expr><C-g> neocomplete#undo_completion()
+                    "inoremap <expr><C-l> neocomplete#complete_common_string()
+                    ""inoremap <expr><CR> neocomplete#complete_common_string()
+
+                    "" <CR>: close popup
+                    "" <s-CR>: close popup and save indent.
+                    "inoremap <expr><s-CR> pumvisible() ? neocomplete#smart_close_popup()."\<CR>" : "\<CR>"
+
+                    "function! CleverCr()
+                        "if pumvisible()
+                            "if neosnippet#expandable()
+                                "let exp = "\<Plug>(neosnippet_expand)"
+                                "return exp . neocomplete#smart_close_popup()
+                            "else
+                                "return neocomplete#smart_close_popup()
+                            "endif
+                        "else
+                            "return "\<CR>"
+                        "endif
+                    "endfunction
+
+                    "" <CR> close popup and save indent or expand snippet
+                    "imap <expr> <CR> CleverCr()
+                    "" <C-h>, <BS>: close popup and delete backword char.
+                    "inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+                    "inoremap <expr><C-y> neocomplete#smart_close_popup()
+                "endif
+                "" <TAB>: completion.
+                "inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
+                "inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<TAB>"
+
+                "" Courtesy of Matteo Cavalleri
+
+                "function! CleverTab()
+                    "if pumvisible()
+                        "return "\<C-n>"
+                    "endif
+                    "let substr = strpart(getline('.'), 0, col('.') - 1)
+                    "let substr = matchstr(substr, '[^ \t]*$')
+                    "if strlen(substr) == 0
+                        "" nothing to match on empty string
+                        "return "\<Tab>"
+                    "else
+                        "" existing text matching
+                        "if neosnippet#expandable_or_jumpable()
+                            "return "\<Plug>(neosnippet_expand_or_jump)"
+                        "else
+                            "return neocomplete#start_manual_complete()
+                        "endif
+                    "endif
+                "endfunction
+
+                "imap <expr> <Tab> CleverTab()
+            "" }
+
+            "" Enable heavy omni completion.
+            "if !exists('g:neocomplete#sources#omni#input_patterns')
+                "let g:neocomplete#sources#omni#input_patterns = {}
+            "endif
+            "let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
+            "let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
+            "let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
+            "let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+            "let g:neocomplete#sources#omni#input_patterns.ruby = '[^. *\t]\.\h\w*\|\h\w*::'
+    "" }
+    "" neocomplcache {
+        "elseif count(g:spf13_bundle_groups, 'neocomplcache')
+            "let g:acp_enableAtStartup = 0
+            "let g:neocomplcache_enable_at_startup = 1
+            "let g:neocomplcache_enable_camel_case_completion = 1
+            "let g:neocomplcache_enable_smart_case = 1
+            "let g:neocomplcache_enable_underbar_completion = 1
+            "let g:neocomplcache_enable_auto_delimiter = 1
+            "let g:neocomplcache_max_list = 15
+            "let g:neocomplcache_force_overwrite_completefunc = 1
+
+            "" Define dictionary.
+            "let g:neocomplcache_dictionary_filetype_lists = {
+                        "\ 'default' : '',
+                        "\ 'vimshell' : $HOME.'/.vimshell_hist',
+                        "\ 'scheme' : $HOME.'/.gosh_completions'
+                        "\ }
+
+            "" Define keyword.
+            "if !exists('g:neocomplcache_keyword_patterns')
+                "let g:neocomplcache_keyword_patterns = {}
+            "endif
+            "let g:neocomplcache_keyword_patterns._ = '\h\w*'
+
+            "" Plugin key-mappings {
+                "" These two lines conflict with the default digraph mapping of <C-K>
+                "imap <C-k> <Plug>(neosnippet_expand_or_jump)
+                "smap <C-k> <Plug>(neosnippet_expand_or_jump)
+                "if exists('g:spf13_noninvasive_completion')
+                    "inoremap <CR> <CR>
+                    "" <ESC> takes you out of insert mode
+                    "inoremap <expr> <Esc>   pumvisible() ? "\<C-y>\<Esc>" : "\<Esc>"
+                    "" <CR> accepts first, then sends the <CR>
+                    "inoremap <expr> <CR>    pumvisible() ? "\<C-y>\<CR>" : "\<CR>"
+                    "" <Down> and <Up> cycle like <Tab> and <S-Tab>
+                    "inoremap <expr> <Down>  pumvisible() ? "\<C-n>" : "\<Down>"
+                    "inoremap <expr> <Up>    pumvisible() ? "\<C-p>" : "\<Up>"
+                    "" Jump up and down the list
+                    "inoremap <expr> <C-d>   pumvisible() ? "\<PageDown>\<C-p>\<C-n>" : "\<C-d>"
+                    "inoremap <expr> <C-u>   pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<C-u>"
+                "else
+                    "imap <silent><expr><C-k> neosnippet#expandable() ?
+                                "\ "\<Plug>(neosnippet_expand_or_jump)" : (pumvisible() ?
+                                "\ "\<C-e>" : "\<Plug>(neosnippet_expand_or_jump)")
+                    "smap <TAB> <Right><Plug>(neosnippet_jump_or_expand)
+
+                    "inoremap <expr><C-g> neocomplcache#undo_completion()
+                    "inoremap <expr><C-l> neocomplcache#complete_common_string()
+                    ""inoremap <expr><CR> neocomplcache#complete_common_string()
+
+                    "function! CleverCr()
+                        "if pumvisible()
+                            "if neosnippet#expandable()
+                                "let exp = "\<Plug>(neosnippet_expand)"
+                                "return exp . neocomplcache#close_popup()
+                            "else
+                                "return neocomplcache#close_popup()
+                            "endif
+                        "else
+                            "return "\<CR>"
+                        "endif
+                    "endfunction
+
+                    "" <CR> close popup and save indent or expand snippet
+                    "imap <expr> <CR> CleverCr()
+
+                    "" <CR>: close popup
+                    "" <s-CR>: close popup and save indent.
+                    "inoremap <expr><s-CR> pumvisible() ? neocomplcache#close_popup()."\<CR>" : "\<CR>"
+                    ""inoremap <expr><CR> pumvisible() ? neocomplcache#close_popup() : "\<CR>"
+
+                    "" <C-h>, <BS>: close popup and delete backword char.
+                    "inoremap <expr><BS> neocomplcache#smart_close_popup()."\<C-h>"
+                    "inoremap <expr><C-y> neocomplcache#close_popup()
+                "endif
+                "" <TAB>: completion.
+                "inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
+                "inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<TAB>"
+            "" }
+
+            "" Enable omni completion.
+            "autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+            "autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+            "autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+            "autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+            "autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+            "autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
+            "autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
+
+            "" Enable heavy omni completion.
+            "if !exists('g:neocomplcache_omni_patterns')
+                "let g:neocomplcache_omni_patterns = {}
+            "endif
+            "let g:neocomplcache_omni_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
+            "let g:neocomplcache_omni_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
+            "let g:neocomplcache_omni_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
+            "let g:neocomplcache_omni_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+            "let g:neocomplcache_omni_patterns.ruby = '[^. *\t]\.\h\w*\|\h\w*::'
+            "let g:neocomplcache_omni_patterns.go = '\h\w*\.\?'
+    "" }
+    "" Normal Vim omni-completion {
+    "" To disable omni complete, add the following to your .vimrc.before.local file:
+    ""   let g:spf13_no_omni_complete = 1
+        "elseif !exists('g:spf13_no_omni_complete')
+            "" Enable omni-completion.
+            "autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+            "autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+            "autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+            "autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+            "autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+            "autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
+            "autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
+
+        "endif
+    " }
+
+    " Snippets {
+        "if count(g:spf13_bundle_groups, 'neocomplcache') ||
+                    "\ count(g:spf13_bundle_groups, 'neocomplete')
+
+            "" Use honza's snippets.
+            "let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets/snippets'
+
+            "" Enable neosnippet snipmate compatibility mode
+            "let g:neosnippet#enable_snipmate_compatibility = 1
+
+            "" For snippet_complete marker.
+            "if !exists("g:spf13_no_conceal")
+                "if has('conceal')
+                    "set conceallevel=2 concealcursor=i
+                "endif
+            "endif
+
+            "" Enable neosnippets when using go
+            "let g:go_snippet_engine = "neosnippet"
+
+            "" Disable the neosnippet preview candidate window
+            "" When enabled, there can be too much visual noise
+            "" especially when splits are used.
+            "set completeopt-=preview
+        "endif
+    " }
+
+    " FIXME: Isn't this for Syntastic to handle?
+    " Haskell post write lint and check with ghcmod
+    " $ `cabal install ghcmod` if missing and ensure
+    " ~/.cabal/bin is in your $PATH.
+    "if !executable("ghcmod")
+        "autocmd BufWritePost *.hs GhcModCheckAndLintAsync
+    "endif
+
+    " UndoTree {
+        "if isdirectory(expand("~/.vim/bundle/undotree/"))
+            "nnoremap <Leader>u :UndotreeToggle<CR>
+            "" If undotree is opened, it is likely one wants to interact with it.
+            "let g:undotree_SetFocusWhenToggle=1
+        "endif
+    " }
+
+    " indent_guides {
+        "if isdirectory(expand("~/.vim/bundle/vim-indent-guides/"))
+            "let g:indent_guides_start_level = 2
+            "let g:indent_guides_guide_size = 1
+            "let g:indent_guides_enable_on_vim_startup = 1
+        "endif
+    " }
+
+    " Wildfire {
+    let g:wildfire_objects = {
+                \ "*" : ["i'", 'i"', "i)", "i]", "i}", "ip"],
+                \ "html,xml" : ["at"],
+                \ }
+    " }
+
+    " vim-airline {
+        " Set configuration options for the statusline plugin vim-airline.
+        " Use the powerline theme and optionally enable powerline symbols.
+        " To use the symbols , , , , , , and .in the statusline
+        " segments add the following to your .vimrc.before.local file:
+        "   let g:airline_powerline_fonts=1
+        " If the previous symbols do not render for you then install a
+        " powerline enabled font.
+
+        " See `:echo g:airline_theme_map` for some more choices
+        " Default in terminal vim is 'dark'
+        "if isdirectory(expand("~/.vim/bundle/vim-airline-themes/"))
+            "if !exists('g:airline_theme')
+                "let g:airline_theme = 'solarized'
+            "endif
+            "if !exists('g:airline_powerline_fonts')
+                "" Use the default set of separators with a few customizations
+                "let g:airline_left_sep='›'  " Slightly fancier than '>'
+                "let g:airline_right_sep='‹' " Slightly fancier than '<'
+            "endif
+        "endif
+    " }
+
+
+
+" }
+
+" GUI Settings {
+
+    " GVIM- (here instead of .gvimrc)
+    "if has('gui_running')
+        "set guioptions-=T           " Remove the toolbar
+        "set lines=40                " 40 lines of text instead of 24
+        "if !exists("g:spf13_no_big_font")
+            "if LINUX() && has("gui_running")
+                "set guifont=Andale\ Mono\ Regular\ 12,Menlo\ Regular\ 11,Consolas\ Regular\ 12,Courier\ New\ Regular\ 14
+            "elseif OSX() && has("gui_running")
+                "set guifont=Andale\ Mono\ Regular:h12,Menlo\ Regular:h11,Consolas\ Regular:h12,Courier\ New\ Regular:h14
+            "elseif WINDOWS() && has("gui_running")
+                "set guifont=Andale_Mono:h10,Menlo:h10,Consolas:h10,Courier_New:h10
+            "endif
+        "endif
+    "else
+        "if &term == 'xterm' || &term == 'screen'
+            "set t_Co=256            " Enable 256 colors to stop the CSApprox warning and make xterm vim shine
+        "endif
+        ""set term=builtin_ansi       " Make arrow and other keys work
+    "endif
+
+" }
+
+" Functions {
+
+    " Initialize directories {
+    function! InitializeDirectories()
+        let parent = $HOME
+        let prefix = 'vim'
+        let dir_list = {
+                    \ 'backup': 'backupdir',
+                    \ 'views': 'viewdir',
+                    \ 'swap': 'directory' }
+
+        if has('persistent_undo')
+            let dir_list['undo'] = 'undodir'
+        endif
+
+        " To specify a different directory in which to place the vimbackup,
+        " vimviews, vimundo, and vimswap files/directories, add the following to
+        " your .vimrc.before.local file:
+        "   let g:spf13_consolidated_directory = <full path to desired directory>
+        "   eg: let g:spf13_consolidated_directory = $HOME . '/.vim/'
+        if exists('g:spf13_consolidated_directory')
+            let common_dir = g:spf13_consolidated_directory . prefix
+        else
+            let common_dir = parent . '/.' . prefix
+        endif
+
+        for [dirname, settingname] in items(dir_list)
+            let directory = common_dir . dirname . '/'
+            if exists("*mkdir")
+                if !isdirectory(directory)
+                    call mkdir(directory)
+                endif
+            endif
+            if !isdirectory(directory)
+                echo "Warning: Unable to create backup directory: " . directory
+                echo "Try: mkdir -p " . directory
+            else
+                let directory = substitute(directory, " ", "\\\\ ", "g")
+                exec "set " . settingname . "=" . directory
+            endif
+        endfor
+    endfunction
+    call InitializeDirectories()
+    " }
+
+    " Initialize NERDTree as needed {
+    function! NERDTreeInitAsNeeded()
+        redir => bufoutput
+        buffers!
+        redir END
+        let idx = stridx(bufoutput, "NERD_tree")
+        if idx > -1
+            NERDTreeMirror
+            NERDTreeFind
+            wincmd l
+        endif
+    endfunction
+    " }
+
+    " Strip whitespace {
+    function! StripTrailingWhitespace()
+        " Preparation: save last search, and cursor position.
+        let _s=@/
+        let l = line(".")
+        let c = col(".")
+        " do the business:
+        %s/\s\+$//e
+        " clean up: restore previous search history, and cursor position
+        let @/=_s
+        call cursor(l, c)
+    endfunction
+    " }
+
+    " Shell command {
+    function! s:RunShellCommand(cmdline)
+        botright new
+
+        setlocal buftype=nofile
+        setlocal bufhidden=delete
+        setlocal nobuflisted
+        setlocal noswapfile
+        setlocal nowrap
+        setlocal filetype=shell
+        setlocal syntax=shell
+
+        call setline(1, a:cmdline)
+        call setline(2, substitute(a:cmdline, '.', '=', 'g'))
+        execute 'silent $read !' . escape(a:cmdline, '%#')
+        setlocal nomodifiable
+        1
+    endfunction
+
+    command! -complete=file -nargs=+ Shell call s:RunShellCommand(<q-args>)
+    " e.g. Grep current file for <search_term>: Shell grep -Hn <search_term> %
+    " }
+
+    function! s:IsSpf13Fork()
+        let s:is_fork = 0
+        let s:fork_files = ["~/.vimrc.fork", "~/.vimrc.before.fork", "~/.vimrc.bundles.fork"]
+        for fork_file in s:fork_files
+            if filereadable(expand(fork_file, ":p"))
+                let s:is_fork = 1
+                break
+            endif
+        endfor
+        return s:is_fork
+    endfunction
+     
+    function! s:ExpandFilenameAndExecute(command, file)
+        execute a:command . " " . expand(a:file, ":p")
+    endfunction
+     
+    function! s:EditSpf13Config()
+        call <SID>ExpandFilenameAndExecute("tabedit", "~/.vimrc")
+        call <SID>ExpandFilenameAndExecute("vsplit", "~/.vimrc.before")
+        call <SID>ExpandFilenameAndExecute("vsplit", "~/.vimrc.bundles")
+     
+        execute bufwinnr(".vimrc") . "wincmd w"
+        call <SID>ExpandFilenameAndExecute("split", "~/.vimrc.local")
+        wincmd l
+        call <SID>ExpandFilenameAndExecute("split", "~/.vimrc.before.local")
+        wincmd l
+        call <SID>ExpandFilenameAndExecute("split", "~/.vimrc.bundles.local")
+     
+        if <SID>IsSpf13Fork()
+            execute bufwinnr(".vimrc") . "wincmd w"
+            call <SID>ExpandFilenameAndExecute("split", "~/.vimrc.fork")
+            wincmd l
+            call <SID>ExpandFilenameAndExecute("split", "~/.vimrc.before.fork")
+            wincmd l
+            call <SID>ExpandFilenameAndExecute("split", "~/.vimrc.bundles.fork")
+        endif
+     
+        execute bufwinnr(".vimrc.local") . "wincmd w"
+    endfunction
+     
+    execute "noremap " . s:spf13_edit_config_mapping " :call <SID>EditSpf13Config()<CR>"
+    execute "noremap " . s:spf13_apply_config_mapping . " :source ~/.vimrc<CR>"
+" }
+
+" Use fork vimrc if available {
+    if filereadable(expand("~/.vimrc.fork"))
+        source ~/.vimrc.fork
+    endif
+" }
+
+" Use local vimrc if available {
+    if filereadable(expand("~/.vimrc.local"))
+        source ~/.vimrc.local
+    endif
+" }
+
+" Use local gvimrc if available and gui is running {
+    if has('gui_running')
+        if filereadable(expand("~/.gvimrc.local"))
+            source ~/.gvimrc.local
+        endif
+    endif
+" }
