@@ -1,7 +1,27 @@
 " Modeline and Notes {
 " vim: set sw=4 ts=4 sts=4 et tw=78 foldmarker={,} foldlevel=0 foldmethod=marker spell:
 " }
+"
 " Environment {
+
+    set fdm=marker      "文件折叠模式 输入zf%创建折叠"
+
+    " The default leader is '\', but many people prefer ',' as it's in a standard
+    " location. To override this behavior and set it back to '\' (or any other
+    " character) add the following to your .vimrc.before.local file:
+    "   let g:spf13_leader=' ' {
+    if !exists('g:spf13_leader')
+        let mapleader = ' '
+        "let mapleader="\<Space>"
+    else
+        let mapleader=g:spf13_leader
+    endif
+    if !exists('g:spf13_localleader')
+        let maplocalleader = ';'
+    else
+        let maplocalleader=g:spf13_localleader
+    endif
+    "}
 
     " Identify platform {
         silent function! OSX()
@@ -140,60 +160,63 @@
 " }
 
 " Vim UI {
-        winpos 780 0          " 设定窗口位置  
-        set lines=52 columns=99    " 设定窗口大小 
+    if WINDOWS()
         set rtp+=E:/0SoftInstall/msys2_64/usr/share/vim/vim80/colors
         set rtp+=E:/0SoftInstall/msys2_64/usr/share/vim/vim80
-        if has('gui_running')
-            "echo "is gui_runnig gvim"
-            "set background=dark         " Assume a dark background 背景黑色
-            set cul "高亮光标所在行
-            set cuc "高亮列"
-            autocmd InsertEnter * se cul    " 用浅色高亮当前行  
-            set shortmess=atI   " 启动的时候不显示那个援助乌干达儿童的提示  
-            set guifont=Courier_New:h10:cANSI   " 设置字体  
-            autocmd InsertLeave * se nocul  " 用浅色高亮当前行  
-            filetype plugin indent on   " Automatically detect file types.
-            syntax on                   " Syntax highlighting
-            colorscheme solarized   "主题黑色,很漂亮,护眼
-        else
-            "echo "not gui or gvim"
-            "colorscheme Zenburn
-            syntax off
-        endif
+    endif
+    if has('gui_running')
+        "echo "is gui_runnig gvim"
+        "set background=dark         " Assume a dark background 背景黑色
+        winpos 780 0          " 设定窗口位置  
+        set lines=52 columns=99    " 设定窗口大小 
+        set cul "高亮光标所在行
+        set cuc "高亮列"
+        autocmd InsertEnter * se cul    " 用浅色高亮当前行  
+        set shortmess=atI   " 启动的时候不显示那个援助乌干达儿童的提示  
+        set guifont=Courier_New:h10:cANSI   " 设置字体  
+        autocmd InsertLeave * se nocul  " 用浅色高亮当前行  
+        filetype plugin indent on   " Automatically detect file types.
+        syntax on                   " Syntax highlighting
+        colorscheme solarized   "主题黑色,很漂亮,护眼
         call togglebg#map("<F7>")   "switch black or light 黑色和护眼色切换"
+    else
+        "echo "not gui or gvim"
+        "colorscheme Zenburn
+        syntax off
+        "Allow to trigger background
+        function! ToggleBG()
+            let s:tbg = &background
+            " Inversion
+            if s:tbg == "dark"
+                set background=light
+            else
+                set background=dark
+            endif
+        endfunction
+        noremap <leader>bg :call ToggleBG()<CR>
+    endif
 
-        " Allow to trigger background
-        "function! ToggleBG()
-            "let s:tbg = &background
-            "" Inversion
-            "if s:tbg == "dark"
-                "set background=light
-            "else
-                "set background=dark
-            "endif
-        "endfunction
-        "noremap <leader>bg :call ToggleBG()<CR>
 
-        " if !has('gui')
-            "set term=$TERM          " Make arrow and other keys work
-        " endif
-        set autowrite   "自动保存
-        set nobackup    "禁止生成临时文件
-        set noswapfile
-        set ignorecase  "搜索忽略大小写
-        set guioptions-=T           " 隐藏工具栏
-        set guioptions-=m           " 隐藏菜单栏
+    " if !has('gui')
+        "set term=$TERM          " Make arrow and other keys work
+    " endif
+    set autoread
+    set autowrite   "自动保存
+    set nobackup    "禁止生成临时文件
+    set noswapfile
+    set ignorecase  "搜索忽略大小写
+    set guioptions-=T           " 隐藏工具栏
+    set guioptions-=m           " 隐藏菜单栏
 
-        "Config color solarized {
-        "if !exists('g:override_spf13_bundles') && filereadable(expand("~/.vim/bundle/vim-colors-solarized/colors/solarized.vim"))
-            "let g:solarized_termcolors=256
-            "let g:solarized_termtrans=1
-            "let g:solarized_contrast="normal"
-            "let g:solarized_visibility="normal"
-            "color solarized             " Load a colorscheme
-        "endif
-        " }
+    "Config color solarized {
+    "if !exists('g:override_spf13_bundles') && filereadable(expand("~/.vim/bundle/vim-colors-solarized/colors/solarized.vim"))
+        "let g:solarized_termcolors=256
+        "let g:solarized_termtrans=1
+        "let g:solarized_contrast="normal"
+        "let g:solarized_visibility="normal"
+        "color solarized             " Load a colorscheme
+    "endif
+    " }
 
     set tabpagemax=15               " Only show 15 tabs
     set showmode                    " Display the current mode
@@ -219,7 +242,7 @@
         set statusline+=%w%h%m%r                 " Options
         if !exists('g:override_spf13_bundles')
             if has('gui')
-                set statusline+=%{fugitive#statusline()} " Git Hotness
+                "set statusline+=%{fugitive#statusline()} " Git Hotness
             endif
         endif
         set statusline+=\ [%{&ff}/%Y]            " Filetype
@@ -244,7 +267,6 @@
     set foldenable                  " Auto fold code
     set list
     set listchars=tab:›\ ,trail:•,extends:#,nbsp:. " Highlight problematic whitespace
-
 " }
 
 " Formatting {
@@ -282,31 +304,23 @@
 
 " Key (re)Mappings {
 
-    " The default leader is '\', but many people prefer ',' as it's in a standard
-    " location. To override this behavior and set it back to '\' (or any other
-    " character) add the following to your .vimrc.before.local file:
-    "   let g:spf13_leader='\' {
-    if !exists('g:spf13_leader')
-        let mapleader = ' '
-    else
-        let mapleader=g:spf13_leader
-    endif
-    if !exists('g:spf13_localleader')
-        let maplocalleader = '_'
-    else
-        let maplocalleader=g:spf13_localleader
-    endif
-    "}
     "vimrc & Write & Quit {
-        nmap <silent> <leader>ev :e $MYVIMRC<CR>    "按 ,ev静默(不回显信息)打开配置文件"
-        nmap <silent> <leader>sv :so $MYVIMRC<CR>   "重载 配置文件 .vimrc"
-       "保存文件"
-        noremap <A-w> :w<CR>
-        noremap! <A-w> <Esc>:w<CR>
-        nmap <A-q> :q<CR>       "退出文件 但不强制退出"
+        "按 ,ev静默(不回显信息)打开配置文件"   "重载 配置文件 .vimrc"
+        nmap <silent> <leader>ev :e $MYVIMRC<CR>
+        nmap <silent> <leader>sv :so $MYVIMRC<CR>
+        "保存文件"       "退出文件 但不强制退出"
+        if has('gui')
+            noremap <A-w> :w<CR>
+            noremap! <A-w> <Esc>:w<CR>
+            nmap <A-q> :q<CR>
+        else
+            noremap <Leader>w :w<CR>
+            noremap <Leader>q :q<CR>
+        endif
     "}
     "
     "cursor &Window move 光标窗口移动 {
+        imap <Tab> <S-Tab>
         map <CR> gg
         imap <C-h> <Left>
         imap <C-j> <Down>
@@ -324,45 +338,59 @@
         nmap <C-k> <C-W>k
         map <C-h> <C-W>h
         nmap <C-l> <C-W>l
+
+        " Visual shifting (does not exit Visual mode)
+        vnoremap < <gv
+        vnoremap > >gv
+
+        " Adjust viewports to the same size
+        map <Leader>= <C-w>=
+
+        " Easier horizontal scrolling
+        map zl zL
+        map zh zH
     " }
     "
     "Copy & Paste {
-                vnoremap <silent> y y`]     "自动跳转到文本的最后"
-                vnoremap <silent> p p`]     "使用pppp进行多行多次粘贴操作"
-                nnoremap <silent> p p`]
-                nnoremap Y y$       "Y复制到行尾
-                "在全模式中使用Shift+Insert粘贴全局剪贴板内容,选择模式先替换后粘贴
-                inoremap <C-v> <esc>:set paste<cr>mui<C-R>+<esc>mv'uV'v=:set nopaste<cr>
-                vmap <S-Insert> "-d"+p
-                map <S-Insert> "+p
+        " Yank from the cursor to the end of the line, to be consistent with C and D."Y复制到行尾
+        nnoremap Y y$
+        "自动跳转到文本的最后"     "使用pppp进行多行多次粘贴操作"
+        vnoremap <silent> y y`]
+        vnoremap <silent> p p`]
+        nnoremap <silent> p p`]
+        "在全模式中使用Shift+Insert粘贴全局剪贴板内容,选择模式先替换后粘贴
+        inoremap <C-v> <esc>:set paste<cr>mui<C-R>+<esc>mv'uV'v=:set nopaste<cr>
+        vmap <S-Insert> "-d"+p
+        map <S-Insert> "+p
 
-                "在Visual模式中使用Ctrl+Insert复制内容到全局剪贴板
-                vnoremap <C-c> "+y
-                map <C-y> "+y
-                map <C-Insert> "+y
-                vmap <C-Insert> "+y
+        "在Visual模式中使用Ctrl+Insert复制内容到全局剪贴板
+        vnoremap <C-c> "+y
+        map <C-y> "+y
+        map <C-Insert> "+y
+        vmap <C-Insert> "+y
 
-                "在Visual模式中使用Ctrl+x剪切内容到全局剪贴板
-                vnoremap <C-x> "+x
+        "在Visual模式中使用Ctrl+x剪切内容到全局剪贴板
+        vnoremap <C-x> "+x
 
-                :nmap <silent> <F9> <ESC>:Tlist<RETURN>
-                map! <C-Z> <Esc>zzi
-                "map! <C-O> <C-Y>,  
-                "全选复制
-                map <Leader>a ggVG$"+y
-                "全屏identited 缩进
-                map <F12> gg=G
-                "imap <C-k> <C-y>,
-                "imap <C-t> <C-q><TAB>
-                "imap <C-j> <ESC>
-                " 选中状态下 Ctrl+c 复制
-                "map <C-v> "*pa
-                "imap <C-v> <Esc>"*pa
-            "}
+        :nmap <silent> <F9> <ESC>:Tlist<RETURN>
+        map! <C-Z> <Esc>zzi
+        "map! <C-O> <C-Y>,  
+        "全选复制
+        map <Leader>a ggVG$"+y
+        "全屏identited 缩进
+        map <F12> gg=G
+        "imap <C-k> <C-y>,
+        "imap <C-t> <C-q><TAB>
+        "imap <C-j> <ESC>
+        " 选中状态下 Ctrl+c 复制
+        "map <C-v> "*pa
+        "imap <C-v> <Esc>"*pa
+    "}
     "
     "tab Config{
                 " keymap to switch tab in gui
-                if has('gui_running') 
+                if has('gui') 
+                    imap <M-/> <C-n>
                     set winaltkeys=no
                     "set macmeta
                     map <A-t> :tabnew<CR>       "新建一个标签"
@@ -395,10 +423,13 @@
                     inoremap <silent><m-8> <ESC>:tabn 8<cr>
                     inoremap <silent><m-9> <ESC>:tabn 9<cr>
                     inoremap <silent><m-0> <ESC>:tabn 10<cr>
+                else
+                    noremap <Leader>h gT
+                    noremap <Leader>l gt
                 endif
                 "设置标签页显示序号"
                 set tabline=%!MyTabLine()  " custom tab pages line  
-                function MyTabLine()  
+                function! MyTabLine()  
                     let s = '' " complete tabline goes here  
                     " loop through each tab page  
                     for t in range(tabpagenr('$'))  
@@ -470,6 +501,44 @@
 
             "}
 
+    "C，C++ py Press F5 Run {
+            map <F5> :call CompileRunGcc()<CR>
+            func! CompileRunGcc()
+                exec "w"
+                if &filetype == 'c'
+                    exec "!g++ % -o %<"
+                    exec "!time ./%<"
+                elseif &filetype == 'cpp'
+                    exec "!g++ % -std=c++11 -o %<"
+                    exec "!time ./%<"
+                elseif &filetype == 'java' 
+                    exec "!javac %" 
+                    exec "!time java %<"
+                elseif &filetype == 'sh'
+                    :!time bash %
+                elseif &filetype == 'python'
+                    exec "! python2.7 %"
+                    "exec "!time python2.7 %"
+                elseif &filetype == 'html'
+                    exec "!firefox % &"
+                elseif &filetype == 'go'
+                    "        exec "!go build %<"
+                    exec "!time go run %"
+                elseif &filetype == 'mkd'
+                    exec "!~/.vim/markdown.pl % > %.html &"
+                    exec "!firefox %.html &"
+                endif
+            endfunc
+            "C,C++的调试
+            map <F8> :call Rungdb()<CR>
+            func! Rungdb()
+                exec "w"
+                exec "!g++ % -std=c++11 -g -o %<"
+                exec "!gdb ./%<"
+            endfunc
+       "}
+
+    "spf13 {
     " The default mappings for editing and applying the spf13 configuration
     " are <leader>ev and <leader>sv respectively. Change them to your preference
     " by adding the following to your .vimrc.before.local file:
@@ -491,12 +560,12 @@
     " If you prefer that functionality, add the following to your
     " .vimrc.before.local file:
     "   let g:spf13_no_easyWindows = 1
-    if !exists('g:spf13_no_easyWindows')
-        map <C-J> <C-W>j<C-W>_
-        map <C-K> <C-W>k<C-W>_
-        map <C-L> <C-W>l<C-W>_
-        map <C-H> <C-W>h<C-W>_
-    endif
+    "if !exists('g:spf13_no_easyWindows')
+        "map <C-J> <C-W>j<C-W>_
+        "map <C-K> <C-W>k<C-W>_
+        "map <C-L> <C-W>l<C-W>_
+        "map <C-H> <C-W>h<C-W>_
+    "endif
 
     " Wrapped lines goes down/up to next row, rather than next line in file.
     noremap j gj
@@ -567,9 +636,7 @@
 
         cmap Tabe tabe
     endif
-
-    " Yank from the cursor to the end of the line, to be consistent with C and D.
-    nnoremap Y y$
+    "}
 
     " Code folding options {
         "nmap <leader>f0 :set foldlevel=0<CR>
@@ -596,17 +663,10 @@
     "endif
     "}
 
-    " Find merge conflict markers
-    map <leader>fc /\v^[<\|=>]{7}( .*\|$)<CR>
-
     " Shortcuts
     " Change Working Directory to that of the current file
     cmap cwd lcd %:p:h
     cmap cd. lcd %:p:h
-
-    " Visual shifting (does not exit Visual mode)
-    vnoremap < <gv
-    vnoremap > >gv
 
     " Allow using the repeat operator with a visual selection (!)
     " http://stackoverflow.com/a/8064607/127816
@@ -623,16 +683,9 @@
     map <leader>ev :vsp %%
     map <leader>et :tabe %%
 
-    " Adjust viewports to the same size
-    map <Leader>= <C-w>=
-
     " Map <Leader>ff to display all lines with keyword under cursor
     " and ask which one to jump to
     nmap <Leader>ff [I:let nr = input("Which one: ")<Bar>exe "normal " . nr ."[\t"<CR>
-
-    " Easier horizontal scrolling
-    map zl zL
-    map zh zH
 
     " Easier formatting
     nnoremap <silent> <leader>q gwip
@@ -1249,10 +1302,6 @@
         "endif
     " }
 
-
-
-" }
-
 " GUI Settings {
 
     " GVIM- (here instead of .gvimrc)
@@ -1436,3 +1485,55 @@
         endif
     endif
 " }
+"
+        "auto complete()"" 自动补全括号,引号 {{{
+            inoremap ( ()<Esc>i
+            inoremap [ []<Esc>i
+            inoremap { {}<Esc>i
+            "inoremap { {<CR>}<Esc>O "{{"{{{
+            "autocmd Syntax html,vim    "导致进入vim会弹框AutoC...
+            inoremap < <lt>><Esc>i| 
+            inoremap > <c-r>=ClosePair('>')<CR>
+            inoremap ) <c-r>=ClosePair(')')<CR>
+            inoremap ] <c-r>=ClosePair(']')<CR>
+            inoremap } <c-r>=ClosePair('}')<CR>
+            "inoremap } <c-r>=CloseBracket()<CR>
+            inoremap " <c-r>=QuoteDelim('"')<CR>
+            inoremap ' <c-r>=QuoteDelim("'")<CR>
+
+            function! ClosePair(char)
+                if getline('.')[col('.') - 1] == a:char
+                    return "\<Right>"
+                else
+                    return a:char
+                endif
+            endf
+
+            function! CloseBracket()
+                if match(getline(line('.') + 1), '\s*}') < 0
+                    return "\<CR>}"
+                else
+                    return "\<Esc>j0f}a"}
+                endif
+            endf
+
+            function! QuoteDelim(char)
+                let line = getline('.')
+                let col = col('.')
+                if line[col - 2] == "\\"
+                    return a:char
+                elseif line[col - 1] == a:char
+                    return "\<Right>"
+                else
+                    return a:char.a:char."\<Esc>i"
+                endif
+            endf
+            filetype plugin indent on 
+            "打开文件类型检测, 加了这句才可以用智能补全
+            set completeopt=longest,menu
+    "}}}
+
+    " Find merge conflict markers
+    map <leader>fc /\v^[<\|=>]{7}( .*\|$)<CR>
+    imap <Tab> <S-Tab>
+    

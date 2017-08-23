@@ -85,14 +85,45 @@ return
 
 ;´óÐ¡Ð´¼üEsc»¥»»
 SetCapsLockState , AlwaysOff
-CapsLock & h::SendInput {Left}
+;CapsLock & h::SendInput {Left}
+CapsLock & h::
+;if GetKeyState("control") = 0
+if GetKeyState("alt") = 0
+{
+    Send, {Left}
+} else {
+    Send, ^{Left}
+}
+return
 CapsLock & j::SendInput {Down}
 CapsLock & k::SendInput {Up}
-CapsLock & l::SendInput {Right}
+CapsLock & l::
+if GetKeyState("alt") = 0
+{
+    Send, {Right}
+} else {
+    Send, ^{Right}
+}
+return
 CapsLock & a::SendInput {Home}
+CapsLock & 0::SendInput {Home}
 CapsLock & e::SendInput {End}
 CapsLock & d::SendInput {Delete}
-Shift & CapsLock::SendInput, {Shift Down}{Blind}{Esc}{Shift Up}
+CapsLock & u::SendInput {PgUp}
+CapsLock & p::SendInput {PgDn}
+;Shift & CapsLock::SendInput, {Shift Down}{Blind}{Esc}{Shift Up}
 CapsLock::SendInput {Esc}
 Esc::CapsLock
 
+;=====================================================================o
+;                           CapsLock Deletor                         ;|
+;-----------------------------------o---------------------------------o
+;                     CapsLock + n  |  Ctrl + Delete (Delete a Word) ;|
+;                     CapsLock + m  |  Delete                        ;|
+;                     CapsLock + ,  |  BackSpace                     ;|
+;                     CapsLock + .  |  Ctrl + BackSpace              ;|
+;-----------------------------------o---------------------------------o
+CapsLock & ,:: Send, {Del}                                           ;|
+CapsLock & .:: Send, ^{Del}                                          ;|
+CapsLock & m:: Send, {BS}                                            ;|
+CapsLock & n:: Send, ^{BS}
