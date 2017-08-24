@@ -121,7 +121,7 @@ alias gcl='git config --list'
 alias gl='git log'
 alias gla='git log --oneline --all --graph --decorate  $*'
 alias gl1='git log --oneline --graph --decorate --color=always'
-alias gll='git log -prerry=oneline'
+alias gll='git log --pretty=oneline'
 
 alias o='explorer .'
 

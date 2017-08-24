@@ -6,6 +6,7 @@
 [core]
 	filemode = false
 	editor = vim
+	autocrlf = false
 [color]
 	interactive = auto
 	[alias]
@@ -26,4 +27,4 @@
 	rv = remote -v
 	unstage = reset HEAD --
 	last = log -1 HEAD
-    l1 = log -pretty=oneline
+    l1 = log --pretty=oneline
