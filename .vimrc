@@ -83,6 +83,8 @@
         set fileencodings=utf8,ucs-bom,gbk,cp936,gb2312,gb18030
         scriptencoding utf-8
         autocmd FileType python set omnifunc=pythoncomplete#Complete
+        set fileformat=unix
+        set fileformats=unix,dos
     " }
 
     set mouse=a                 " Automatically enable mouse usage

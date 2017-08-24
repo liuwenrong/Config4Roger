@@ -27,14 +27,17 @@ alias ga='git add .'
 alias gba='git branch -a'
 alias gbv='git branch -vv'
 alias gf='git fetch'
+alias gr='git rebase'
+alias grv='git remote -v'
 alias gp='git push'
 alias gco='git checkout'
 alias gcm='git commit -a -s'
 alias gamend=git commit --amend -C HEAD 
 alias gcl='git config --list'
 alias gl='git log'
-alias gla=git log --oneline --all --graph --decorate  $*
-alias gl1=git log --oneline --graph --decorate --color=always 
+alias gla='git log --oneline --all --graph --decorate  $*'
+alias gl1='git log --oneline --graph --decorate --color=always'
+alias gll='git log -prerry=oneline'
 
-alias o=explorer
+alias o='explorer .'
 

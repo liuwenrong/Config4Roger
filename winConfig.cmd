@@ -28,7 +28,11 @@ REM ) ELSE (
     REM call cd "%APP_PATH%"
 )
 
-call mklink "%HOME%\.vimrc" "%APP_PATH%\.vimrc"
+call mklink "%HOME%\.zshrc" "%APP_PATH%\.zshrc"
+call mklink "%HOME%\.gitconfig" "%APP_PATH%\.gitconfig"
+call mklink "%HOME%\.bash_aliases" "%APP_PATH%\.bash_aliases"
+call mklink "%HOME%\.bashrc" "%APP_PATH%\.bashrc"
+REM call mklink "%HOME%\.vimrc" "%APP_PATH%\.vimrc"
 call mklink "%HOME%\_vimrc" "%APP_PATH%\.vimrc"
 call mklink "%HOME%\.vimrc.fork" "%APP_PATH%\.vimrc.fork"
 call mklink "%HOME%\.vimrc.bundles" "%APP_PATH%\.vimrc.bundles"
