@@ -6,8 +6,8 @@
 [core]
 	filemode = false
 	editor = vim
-	autocrlf = false
 	trustctime = false
+	autocrlf = input
 [color]
 	interactive = auto
 	[alias]
