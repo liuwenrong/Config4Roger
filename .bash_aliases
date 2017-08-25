@@ -2,7 +2,7 @@
 alias ls='ls -l -a'
 alias ll='ls -l --color=tty'
 alias base='cd ~/zs_1.0/frameworks/base'
-alias ui='cd ~/zs_1.0/frameworks/base/packages/SystemUI'
+alias sui='cd ~/zs_1.0/frameworks/base/packages/SystemUI'
 alias c='cd'
 alias b='cd ..'
 alias h='cd ~'

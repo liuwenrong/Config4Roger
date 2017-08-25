@@ -20,10 +20,13 @@ return
 ;return
 
 #f::
-sogouExplorer=E:\Program Files\SogouExplorer\SogouExplorer.exe
-fanyi=fanyi.baidu.com
-Run, %sogouExplorer% "%fanyi%"
+Run, E:\0SoftInstall\QQBrowser\QQBrowser.exe fanyi.baidu.com
 return
+;#f::
+;sogouExplorer=E:\Program Files\SogouExplorer\SogouExplorer.exe
+;fanyi=fanyi.baidu.com
+;Run, %sogouExplorer% "%fanyi%"
+;return
 
 #g::
 Run, www.gogle.com
@@ -72,8 +75,10 @@ Run, %SecureCRTPortable%
 return
 
 #v::
-vim=E:\Program Files\Vim\vim80\gvim.exe
-Run, %vim%
+vim=E:\0SoftInstall\msys2_64\usr\share\vim\vim80\gvim.exe -p --remote-tab-silent
+;HOME=C:\Users\liuwenrong.CCDOMAIN
+vimrc=%HOME%\_vimrc
+Run, %vim% %vimrc%
 return
 
 ^+w::

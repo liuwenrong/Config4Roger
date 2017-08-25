@@ -7,6 +7,7 @@
 	filemode = false
 	editor = vim
 	autocrlf = false
+	trustctime = false
 [color]
 	interactive = auto
 	[alias]
@@ -28,3 +29,20 @@
 	unstage = reset HEAD --
 	last = log -1 HEAD
     l1 = log --pretty=oneline
+	cp = cherry-pick
+	br = branch
+	dc = diff --cached
+	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %Cblue<%an>%Creset' --abbrev-commit --date=relative --all
+[push]
+	default = matching
+[credential]
+	helper = cache --timeout=3600
+[merge]
+	tool = vimdiff
+[mergetool]
+	keeptemporaries = false
+	keepbackups = false
+	prompt = false
+	trustexitcode = false
+[oh-my-zsh]
+	hide-status = 1

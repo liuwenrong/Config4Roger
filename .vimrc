@@ -3,7 +3,9 @@
 " }
 "
 " Environment {
-
+    set foldmarker={,}
+    set foldlevel=0 
+    set foldmethod=marker
     set fdm=marker      "文件折叠模式 输入zf%创建折叠"
 
     " The default leader is '\', but many people prefer ',' as it's in a standard
@@ -89,14 +91,6 @@
 
     set mouse=a                 " Automatically enable mouse usage
     set mousehide               " Hide the mouse cursor while typing
-
-    if has('clipboard')
-        if has('unnamedplus')  " When possible use + register for copy-paste
-            set clipboard=unnamed,unnamedplus
-        else         " On mac and Windows, use * register for copy-paste
-            set clipboard=unnamed
-        endif
-    endif
 
     " Most prefer to automatically switch to the current file directory when
     " a new buffer is opened; to prevent this behavior, add the following to
@@ -354,6 +348,15 @@
     " }
     "
     "Copy & Paste {
+        if has('clipboard')
+            if has('unnamedplus')  " When possible use + register for copy-paste
+                set clipboard=unnamed,unnamedplus
+            else         " On mac and Windows, use * register for copy-paste
+                "set clipboard=unnamed
+                set clipboard=unnamed,unnamedplus
+            endif
+        endif
+
         " Yank from the cursor to the end of the line, to be consistent with C and D."Y复制到行尾
         nnoremap Y y$
         "自动跳转到文本的最后"     "使用pppp进行多行多次粘贴操作"
