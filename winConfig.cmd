@@ -28,6 +28,7 @@ REM ) ELSE (
     REM call cd "%APP_PATH%"
 )
 
+call mklink "%HOME%\.minttyrc" "%APP_PATH%\.minttyrc"
 call mklink "%HOME%\.zshrc" "%APP_PATH%\.zshrc"
 call mklink "%HOME%\.gitconfig" "%APP_PATH%\.gitconfig"
 call mklink "%HOME%\.bash_aliases" "%APP_PATH%\.bash_aliases"

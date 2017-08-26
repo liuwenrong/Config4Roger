@@ -8,21 +8,10 @@
     set foldmethod=marker
     set fdm=marker      "文件折叠模式 输入zf%创建折叠"
 
-    " The default leader is '\', but many people prefer ',' as it's in a standard
-    " location. To override this behavior and set it back to '\' (or any other
-    " character) add the following to your .vimrc.before.local file:
-    "   let g:spf13_leader=' ' {
-    if !exists('g:spf13_leader')
+    " Leader & localLeader {
         let mapleader = ' '
         "let mapleader="\<Space>"
-    else
-        let mapleader=g:spf13_leader
-    endif
-    if !exists('g:spf13_localleader')
         let maplocalleader = ';'
-    else
-        let maplocalleader=g:spf13_localleader
-    endif
     "}
 
     " Identify platform {
@@ -68,11 +57,14 @@
 " }
 
 " Use bundles config {
-    if has('gui')
-        if filereadable(expand("~/.vimrc.bundles"))
-            source ~/.vimrc.bundles
-        endif
+    if filereadable(expand("~/.vimrc.bundles"))
+        source ~/.vimrc.bundles
     endif
+    "if has('gui')
+        "if filereadable(expand("~/.vimrc.bundles"))
+            "source ~/.vimrc.bundles
+        "endif
+    "endif
 " }
 
 " General {
@@ -89,6 +81,22 @@
         set fileformats=unix,dos
     " }
 
+    "Edit {
+        set autowrite   " Automatically write a file when leaving a modified buffer
+        set autoread
+        set nobackup    "禁止生成临时文件
+        set noswapfile
+        set shortmess+=filmnrxoOtT          " Abbrev. of messages (avoids 'hit enter')
+        set viewoptions=folds,options,cursor,unix,slash " Better Unix / Windows compatibility
+        set virtualedit=onemore             " Allow for cursor beyond last character
+        set history=1000                    " Store a ton of history (default is 20)
+        set spell                           " Spell checking on
+        set hidden                          " Allow buffer switching without saving
+        set iskeyword-=.                    " '.' is an end of word designator
+        set iskeyword-=#                    " '#' is an end of word designator
+        set iskeyword-=-                    " '-' is an end of word designator
+
+    "}
     set mouse=a                 " Automatically enable mouse usage
     set mousehide               " Hide the mouse cursor while typing
 
@@ -100,17 +108,6 @@
         autocmd BufEnter * if bufname("") !~ "^\[A-Za-z0-9\]*://" | lcd %:p:h | endif
         " Always switch to the current file directory
     endif
-
-    "set autowrite                       " Automatically write a file when leaving a modified buffer
-    set shortmess+=filmnrxoOtT          " Abbrev. of messages (avoids 'hit enter')
-    set viewoptions=folds,options,cursor,unix,slash " Better Unix / Windows compatibility
-    set virtualedit=onemore             " Allow for cursor beyond last character
-    set history=1000                    " Store a ton of history (default is 20)
-    set spell                           " Spell checking on
-    set hidden                          " Allow buffer switching without saving
-    set iskeyword-=.                    " '.' is an end of word designator
-    set iskeyword-=#                    " '#' is an end of word designator
-    set iskeyword-=-                    " '-' is an end of word designator
 
     " Instead of reverting the cursor to the last position in the buffer, we
     " set it to the first line when editing a git commit message
@@ -160,49 +157,63 @@
         set rtp+=E:/0SoftInstall/msys2_64/usr/share/vim/vim80/colors
         set rtp+=E:/0SoftInstall/msys2_64/usr/share/vim/vim80
     endif
-    if has('gui_running')
-        "echo "is gui_runnig gvim"
-        "set background=dark         " Assume a dark background 背景黑色
-        winpos 780 0          " 设定窗口位置  
+    "Font Settings 字体的设置 {
+        "set guifont=*
+        "set guifont=Menlo_for_Powerline "该字体状态栏还是会乱码"
+        set guifont=DejaVu_Sans_Mono_for_Powerline:h11:cANSI
+        "set guifont=Consolas,Menlo_for_Powerline:h9  "unuseable"
+        "set guifont=/C/Windows/Fonts/Menlo_for_Powerline:h19
+        "set guifont=C:\Windows\Fonts\Menlo for Powerline:h9:cANSI
+        "set guifont=Consolas,Menlo for Powerline:h9:cANSI  "unuseable"
+        "set guifont=Consolas,Bitstream_Vera_Sans_Mono:h9:cANSI "设置gui下的字体
+        "set gfw=Consolas:h20
+        "set guifont=Courier_New:h10:cANSI   " 设置字体  
+        "set gfw=Consolas:h10:cGB2312
+        hi CursorLine   cterm=NONE ctermbg=black guibg=black  
+        hi CursorColumn   cterm=NONE ctermbg=black guibg=black " 
+        highlight ColorColumn ctermbg=black guibg=black
+    "}
+
+    "UI {
         set lines=52 columns=99    " 设定窗口大小 
-        set cul "高亮光标所在行
-        set cuc "高亮列"
-        autocmd InsertEnter * se cul    " 用浅色高亮当前行  
-        set shortmess=atI   " 启动的时候不显示那个援助乌干达儿童的提示  
-        set guifont=Courier_New:h10:cANSI   " 设置字体  
-        autocmd InsertLeave * se nocul  " 用浅色高亮当前行  
-        filetype plugin indent on   " Automatically detect file types.
-        syntax on                   " Syntax highlighting
-        colorscheme solarized   "主题黑色,很漂亮,护眼
-        call togglebg#map("<F7>")   "switch black or light 黑色和护眼色切换"
-    else
-        "echo "not gui or gvim"
-        "colorscheme Zenburn
-        syntax off
-        "Allow to trigger background
-        function! ToggleBG()
-            let s:tbg = &background
-            " Inversion
-            if s:tbg == "dark"
-                set background=light
-            else
-                set background=dark
-            endif
-        endfunction
-        noremap <leader>bg :call ToggleBG()<CR>
-    endif
-
-
-    " if !has('gui')
-        "set term=$TERM          " Make arrow and other keys work
-    " endif
-    set autoread
-    set autowrite   "自动保存
-    set nobackup    "禁止生成临时文件
-    set noswapfile
-    set ignorecase  "搜索忽略大小写
-    set guioptions-=T           " 隐藏工具栏
-    set guioptions-=m           " 隐藏菜单栏
+        if has('gui_running')
+            ""echo "is gui_runnig gvim"
+            set guioptions-=T           " 隐藏工具栏
+            set guioptions-=m           " 隐藏菜单栏
+            ""set background=dark         " Assume a dark background 背景黑色
+            winpos 780 0          " 设定窗口位置  
+            "set cul "高亮光标所在行
+            "set cuc "高亮列"
+            "autocmd InsertEnter * se cul    " 用浅色高亮当前行  
+            "set shortmess=atI   " 启动的时候不显示那个援助乌干达儿童的提示  
+            "autocmd InsertLeave * se nocul  " 用浅色高亮当前行  
+            "filetype plugin indent on   " Automatically detect file types.
+            syntax on                   " Syntax highlighting
+            "colorscheme solarized   "主题黑色,很漂亮,护眼
+            "call togglebg#map("<F7>")   "switch black or light 黑色和护眼色切换"
+        else
+            ""echo "not gui or gvim"
+            ""colorscheme Zenburn
+            "syntax off
+            winpos 0 0
+            syntax on                   " Syntax highlighting
+            ""Allow to trigger background
+            "function! ToggleBG()
+                "let s:tbg = &background
+                "" Inversion
+                "if s:tbg == "dark"
+                    "set background=light
+                "else
+                    "set background=dark
+                "endif
+            "endfunction
+            "noremap <leader>bg :call ToggleBG()<CR>
+        endif
+        "
+        " if !has('gui')
+            "set term=$TERM          " Make arrow and other keys work
+        " endif
+    "}
 
     "Config color solarized {
     "if !exists('g:override_spf13_bundles') && filereadable(expand("~/.vim/bundle/vim-colors-solarized/colors/solarized.vim"))
@@ -214,6 +225,7 @@
     "endif
     " }
 
+    set ignorecase  "搜索忽略大小写
     set tabpagemax=15               " Only show 15 tabs
     set showmode                    " Display the current mode
 
@@ -276,7 +288,7 @@
     set nojoinspaces                " Prevents inserting two spaces after punctuation on a join (J)
     set splitright                  " Puts new vsplit windows to the right of the current
     set splitbelow                  " Puts new split windows to the bottom of the current
-    "set matchpairs+=<:>             " Match, to be used with %
+    set matchpairs+=<:>             " Match, to be used with %
     set pastetoggle=<F12>           " pastetoggle (sane indentation on pastes)
     "set comments=sl:/*,mb:*,elx:*/  " auto format comment blocks
     " Remove trailing whitespaces and ^M chars
@@ -305,13 +317,20 @@
         nmap <silent> <leader>ev :e $MYVIMRC<CR>
         nmap <silent> <leader>sv :so $MYVIMRC<CR>
         "保存文件"       "退出文件 但不强制退出"
+        noremap <localLeader>w :w<CR>
+        noremap! <localLeader>w <Esc>:w<CR>
+        noremap <localLeader>q :q<CR>
         if has('gui')
             noremap <A-w> :w<CR>
             noremap! <A-w> <Esc>:w<CR>
             nmap <A-q> :q<CR>
-        else
-            noremap <Leader>w :w<CR>
+        else        "Terminal"
+            "noremap <Leader>w :w<CR>
             noremap <Leader>q :q<CR>
+            "noremap <ESC>]{0}q~ :q<CR>  "unuseable"
+            "nmap <A-q> :q<CR>   "unuseable"
+            "nmap <M-q> :q<CR>      "unuseable"
+            "noremap <C-q> :q<CR>    "unuseable"
         endif
     "}
     "
@@ -549,16 +568,17 @@
     " by adding the following to your .vimrc.before.local file:
     "   let g:spf13_edit_config_mapping='<leader>ec'
     "   let g:spf13_apply_config_mapping='<leader>sc'
-    if !exists('g:spf13_edit_config_mapping')
-        let s:spf13_edit_config_mapping = '<leader>ev'
-    else
-        let s:spf13_edit_config_mapping = g:spf13_edit_config_mapping
-    endif
-    if !exists('g:spf13_apply_config_mapping')
-        let s:spf13_apply_config_mapping = '<leader>sv'
-    else
-        let s:spf13_apply_config_mapping = g:spf13_apply_config_mapping
-    endif
+    "
+    "if !exists('g:spf13_edit_config_mapping')
+        "let s:spf13_edit_config_mapping = '<leader>ev'
+    "else
+        "let s:spf13_edit_config_mapping = g:spf13_edit_config_mapping
+    "endif
+    "if !exists('g:spf13_apply_config_mapping')
+        "let s:spf13_apply_config_mapping = '<leader>sv'
+    "else
+        "let s:spf13_apply_config_mapping = g:spf13_apply_config_mapping
+    "endif
 
     " Easier moving in tabs and windows
     " The lines conflict with the default digraph mapping of <C-K>
@@ -670,15 +690,15 @@
 
     " Shortcuts
     " Change Working Directory to that of the current file
-    cmap cwd lcd %:p:h
-    cmap cd. lcd %:p:h
+    "cmap cwd lcd %:p:h
+    "cmap cd. lcd %:p:h
 
     " Allow using the repeat operator with a visual selection (!)
     " http://stackoverflow.com/a/8064607/127816
     vnoremap . :normal .<CR>
 
     " For when you forget to sudo.. Really Write the file.
-    cmap w!! w !sudo tee % >/dev/null
+    "cmap w!! w !sudo tee % >/dev/null
 
     " Some helpers to edit mode
     " http://vimcasts.org/e/14
@@ -690,10 +710,10 @@
 
     " Map <Leader>ff to display all lines with keyword under cursor
     " and ask which one to jump to
-    nmap <Leader>ff [I:let nr = input("Which one: ")<Bar>exe "normal " . nr ."[\t"<CR>
+    "nmap <Leader>ff [I:let nr = input("Which one: ")<Bar>exe "normal " . nr ."[\t"<CR>
 
     " Easier formatting
-    nnoremap <silent> <leader>q gwip
+    "nnoremap <silent> <leader>q gwip
 
     " FIXME: Revert this f70be548
     " fullscreen mode for GVIM and Terminal, need 'wmctrl' in you PATH
@@ -1467,8 +1487,8 @@
         execute bufwinnr(".vimrc.local") . "wincmd w"
     endfunction
      
-    execute "noremap " . s:spf13_edit_config_mapping " :call <SID>EditSpf13Config()<CR>"
-    execute "noremap " . s:spf13_apply_config_mapping . " :source ~/.vimrc<CR>"
+    "execute "noremap " . s:spf13_edit_config_mapping " :call <SID>EditSpf13Config()<CR>"
+    "execute "noremap " . s:spf13_apply_config_mapping . " :source ~/.vimrc<CR>"
 " }
 
 " Use fork vimrc if available {
@@ -1541,4 +1561,3 @@
     " Find merge conflict markers
     map <leader>fc /\v^[<\|=>]{7}( .*\|$)<CR>
     imap <Tab> <S-Tab>
-    

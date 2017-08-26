@@ -112,3 +112,8 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+#zsh 启动
+#exec /e/0SoftInstall/msys2_64/bin/zsh #unuseable
+if [ -x /bin/zsh ]; then
+    exec /bin/zsh
+fi

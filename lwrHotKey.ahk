@@ -32,6 +32,11 @@ return
 Run, www.gogle.com
 return
 
+#m::
+msys=E:\0SoftInstall\msys2_64\msys2_shell.cmd
+Run, %msys%
+return
+
 #n::
 npp=E:\Program Files\Notepad++\notepad++.exe
 Run, %npp%

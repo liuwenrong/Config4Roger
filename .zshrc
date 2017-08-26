@@ -7,22 +7,30 @@
 
     # Path to your oh-my-zsh installation.
     export ZSH=$HOME/.oh-my-zsh
-    export PATH=$PATH:E:/0SoftInstall/Git/cmd:E:/0SoftInstall/Git/bin
+    export GIT=/e/0SoftInstall/Git/bin
+    export ADB=/c/adb
+    export java=/d/Java/jdk1.8.0_112/bin
+    export gradle=/d/Android/Android_Studio/gradle/gradle-2.14.1/bin
+    export pySrc=/d/pythonSrc
+    export ASSDK=/d/Android/AS_SDK/platform-tools
+    export PATH=$HOME:$gradle:$java:$ASSDK:$pySrc:$GIT:$ADB:$PATH
     #export PATH=E:/0SoftInstall/Git/bin #导致很多命令找不到
 #}
-#
+# Theme {
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 #ZSH_THEME="robbyrussell"
 #ZSH_THEME="cloud"
 #ZSH_THEME="steeef"
-#ZSH_THEME="agnoster"
-ZSH_THEME="amuse"
+ZSH_THEME="agnoster"
+#ZSH_THEME="amuse"
 #ZSH_THEME="avit"
 #ZSH_THEME="random"
 #ZSH_THEME="ys"      #slow 很慢
+#}
 
+# Others {
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
 
@@ -60,6 +68,7 @@ ZSH_THEME="amuse"
 
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
+# }
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
@@ -116,6 +125,7 @@ source $ZSH/oh-my-zsh.sh
         alias foe='fastboot oem edl'
 
 #   }
+#
     #cd alias {
         alias cdpy='cd d:/pythonSrc'
         alias home='cd $HOME'
@@ -124,7 +134,9 @@ source $ZSH/oh-my-zsh.sh
         alias c='cd'
         alias b='cd ..'
         alias h='cd ~'
+        alias config='cd ~/.Config4Roger'
         export zHome=Z:
+        alias zconfig='cd $zHome/.Config4Roger'
         alias zs='cd $zHome/zs_1.0'
         alias base='cd $zHome/zs_1.0/frameworks/base'
         alias sui='cd $zHome/zs_1.0/frameworks/base/packages/SystemUI'
@@ -137,6 +149,7 @@ source $ZSH/oh-my-zsh.sh
         alias priv='cd $zHome/zs_1.0/out/target/product/Y3/system/priv-app'
         alias sett='cd $zHome/zs_1.0/packages/apps/Settings'
     #}
+    #
     # aliase {
         alias cls='clear'
         alias ll='ls -l'
@@ -178,6 +191,14 @@ source $ZSH/oh-my-zsh.sh
         alias gl1='git log --oneline --graph --decorate --color=always'
         alias gll='git log --pretty=oneline'
     #}
+    #
+    # Script {
+        alias ins='python2 $pySrc/ins.py'
+        export bl=/d/Android/0workSpacesAS/coolyotaY3/APP_BLauncher_170627/LauncherInk
+        alias insdebug='cd $bl'
+        #alias insreleasel='cd $bl & ins CY_BLauncher YotaDeviceRelease'
+        alias insreleasel='cd $bl ; ins CY_BLauncher YotaDeviceRelease'
+    # }
 
 alias o='explorer .'
 #}

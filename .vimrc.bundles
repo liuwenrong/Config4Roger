@@ -34,28 +34,29 @@
     " }
 
     " Setup Bundle Support {
-        " The next three lines ensure that the ~/.vim/bundle/ system works
-"        filetype off
-"        set rtp+=~/.vim/bundle/vundle
-"        call vundle#rc()
+       "The next three lines ensure that the ~/.vim/bundle/ system works
+       filetype off
+       set rtp+=~/.vim/bundle/vundle
+       call vundle#rc()
     " }
 
     " Add an UnBundle command {
-    "function! UnBundle(arg, ...)
-      "let bundle = vundle#config#init_bundle(a:arg, a:000)
-      "call filter(g:vundle#bundles, 'v:val["name_spec"] != "' . a:arg . '"')
-    "endfunction
+    function! UnBundle(arg, ...)
+      let bundle = vundle#config#init_bundle(a:arg, a:000)
+      call filter(g:vundle#bundles, 'v:val["name_spec"] != "' . a:arg . '"')
+    endfunction
 
     "com! -nargs=+         UnBundle
     "\ call UnBundle(<args>)
-    " }
+    "
+    "}
 
 " }
 
 " Bundles {
 
-    " Deps {
-"        Bundle 'gmarik/vundle'
+    " Vundle {
+           Bundle 'gmarik/vundle'
 "        Bundle 'MarcWeber/vim-addon-mw-utils'
 "        Bundle 'tomtom/tlib_vim'
 "        if executable('ag')
@@ -68,40 +69,76 @@
 "            Bundle 'mileszs/ack.vim'
 "        endif
     " }
-    
-        set rtp+=$VIM/bundle/vim-airline      "状态栏插件-美化-漂亮
-    
+    "
+    "Theme Solarized & molokai {
+        " 主题 solarized
+        Bundle 'altercation/vim-colors-solarized'
+        let g:solarized_termcolors=256
+        let g:solarized_termtrans=1
+        let g:solarized_contrast="normal"
+        let g:solarized_visibility="normal"
+        " 主题 molokai
+        Bundle 'tomasr/molokai'
+        let g:molokai_original = 1
+        " 配色方案
+        set background=dark
+        set t_Co=256
+        if has('gui')
+            colorscheme solarized
+            "colorscheme molokai
+            "colorscheme phd
+        else
+            "colorscheme solarized
+            colorscheme molokai
+            "colorscheme phd
+        endif
+    "
+    "}
+    "
+    "airLine {
+        Bundle 'vim-airline/vim-airline'
+        Bundle 'vim-airline/vim-airline-themes'
+        "set rtp+=$VIM/bundle/vim-airline      "状态栏插件-美化-漂亮
+        " airline 就是状态栏的箭头
+        let g:airline_theme="dark"
+        let g:airline_powerline_fonts = 1
+        let g:airline#extensions#tabline#enabled = 1
+        let g:airline#extensions#tabline#buffer_nr_show = 1
+    "}
+    "
     "NerdCommenter快速注释<Leader>/{
-        set rtp+=$VIM/bundle/The-NERD-Commenter     "快速注释 <leader>c<SPACE> 运行 <leader>cc 注释， <leader>cu 反注释
+        Plugin 'vim-scripts/The-NERD-Commenter'
+        "set rtp+=$VIM/bundle/The-NERD-Commenter     "快速注释 <leader>c<SPACE> 运行 <leader>cc 注释， <leader>cu 反注释
         nmap <Leader>/ <plug>NERDCommenterToggle
         vmap <Leader>/ <plug>NERDCommenterToggle
         imap <Leader>/ <Esc><plug>NERDCommenterToggle
      "}
 
-        "EasyMotion Config {
-            set rtp+=$VIM/bundle/vim-easymotion     "easymotion 快速定位跳转"
-            nmap <Leader>w <Plug>(easymotion-overwin-w)
-            "快速查找单词之后的word"没有bd就是之后,有bd就是前后的单词           
-            " <Leader>f{char} to move to {char}
-            "map  <Leader>f <Plug>(easymotion-bd-f)
-            nmap <Leader>; <Plug>(easymotion-overwin-f)
-            "nmap <Leader>f <Plug>(easymotion-overwin-f)
+    "EasyMotion Config {
+        Bundle 'easymotion/vim-easymotion'
+        "set rtp+=$VIM/bundle/vim-easymotion     "easymotion 快速定位跳转"
+        nmap <Leader>w <Plug>(easymotion-overwin-w)
+        "快速查找单词之后的word"没有bd就是之后,有bd就是前后的单词           
+        " <Leader>f{char} to move to {char}
+        "map  <Leader>f <Plug>(easymotion-bd-f)
+        nmap <Leader>; <Plug>(easymotion-overwin-f)
+        "nmap <Leader>f <Plug>(easymotion-overwin-f)
 
-            "s{char}{char} to move to {char}{char}
-            nmap <Leader>f <Plug>(easymotion-overwin-f2)
+        "s{char}{char} to move to {char}{char}
+        nmap <Leader>f <Plug>(easymotion-overwin-f2)
 
-            " Move to line
-            nmap <Leader><leader>h <Plug>(easymotion-linebackward)
-            nmap <Leader><leader>l <Plug>(easymotion-lineforward)
-            "map <Leader>L <Plug>(easymotion-bd-jk)
-            "nmap <Leader>L <Plug>(easymotion-overwin-line)
-            "map <Leader><Leader>j <Plug>(easymotion-j)
-            "map <Leader><Leader>k <Plug>(easymotion-k)
+        " Move to line
+        nmap <Leader><leader>h <Plug>(easymotion-linebackward)
+        nmap <Leader><leader>l <Plug>(easymotion-lineforward)
+        "map <Leader>L <Plug>(easymotion-bd-jk)
+        "nmap <Leader>L <Plug>(easymotion-overwin-line)
+        "map <Leader><Leader>j <Plug>(easymotion-j)
+        "map <Leader><Leader>k <Plug>(easymotion-k)
 
-            " Move to word
-            "map  <Leader>s <Plug>(easymotion-bd-w)
-            "nmap <Leader>s <Plug>(easymotion-overwin-w)
-        "}
+        " Move to word
+        "map  <Leader>s <Plug>(easymotion-bd-w)
+        "nmap <Leader>s <Plug>(easymotion-overwin-w)
+    "}
 
     "Config python-mode{
             if has('gui_running')
