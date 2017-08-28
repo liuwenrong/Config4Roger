@@ -2,6 +2,12 @@
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
+#zsh 启动
+#exec /e/0SoftInstall/msys2_64/bin/zsh #unuseable
+if [ -x /bin/zsh ]; then
+    exec /bin/zsh
+fi
+
 # If not running interactively, don't do anything
 case $- in
     *i*) ;;
@@ -111,9 +117,4 @@ if ! shopt -oq posix; then
   elif [ -f /etc/bash_completion ]; then
     . /etc/bash_completion
   fi
-fi
-#zsh 启动
-#exec /e/0SoftInstall/msys2_64/bin/zsh #unuseable
-if [ -x /bin/zsh ]; then
-    exec /bin/zsh
 fi

@@ -1,4 +1,8 @@
-"环境配置{{{
+" Modeline and Notes {
+" vim: set sw=4 ts=4 sts=4 et tw=78 foldmarker={,} foldlevel=0 foldmethod=marker spell:
+" }
+"
+" Environment 环境配置{{{
     
     "基础设置{{{
         set nocompatible    "避免进入vi模式"
@@ -14,18 +18,43 @@
         set ruler "可显示最后一排的状态
         set showmode "左下角那一行的状态
         set list "显示换行符$
-               "}}}
-
-        "KeyMap 键盘命令注:注释不能在语句之后{{{
-            "使用的时候要按住空格\<Space>不可用,可用 空可用 不放"
-            let mapleader=" "
+    "}}}
+    "
+    "光标类型{{{
+        "普通模式下用块状光标，在插入模式下用条状光标（形状类似英文 "I" 的样子），然后在替换模式中使用下划线形状的光标"
+        if empty($TMUX)
+          let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+          let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+          let &t_SR = "\<Esc>]50;CursorShape=2\x7"
+        else
+          let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
+          let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
+          let &t_SR = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=2\x7\<Esc>\\"
+        endif
+     "}}}
+     "
+    "KeyMap Leader 键盘命令注:注释不能在语句之后{{{
+        "使用的时候要按住空格\<Space>不可用,可用 空可用 不放"
+        let mapleader=" "
+        let localleader="\"
+    "}}}
 
             "vimrc和保存退出{{{
                 nmap <silent> <leader>ev :e $MYVIMRC<CR>
                 nmap <silent> <leader>sv :so $MYVIMRC<CR>
-                nmap <leader>w :w<CR>
-                nmap <leader>q :q<CR>
+                nmap <A-w> :w<CR>
+                nmap <A-q> :q<CR>
+                nmap <localLeader>q :q<CR>
             "}}}
+
+            "便捷{{{
+                "如果你希望 n 始终为向后搜索，N 始终为向前搜索，那么只需要这样设置：
+                nnoremap <expr> n  'Nn'[v:searchforward]
+                nnoremap <expr> N  'nN'[v:searchforward]
+                "Vim 用户都不愿意去按方向键，事实上我们也不需要去按，只需要设置这样的映射：
+                cnoremap <c-n> <down>
+                cnoremap <c-p> <up>
+             "}}}
 
             "光标移动{{{
                 map <CR> gg
@@ -33,11 +62,14 @@
                 imap <C-j> <Down>
                 imap <C-k> <Up>
                 imap <C-l> <Right>
-                "fj同时按相当于Esc退出"
-                imap fj <Esc>       
+                "fj同时按相当于退出"
+                "inoremap fj <C-o>       
                 imap <C-i> <Esc>
                 "map <F2> i{<Esc>ea}<Esc>
                 map <F1> i + "--1703"<Esc>i
+               "回到句首"   "回到句末"
+                imap <C-a> <Esc>^
+                imap <C-e> <Esc>$
                 " Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
                 "map <Space> /
                 "nmap, <C-Space> ?
@@ -78,9 +110,7 @@
 
        "}}}
 
-"}}}
-
-"插件配置{{{
+"Plugins 插件配置{{{
 
     "路径设置{{{
         "set rtp+=E:/0SoftInstall/msys2_64/usr/share/vim/vim80

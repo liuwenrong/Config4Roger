@@ -11,7 +11,7 @@
     " Leader & localLeader {
         let mapleader = ' '
         "let mapleader="\<Space>"
-        let maplocalleader = ';'
+        let maplocalleader = '\'
     "}
 
     " Identify platform {
@@ -175,13 +175,13 @@
     "}
 
     "UI {
-        set lines=52 columns=99    " 设定窗口大小 
         if has('gui_running')
             ""echo "is gui_runnig gvim"
             set guioptions-=T           " 隐藏工具栏
             set guioptions-=m           " 隐藏菜单栏
             ""set background=dark         " Assume a dark background 背景黑色
-            winpos 780 0          " 设定窗口位置  
+            set lines=52 columns=99    "set win Size
+            winpos 780 0          " Set Win Position
             "set cul "高亮光标所在行
             "set cuc "高亮列"
             "autocmd InsertEnter * se cul    " 用浅色高亮当前行  
@@ -196,6 +196,7 @@
             ""colorscheme Zenburn
             "syntax off
             winpos 0 0
+            set lines=42 columns=99    "set win Size
             syntax on                   " Syntax highlighting
             ""Allow to trigger background
             "function! ToggleBG()
@@ -335,6 +336,24 @@
     "}
     "
     "cursor &Window move 光标窗口移动 {
+        "Cursor Style 光标样式{{{
+            "普通模式下用块状光标，在插入模式下用条状光标（形状类似英文 "I" 的样子），然后在替换模式中使用下划线形状的光标"
+            if !has('gui')
+            "if empty($TMUX)
+                "echo "empty tmux"
+                "echo "no gui"
+                "let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+                "let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+                "let &t_SR = "\<Esc>]50;CursorShape=2\x7"
+            else
+                "set guicursor=n-c-v:block-nCursor "Available"
+               "set guicursor=i-ci:ver30-iCursor-blinkwait300-blinkon200-blinkoff150
+                "let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
+                "let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
+                "let &t_SR = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=2\x7\<Esc>\\"
+            endif
+         "}}}
+         "
         imap <Tab> <S-Tab>
         map <CR> gg
         imap <C-h> <Left>
@@ -343,7 +362,7 @@
         imap <C-k> <Up>
         imap <C-i> <Esc>
        "fj同时按相当于临时退出编辑模式
-        inoremap fj <C-o>
+        "inoremap fj <C-o>
        "回到句首"   "回到句末"
         imap <C-a> <Esc>^
         imap <C-e> <Esc>$

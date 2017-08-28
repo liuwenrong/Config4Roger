@@ -1,3 +1,8 @@
+;win --> #
+;ctrl --> ^
+;shift --> +
+;alt --> !
+
 #a::
 ;Run, D:\Android\Android Studio\bin\studio64.exe
 Run, E:\0SoftInstall\AS_2.3.3\bin\studio64.exe
@@ -79,19 +84,27 @@ Run, %SecureCRTPortable%
 ;MsgBox 按下Win+s显示此消息
 return
 
+;win+v 用vim打开_vimrc文件
 #v::
-vim=E:\0SoftInstall\msys2_64\usr\share\vim\vim80\gvim.exe -p --remote-tab-silent
+;vim=E:\0SoftInstall\msys2_64\usr\share\vim\vim80\gvim.exe -p --remote-tab-silent
+vim=%HOME%\.vim\gvim.exe -p --remote-tab-silent
 ;HOME=C:\Users\liuwenrong.CCDOMAIN
+;MsgBox %HOME%
 vimrc=%HOME%\_vimrc
 Run, %vim% %vimrc%
 return
 
+;Ctrl+Shift 显示测试消息
 ^+w::
+MsgBox 测试显示消息
 return
 
 #z::
 Run, https://www.zhihu.com
 return
+
+^+h::SendInput !{Left}
+^+l::SendInput !{Right}
 
 ;大小写键Esc互换
 SetCapsLockState , AlwaysOff
@@ -105,8 +118,25 @@ if GetKeyState("alt") = 0
     Send, ^{Left}
 }
 return
-CapsLock & j::SendInput {Down}
-CapsLock & k::SendInput {Up}
+CapsLock & k::
+if GetKeyState("alt") = 0
+{
+    Send, {Up}
+} else {
+    Send, {Home}
+}
+return
+
+SendInput {Up}
+CapsLock & j::
+if GetKeyState("alt") = 0
+{
+    Send, {Down}
+} else {
+    Send, {End}
+}
+return
+
 CapsLock & l::
 if GetKeyState("alt") = 0
 {
@@ -118,10 +148,19 @@ return
 CapsLock & a::SendInput {Home}
 CapsLock & 0::SendInput {Home}
 CapsLock & e::SendInput {End}
+CapsLock & 4::SendInput {End}
 CapsLock & d::SendInput {Delete}
 CapsLock & u::SendInput {PgUp}
 CapsLock & p::SendInput {PgDn}
 ;Shift & CapsLock::SendInput, {Shift Down}{Blind}{Esc}{Shift Up}
+CapsLock & g::
+if  GetKeyState("shift") = 0
+{
+    Send, {Home}
+} else {
+    Send, {End}
+}
+return
 CapsLock::SendInput {Esc}
 Esc::CapsLock
 
@@ -133,7 +172,21 @@ Esc::CapsLock
 ;                     CapsLock + ,  |  BackSpace                     ;|
 ;                     CapsLock + .  |  Ctrl + BackSpace              ;|
 ;-----------------------------------o---------------------------------o
-CapsLock & ,:: Send, {Del}                                           ;|
-CapsLock & .:: Send, ^{Del}                                          ;|
-CapsLock & m:: Send, {BS}                                            ;|
-CapsLock & n:: Send, ^{BS}
+CapsLock & m::
+if GetKeyState("alt") = 0
+{
+    Send, {BS}
+} else {
+    Send, ^{BS}
+}
+return
+CapsLock & ,::
+if GetKeyState("alt") = 0
+{
+    Send, {Del}
+} else {
+    Send, ^{Del}
+}
+return
+;CapsLock & .:: Send, ^{Del}                                          ;|
+;CapsLock & n:: Send, ^{BS}

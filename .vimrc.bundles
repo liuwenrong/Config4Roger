@@ -180,7 +180,17 @@
             endif
 
     "}
-
+    "
+    "ConqueTerm {
+        "set rtp+=$VIM/bundle/conque      "open Terminal Unavailable
+        "let g:ConqueTerm_TERM ='xterm'
+        "let g:ConqueTerm_TERM ='mintty'
+        "let g:ConqueTerm_PyVersion = 2
+        "nmap <Leader>sh :ConqueTerm bash<CR>
+        "nmap <Leader>shs :ConqueTermSplit bash<CR>
+        "nmap <Leader>shv :ConqueTermVSplit bash<CR>
+        "nmap <Leader>sht :ConqueTermTab bash<CR>
+    "}
 
     " In your .vimrc.before.local file
     " list only the plugin groups you will use

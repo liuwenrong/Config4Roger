@@ -129,6 +129,8 @@ source $ZSH/oh-my-zsh.sh
     #cd alias {
         alias cdpy='cd d:/pythonSrc'
         alias home='cd $HOME'
+        alias cdgc='cd d:/GitClone'
+        alias cdgcui='cd d:/GitClone'
         alias ui="cd d:/0Work/UI"
         alias cdlog='cd d:/0Work/WorkGet/log'
         alias c='cd'
@@ -190,6 +192,7 @@ source $ZSH/oh-my-zsh.sh
         alias gla='git log --oneline --all --graph --decorate  $*'
         alias gl1='git log --oneline --graph --decorate --color=always'
         alias gll='git log --pretty=oneline'
+        alias glg="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %Cblue<%an>%Creset' --abbrev-commit --date=relative --all"
     #}
     #
     # Script {
