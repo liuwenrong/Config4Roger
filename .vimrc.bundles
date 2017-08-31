@@ -95,6 +95,12 @@
     "
     "}
     "
+    "
+    "
+    "Auto-Pairs 自动补全括号 {
+        Bundle 'vim-scripts/Auto-Pairs'
+    "}
+    "
     "airLine {
         Bundle 'vim-airline/vim-airline'
         Bundle 'vim-airline/vim-airline-themes'
@@ -106,26 +112,51 @@
         let g:airline#extensions#tabline#buffer_nr_show = 1
     "}
     "
+    "FuzzyFinder 杀手级模糊搜索 Require L9{
+        Bundle 'vim-scripts/L9'
+        Bundle 'vim-scripts/FuzzyFinder'
+        nnoremap <leader>f :FufFile<CR>
+        "nnoremap <leader>F :FufTaggedFile<CR>
+        nnoremap <leader>g :FufTag<CR>
+        nnoremap <leader>b :FufBuffer<CR>
+        "let g:FuzzyFinderOptions.Base.key_open = '<CR>'
+        "let g:FuzzyFinderOptions.Base.key_open_split = '<C-j>'
+        "let g:FuzzyFinderOptions.Base.key_open_vsplit = '<C-k>'
+        "let g:FuzzyFinderOptions.Base.key_open_tab_page = '<C-t>'
+        let g:fuf_keyOpenTabpage = '<CR>'
+    "}
+    "
     "NerdCommenter快速注释<Leader>/{
         Plugin 'vim-scripts/The-NERD-Commenter'
         "set rtp+=$VIM/bundle/The-NERD-Commenter     "快速注释 <leader>c<SPACE> 运行 <leader>cc 注释， <leader>cu 反注释
         nmap <Leader>/ <plug>NERDCommenterToggle
         vmap <Leader>/ <plug>NERDCommenterToggle
-        imap <Leader>/ <Esc><plug>NERDCommenterToggle
+        "imap <Leader>/ <Esc><plug>NERDCommenterToggle
+        nmap <C-t> <plug>NERDCommenterToggle
+        vmap <C-t> <plug>NERDCommenterToggle
+        imap <C-t> <Esc><plug>NERDCommenterToggle
+        "nmap <C-m> <plug>NERDCommenterToggle    #Ctrl m 得到 Enter
+        "nmap <C-,> <plug>NERDCommenterToggle
+        "nmap <C-.> <plug>NERDCommenterToggle
+        "nmap <C-/> <plug>NERDCommenterToggle
+        "nmap <C-;> <plug>NERDCommenterToggle
+        "nmap <C-'> <plug>NERDCommenterToggle
      "}
 
     "EasyMotion Config {
         Bundle 'easymotion/vim-easymotion'
         "set rtp+=$VIM/bundle/vim-easymotion     "easymotion 快速定位跳转"
-        nmap <Leader>w <Plug>(easymotion-overwin-w)
         "快速查找单词之后的word"没有bd就是之后,有bd就是前后的单词           
         " <Leader>f{char} to move to {char}
         "map  <Leader>f <Plug>(easymotion-bd-f)
+        nmap <C-b> <Plug>(easymotion-overwin-f)
         nmap <Leader>; <Plug>(easymotion-overwin-f)
         "nmap <Leader>f <Plug>(easymotion-overwin-f)
+        nmap <Leader>w <Plug>(easymotion-overwin-w)
+        nmap <C-w> <Plug>(easymotion-overwin-w)
 
         "s{char}{char} to move to {char}{char}
-        nmap <Leader>f <Plug>(easymotion-overwin-f2)
+        "nmap <Leader>f <Plug>(easymotion-overwin-f2)
 
         " Move to line
         nmap <Leader><leader>h <Plug>(easymotion-linebackward)

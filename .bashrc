@@ -4,9 +4,9 @@
 
 #zsh 启动
 #exec /e/0SoftInstall/msys2_64/bin/zsh #unuseable
-if [ -x /bin/zsh ]; then
-    exec /bin/zsh
-fi
+#if [ -x /bin/zsh ]; then
+    #exec /bin/zsh
+#fi
 
 # If not running interactively, don't do anything
 case $- in

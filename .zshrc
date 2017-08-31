@@ -7,13 +7,17 @@
 
     # Path to your oh-my-zsh installation.
     export ZSH=$HOME/.oh-my-zsh
-    export GIT=/e/0SoftInstall/Git/bin
+    #export GIT=/e/0SoftInstall/Git/bin
     export ADB=/c/adb
     export java=/d/Java/jdk1.8.0_112/bin
     export gradle=/d/Android/Android_Studio/gradle/gradle-2.14.1/bin
     export pySrc=/d/pythonSrc
     export ASSDK=/d/Android/AS_SDK/platform-tools
-    export PATH=$HOME:$gradle:$java:$ASSDK:$pySrc:$GIT:$ADB:$PATH
+    export Windows=/d/Windows
+    export System32=/d/Windows/System32
+    #export PATH=$HOME:$System32:$gradle:$java:$ASSDK:$pySrc:$GIT:$ADB:$PATH
+    #export PATH=$HOME:$gradle:$java:$ASSDK:$pySrc:$GIT:$ADB:$PATH
+    export PATH=$HOME:$Windows:$System32:$gradle:$java:$ASSDK:$pySrc:$GIT:$ADB:$PATH
     #export PATH=E:/0SoftInstall/Git/bin #导致很多命令找不到
 #}
 # Theme {
@@ -23,8 +27,9 @@
 #ZSH_THEME="robbyrussell"
 #ZSH_THEME="cloud"
 #ZSH_THEME="steeef"
-ZSH_THEME="agnoster"
-#ZSH_THEME="amuse"
+#ZSH_THEME="agnoster" #oneLine
+#ZSH_THEME="amuse"   #doubleLine
+ZSH_THEME="0Roger"
 #ZSH_THEME="avit"
 #ZSH_THEME="random"
 #ZSH_THEME="ys"      #slow 很慢
@@ -70,15 +75,65 @@ ZSH_THEME="agnoster"
 # ZSH_CUSTOM=/path/to/new-custom-folder
 # }
 
+# Plugins {
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 #plugins=(autojump autopep8 git gradle python vi-mode)
+#plugins=(vi-mode)
+#plugins=(z) #not find ~/.z/
+#
+source $ZSH/oh-my-zsh.sh #猜测会清空之前加载的插件
 
-source $ZSH/oh-my-zsh.sh
+#cat -v Enter Press Key --> Enter --> get Escape code 字符序列
 
-# User configuration
+#   z {
+        source $ZSH/plugins/z/z.plugin.zsh
+#   }
+
+# vim {
+    #set -o vi
+    EDITOR=vim 
+    export EDITOR
+    export Plugins=$HOME/.Config4Roger/Plugins
+    source $Plugins/vi-mode.plugin.zsh
+    ##bindkey -v #vi
+    # 自定义Vi-mode {
+        #allow v to edit the command line (standard behaviour)
+        #autoload -Uz edit-command-line
+        #bindkey -M vicmd 'v' edit-command-line
+
+        #allow ctrl-p, ctrl-n for navigate history (standard behaviour)
+        #bindkey '^P' up-history
+        #bindkey '^N' down-history
+
+        #allow ctrl-h, ctrl-w, ctrl-? for char and word deletion (standard behaviour)
+        #bindkey '^?' backward-delete-char
+        #bindkey '^h' backward-delete-char
+        #bindkey '^w' backward-kill-word
+
+        #allow ctrl-r to perform backward search in history
+        #bindkey '^r' history-incremental-search-backward
+
+        #allow ctrl-a and ctrl-e to move to beginning/end of line
+        #bindkey '^a' beginning-of-line
+        #bindkey '^e' end-of-line
+
+        #VIMODE='-- INSERT --'
+        #function zle-line-init zle-keymap-select {
+        #VIMODE="${${KEYMAP/vicmd/-- NORMAL --}/(main|viins)/-- INSERT --}"
+        #zle reset-prompt
+        #}
+        #zle -N zle-line-init 
+        #zle -N zle-keymap-select
+        #RPROMPT='%{$fg[green]%}${VIMODE}%{$reset_color%}'
+    # }
+# }
+
+# }
+
+# User configuration SSH {
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
@@ -97,6 +152,7 @@ source $ZSH/oh-my-zsh.sh
 
 # ssh
 # export SSH_KEY_PATH="~/.ssh/rsa_id"
+#}
 
 # aliases {
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
@@ -127,11 +183,14 @@ source $ZSH/oh-my-zsh.sh
 #   }
 #
     #cd alias {
+        alias cdbl='cd d:/Android/0workSpacesAS/coolyotaY3/APP_BLauncher_170627/LauncherInk'
+        alias cdlr='cd d:/Android/0workSpacesAS/coolyotaY3/logreport'
         alias cdpy='cd d:/pythonSrc'
         alias home='cd $HOME'
         alias cdgc='cd d:/GitClone'
         alias cdgcui='cd d:/GitClone'
         alias ui="cd d:/0Work/UI"
+        alias apk="cd d:/0Work/apk"
         alias cdlog='cd d:/0Work/WorkGet/log'
         alias c='cd'
         alias b='cd ..'

@@ -71,7 +71,7 @@
     "安装匹配括号的插件"
     packadd! matchit
 
-    "encoding {
+    "fileencoding & fileformat{
         set termencoding=utf-8
         set encoding=utf8
         set fileencodings=utf8,ucs-bom,gbk,cp936,gb2312,gb18030
@@ -187,7 +187,7 @@
             "autocmd InsertEnter * se cul    " 用浅色高亮当前行  
             "set shortmess=atI   " 启动的时候不显示那个援助乌干达儿童的提示  
             "autocmd InsertLeave * se nocul  " 用浅色高亮当前行  
-            "filetype plugin indent on   " Automatically detect file types.
+            filetype plugin indent on   " Automatically detect file types.
             syntax on                   " Syntax highlighting
             "colorscheme solarized   "主题黑色,很漂亮,护眼
             "call togglebg#map("<F7>")   "switch black or light 黑色和护眼色切换"
@@ -195,6 +195,7 @@
             ""echo "not gui or gvim"
             ""colorscheme Zenburn
             "syntax off
+            filetype plugin indent on   " Automatically detect file types.
             winpos 0 0
             set lines=42 columns=99    "set win Size
             syntax on                   " Syntax highlighting
@@ -211,9 +212,9 @@
             "noremap <leader>bg :call ToggleBG()<CR>
         endif
         "
-        " if !has('gui')
-            "set term=$TERM          " Make arrow and other keys work
-        " endif
+        if !has('gui')
+            set term=$TERM          " Make arrow and other keys work
+        endif
     "}
 
     "Config color solarized {
@@ -367,7 +368,7 @@
         imap <C-a> <Esc>^
         imap <C-e> <Esc>$
         set scrolloff=8     " 光标移动到buffer的顶部和底部时保持3行距离 
-        map <C-w> <C-w>w
+        "map <C-w> <C-w>w
         nmap <C-j> <C-W>j
         nmap <C-k> <C-W>k
         map <C-h> <C-W>h
@@ -1531,52 +1532,52 @@
 " }
 "
         "auto complete()"" 自动补全括号,引号 {{{
-            inoremap ( ()<Esc>i
-            inoremap [ []<Esc>i
-            inoremap { {}<Esc>i
-            "inoremap { {<CR>}<Esc>O "{{"{{{
-            "autocmd Syntax html,vim    "导致进入vim会弹框AutoC...
-            inoremap < <lt>><Esc>i| 
-            inoremap > <c-r>=ClosePair('>')<CR>
-            inoremap ) <c-r>=ClosePair(')')<CR>
-            inoremap ] <c-r>=ClosePair(']')<CR>
-            inoremap } <c-r>=ClosePair('}')<CR>
-            "inoremap } <c-r>=CloseBracket()<CR>
-            inoremap " <c-r>=QuoteDelim('"')<CR>
-            inoremap ' <c-r>=QuoteDelim("'")<CR>
+            "inoremap ( ()<Esc>i
+            "inoremap [ []<Esc>i
+            "inoremap { {}<Esc>i
+            ""inoremap { {<CR>}<Esc>O "{{"{{{
+            ""autocmd Syntax html,vim    "导致进入vim会弹框AutoC...
+            "inoremap < <lt>><Esc>i| 
+            "inoremap > <c-r>=ClosePair('>')<CR>
+            "inoremap ) <c-r>=ClosePair(')')<CR>
+            "inoremap ] <c-r>=ClosePair(']')<CR>
+            "inoremap } <c-r>=ClosePair('}')<CR>
+            ""inoremap } <c-r>=CloseBracket()<CR>
+            "inoremap " <c-r>=QuoteDelim('"')<CR>
+            "inoremap ' <c-r>=QuoteDelim("'")<CR>
 
-            function! ClosePair(char)
-                if getline('.')[col('.') - 1] == a:char
-                    return "\<Right>"
-                else
-                    return a:char
-                endif
-            endf
+            "function! ClosePair(char)
+                "if getline('.')[col('.') - 1] == a:char
+                    "return "\<Right>"
+                "else
+                    "return a:char
+                "endif
+            "endf
 
-            function! CloseBracket()
-                if match(getline(line('.') + 1), '\s*}') < 0
-                    return "\<CR>}"
-                else
-                    return "\<Esc>j0f}a"}
-                endif
-            endf
+            "function! CloseBracket()
+                "if match(getline(line('.') + 1), '\s*}') < 0
+                    "return "\<CR>}"
+                "else
+                    "return "\<Esc>j0f}a"}
+                "endif
+            "endf
 
-            function! QuoteDelim(char)
-                let line = getline('.')
-                let col = col('.')
-                if line[col - 2] == "\\"
-                    return a:char
-                elseif line[col - 1] == a:char
-                    return "\<Right>"
-                else
-                    return a:char.a:char."\<Esc>i"
-                endif
-            endf
-            filetype plugin indent on 
-            "打开文件类型检测, 加了这句才可以用智能补全
-            set completeopt=longest,menu
+            "function! QuoteDelim(char)
+                "let line = getline('.')
+                "let col = col('.')
+                "if line[col - 2] == "\\"
+                    "return a:char
+                "elseif line[col - 1] == a:char
+                    "return "\<Right>"
+                "else
+                    "return a:char.a:char."\<Esc>i"
+                "endif
+            "endf
+            "filetype plugin indent on 
+            ""打开文件类型检测, 加了这句才可以用智能补全
+            "set completeopt=longest,menu
     "}}}
 
     " Find merge conflict markers
-    map <leader>fc /\v^[<\|=>]{7}( .*\|$)<CR>
+    "map <leader>fc /\v^[<\|=>]{7}( .*\|$)<CR>
     imap <Tab> <S-Tab>

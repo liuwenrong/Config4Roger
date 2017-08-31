@@ -17,6 +17,7 @@ REM    limitations under the License.
 @if not exist "%HOME%" @set HOME=%USERPROFILE%
 
 @set APP_PATH=%HOME%\.Config4Roger
+@set ZSH=%HOME%\.oh-my-zsh
 IF NOT EXIST "%APP_PATH%" (
     call git clone -b 3.0 https://github.com/liuwenrong/Config4Roger.git "%APP_PATH%"
 REM ) ELSE (
@@ -28,6 +29,7 @@ REM ) ELSE (
     REM call cd "%APP_PATH%"
 )
 
+call mklink "%ZSH%\themes\0Roger.zsh-theme" "%APP_PATH%\Themes\0Roger.zsh-theme"
 call mklink "%HOME%\.minttyrc" "%APP_PATH%\.minttyrc"
 call mklink "%HOME%\.zshrc" "%APP_PATH%\.zshrc"
 call mklink "%HOME%\.gitconfig" "%APP_PATH%\.gitconfig"

@@ -1,12 +1,12 @@
 /*BoldAsFont=-1*/
-FontHeight=10
+FontHeight=11
 Locale=zh_CN
 Language=@
 BoldAsFont=no
 Transparency=high
 /*Font 空格相连 vimrc中是下划线*/
 Font=DejaVu Sans Mono for Powerline
-FontIsBold=yes
+FontIsBold=no
 FontSmoothing=default
 AllowBlinking=no
 BoldAsColour=yes
@@ -40,5 +40,7 @@ Cyan=122,184,184
 BoldCyan=189,219,219
 White=217,217,217
 BoldWhite=255,255,255
-FontWeight=700
+FontWeight=400
 ComposeKey=alt
+DeleteSendsDEL=no
+CtrlAltIsAltGr=yes
