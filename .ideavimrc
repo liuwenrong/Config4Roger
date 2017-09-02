@@ -2,10 +2,10 @@
 " vim: set sw=4 ts=4 sts=4 et tw=78 foldmarker={,} foldlevel=0 foldmethod=marker spell:
 " }
 "
-" Environment »·¾³ÅäÖÃ{{{
+" Environment ç¯å¢ƒé…ç½®{{{
     
-    "»ù´¡ÉèÖÃ{{{
-        set nocompatible    "±ÜÃâ½øÈëviÄ£Ê½"
+    "åŸºç¡€è®¾ç½®{{{
+        set nocompatible
         filetype plugin on
         set showcmd
         set mouse=a
@@ -14,32 +14,38 @@
         set warn
         "set number
         set nonu
-        set diffexpr=MyDiff()
-        set ruler "¿ÉÏÔÊ¾×îºóÒ»ÅÅµÄ×´Ì¬
-        set showmode "×óÏÂ½ÇÄÇÒ»ĞĞµÄ×´Ì¬
-        set list "ÏÔÊ¾»»ĞĞ·û$
+        "set diffexpr=MyDiff()
+        set ruler "å¯æ˜¾ç¤ºæœ€åä¸€æ’çš„çŠ¶æ€
+        set showmode "å·¦ä¸‹è§’é‚£ä¸€è¡Œçš„çŠ¶æ€
+        set list "æ˜¾ç¤ºæ¢è¡Œç¬¦$
     "}}}
     "
-    "¹â±êÀàĞÍ{{{
-        "ÆÕÍ¨Ä£Ê½ÏÂÓÃ¿é×´¹â±ê£¬ÔÚ²åÈëÄ£Ê½ÏÂÓÃÌõ×´¹â±ê£¨ĞÎ×´ÀàËÆÓ¢ÎÄ "I" µÄÑù×Ó£©£¬È»ºóÔÚÌæ»»Ä£Ê½ÖĞÊ¹ÓÃÏÂ»®ÏßĞÎ×´µÄ¹â±ê"
-        if empty($TMUX)
-          let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-          let &t_EI = "\<Esc>]50;CursorShape=0\x7"
-          let &t_SR = "\<Esc>]50;CursorShape=2\x7"
-        else
-          let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
-          let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
-          let &t_SR = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=2\x7\<Esc>\\"
-        endif
+    "UI {
+        å¼€å¯é«˜äº®å…‰æ ‡è¡Œ
+        set cursorline
+        hi CursorLine   cterm=NONE ctermbg=darkred ctermfg=white guibg=darkred guifg=white
+        å¼€å¯é«˜äº®å…‰æ ‡åˆ—
+        set cursorcolumn
+        hi CursorColumn cterm=NONE ctermbg=darkred ctermfg=white guibg=darkred guifg=white
+    "}
+    "
+    "å…‰æ ‡ç±»å‹{{{
+        "æ™®é€šæ¨¡å¼ä¸‹ç”¨å—çŠ¶å…‰æ ‡ï¼Œåœ¨æ’å…¥æ¨¡å¼ä¸‹ç”¨æ¡çŠ¶å…‰æ ‡ï¼ˆå½¢çŠ¶ç±»ä¼¼è‹±æ–‡ "I" çš„æ ·å­ï¼‰ï¼Œç„¶ååœ¨æ›¿æ¢æ¨¡å¼ä¸­ä½¿ç”¨ä¸‹åˆ’çº¿å½¢çŠ¶çš„å…‰æ ‡"
+          "let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+          "let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+          "let &t_SR = "\<Esc>]50;CursorShape=2\x7"
+            let &t_EI = "\<Esc>]12;yellow\x7"
+            let &t_SI = "\<Esc>]12;blue\x7"
+            let &t_SR = "\<Esc>]12;red\x7"
      "}}}
      "
-    "KeyMap Leader ¼üÅÌÃüÁî×¢:×¢ÊÍ²»ÄÜÔÚÓï¾äÖ®ºó{{{
-        "Ê¹ÓÃµÄÊ±ºòÒª°´×¡¿Õ¸ñ\<Space>²»¿ÉÓÃ,¿ÉÓÃ ¿Õ¿ÉÓÃ ²»·Å"
+    "KeyMap Leader é”®ç›˜å‘½ä»¤æ³¨:æ³¨é‡Šä¸èƒ½åœ¨è¯­å¥ä¹‹å{{{
+        "ä½¿ç”¨çš„æ—¶å€™è¦æŒ‰ä½ç©ºæ ¼\<Space>ä¸å¯ç”¨,å¯ç”¨ ç©ºå¯ç”¨ ä¸æ”¾"
         let mapleader=" "
         let localleader="\"
     "}}}
 
-            "vimrcºÍ±£´æÍË³ö{{{
+            "vimrcå’Œä¿å­˜é€€å‡º{{{
                 nmap <silent> <leader>ev :e $MYVIMRC<CR>
                 nmap <silent> <leader>sv :so $MYVIMRC<CR>
                 nmap <A-w> :w<CR>
@@ -47,27 +53,27 @@
                 nmap <localLeader>q :q<CR>
             "}}}
 
-            "±ã½İ{{{
-                "Èç¹ûÄãÏ£Íû n Ê¼ÖÕÎªÏòºóËÑË÷£¬N Ê¼ÖÕÎªÏòÇ°ËÑË÷£¬ÄÇÃ´Ö»ĞèÒªÕâÑùÉèÖÃ£º
+            "ä¾¿æ·{{{
+                "å¦‚æœä½ å¸Œæœ› n å§‹ç»ˆä¸ºå‘åæœç´¢ï¼ŒN å§‹ç»ˆä¸ºå‘å‰æœç´¢ï¼Œé‚£ä¹ˆåªéœ€è¦è¿™æ ·è®¾ç½®ï¼š
                 nnoremap <expr> n  'Nn'[v:searchforward]
                 nnoremap <expr> N  'nN'[v:searchforward]
-                "Vim ÓÃ»§¶¼²»Ô¸ÒâÈ¥°´·½Ïò¼ü£¬ÊÂÊµÉÏÎÒÃÇÒ²²»ĞèÒªÈ¥°´£¬Ö»ĞèÒªÉèÖÃÕâÑùµÄÓ³Éä£º
+                "Vim ç”¨æˆ·éƒ½ä¸æ„¿æ„å»æŒ‰æ–¹å‘é”®ï¼Œäº‹å®ä¸Šæˆ‘ä»¬ä¹Ÿä¸éœ€è¦å»æŒ‰ï¼Œåªéœ€è¦è®¾ç½®è¿™æ ·çš„æ˜ å°„ï¼š
                 cnoremap <c-n> <down>
                 cnoremap <c-p> <up>
              "}}}
 
-            "¹â±êÒÆ¶¯{{{
+            "å…‰æ ‡ç§»åŠ¨{{{
                 map <CR> gg
                 imap <C-h> <Left>
                 imap <C-j> <Down>
                 imap <C-k> <Up>
                 imap <C-l> <Right>
-                "fjÍ¬Ê±°´Ïàµ±ÓÚÍË³ö"
+                "fjåŒæ—¶æŒ‰ç›¸å½“äºé€€å‡º"
                 "inoremap fj <C-o>       
                 imap <C-i> <Esc>
                 "map <F2> i{<Esc>ea}<Esc>
                 map <F1> i + "--1703"<Esc>i
-               "»Øµ½¾äÊ×"   "»Øµ½¾äÄ©"
+               "å›åˆ°å¥é¦–"   "å›åˆ°å¥æœ«"
                 imap <C-a> <Esc>^
                 imap <C-e> <Esc>$
                 " Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
@@ -77,7 +83,7 @@
                 map J j
              "}}}
 
-            "´°¿ÚÒÆ¶¯{{{
+            "çª—å£ç§»åŠ¨{{{
                 " Smart way to move between windows
                 nmap <C-j> <C-W>j
                 nmap <C-k> <C-W>k
@@ -87,65 +93,28 @@
                 "map <A-e> :browse tabnew<CR>
              "}}}
 
-             "¸´ÖÆÏà¹Ø{{{
-                "ÔÚ²åÈëÄ£Ê½ÖĞÊ¹ÓÃCtrl+vÕ³ÌùÈ«¾Ö¼ôÌù°åÄÚÈİ
+             "å¤åˆ¶ç›¸å…³{{{
+                "åœ¨æ’å…¥æ¨¡å¼ä¸­ä½¿ç”¨Ctrl+vç²˜è´´å…¨å±€å‰ªè´´æ¿å†…å®¹
                 "inoremap <C-v> <esc>l:set paste<cr>mui<C-R>+<esc>mv'uV'v=:set nopaste<cr>
                 "vmap <C-v> "-d"+p
                 "imap <C-v> <S-insert>
                 "map <C-v> "+p
 
-                "ÔÚVisualÄ£Ê½ÖĞÊ¹ÓÃCtrl+c¸´ÖÆÄÚÈİµ½È«¾Ö¼ôÌù°å
+                "åœ¨Visualæ¨¡å¼ä¸­ä½¿ç”¨Ctrl+cå¤åˆ¶å†…å®¹åˆ°å…¨å±€å‰ªè´´æ¿
                 vnoremap <C-c> "+y
                 map <C-y> "+y
 
-                "ÔÚVisualÄ£Ê½ÖĞÊ¹ÓÃCtrl+x¼ôÇĞÄÚÈİµ½È«¾Ö¼ôÌù°å
+                "åœ¨Visualæ¨¡å¼ä¸­ä½¿ç”¨Ctrl+xå‰ªåˆ‡å†…å®¹åˆ°å…¨å±€å‰ªè´´æ¿
                 vnoremap <C-x> "+x
               "}}}
 
-            "ËõĞ´{{{
+            "ç¼©å†™{{{
                 iab xdate =strftime("%Y-%m-%y")
                 iab xdate1 =strftime("%Y-%m-%y %H:%M:%S")
                 iab xname liuwenrong.Roger
             "}}}
 
        "}}}
-
-"Plugins ²å¼şÅäÖÃ{{{
-
-    "Â·¾¶ÉèÖÃ{{{
-        "set rtp+=E:/0SoftInstall/msys2_64/usr/share/vim/vim80
-        "×´Ì¬À¸²å¼ş-ÃÀ»¯-Æ¯ÁÁ
-        "set rtp+=$VIM\bundle\vim-airline
-     "}}}
-
-    "EasyMotionÅäÖÃ{{{
-            "easymotion ¿ìËÙ¶¨Î»Ìø×ª"
-            "set rtp+=$VIM\bundle\vim-easymotion     
-            "nmap <Leader><Leader>w <Plug>(easymotion-overwin-w)
-            "¿ìËÙ²éÕÒµ¥´ÊÖ®ºóµÄword"Ã»ÓĞbd¾ÍÊÇÖ®ºó,ÓĞbd¾ÍÊÇÇ°ºóµÄµ¥´Ê           
-            " <Leader>f{char} to move to {char}
-            "map  <Leader>f <Plug>(easymotion-bd-f)
-            "nmap <Leader>f <Plug>(easymotion-overwin-f)
-
-            "s{char}{char} to move to {char}{char}
-            "nmap <Leader><Leader>s <Plug>(easymotion-overwin-f2)
-
-            " Move to line
-            "map <Leader><leader>h <Plug>(easymotion-linebackward)
-            "map <Leader><leader>l <Plug>(easymotion-lineforward)
-            "map <Leader>L <Plug>(easymotion-bd-jk)
-            "nmap <Leader>L <Plug>(easymotion-overwin-line)
-            "map <Leader><Leader>j <Plug>(easymotion-j)
-            "map <Leader><Leader>k <Plug>(easymotion-k)
-
-            " Move to word
-            "map  <Leader>s <Plug>(easymotion-bd-w)
-            "nmap <Leader>s <Plug>(easymotion-overwin-w)
-    "}}}
-    
- "}}}
-
-
 
 function MyDiff()
   let opt = '-a --binary '

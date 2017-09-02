@@ -29,7 +29,9 @@
 #ZSH_THEME="steeef"
 #ZSH_THEME="agnoster" #oneLine
 #ZSH_THEME="amuse"   #doubleLine
-ZSH_THEME="0Roger"
+#ZSH_THEME="0Roger"
+ZSH_THEME="0RogerEasy"
+#ZSH_THEME="0RogerNoGit"
 #ZSH_THEME="avit"
 #ZSH_THEME="random"
 #ZSH_THEME="ys"      #slow 很慢
@@ -44,7 +46,7 @@ ZSH_THEME="0Roger"
 # HYPHEN_INSENSITIVE="true"
 
 # Uncomment the following line to disable bi-weekly auto-update checks.
-# DISABLE_AUTO_UPDATE="true"
+DISABLE_AUTO_UPDATE="true"
 
 # Uncomment the following line to change how often to auto-update (in days).
 # export UPDATE_ZSH_DAYS=13
@@ -53,18 +55,18 @@ ZSH_THEME="0Roger"
 # DISABLE_LS_COLORS="true"
 
 # Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
+DISABLE_AUTO_TITLE="true"
 
 # Uncomment the following line to enable command auto-correction.
 # ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
-# COMPLETION_WAITING_DOTS="true"
+COMPLETION_WAITING_DOTS="true"
 
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
 # much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
+DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # Uncomment the following line if you want to change the command execution time
 # stamp shown in the history command output.
@@ -83,14 +85,17 @@ ZSH_THEME="0Roger"
 #plugins=(autojump autopep8 git gradle python vi-mode)
 #plugins=(vi-mode)
 #plugins=(z) #not find ~/.z/
-#
+#plugins=(zsh-syntax-highlighting)
+plugins=(autojump zsh-syntax-highlighting)
 source $ZSH/oh-my-zsh.sh #猜测会清空之前加载的插件
 
 #cat -v Enter Press Key --> Enter --> get Escape code 字符序列
 
-#   z {
-        source $ZSH/plugins/z/z.plugin.zsh
+#   z 进入会卡1~2s git 项目会卡1~2s{
+        #source $ZSH/plugins/z/z.plugin.zsh
 #   }
+
+#source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # vim {
     #set -o vi
@@ -240,7 +245,8 @@ source $ZSH/oh-my-zsh.sh #猜测会清空之前加载的插件
         alias gba='git branch -a'
         alias gbv='git branch -vv'
         alias gf='git fetch'
-        alias gr='git rebase'
+        alias grb='git rebase'
+        alias gr='git remote'
         alias grv='git remote -v'
         alias gp='git push'
         alias gco='git checkout'

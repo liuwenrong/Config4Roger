@@ -14,10 +14,11 @@ zle -N edit-command-line
 
 bindkey -v
 
-# allow v to edit the command line (standard behaviour)
+# allow Ctrl-e to edit the command line (standard behaviour)
 autoload -Uz edit-command-line
-bindkey -M vicmd 'v' edit-command-line
+bindkey -M vicmd '^e' edit-command-line
 
+bindkey "^L" clear-screen
 
 # allow ctrl-h, ctrl-w, ctrl-? for char and word deletion (standard behaviour)
 bindkey '^?' backward-delete-char
@@ -37,8 +38,11 @@ bindkey "^K" kill-line  #kill after cursor
 # allow ctrl-r to perform backward search in history
 #bindkey '^r' history-incremental-search-backward
 #bindkey '^f' history-incremental-pattern-search-forward
-bindkey "^[OA" up-line-or-beginning-search # 向上搜索历史并从 输入的begin搜索
+bindkey "^[OA" up-line-or-beginning-search # mintty Up 向上搜索历史并从 输入的begin搜索
 bindkey "^[OB" down-line-or-beginning-search
+
+bindkey "^[[A" up-line-or-beginning-search # ConEmu-cmd Up keyCode 向上搜索历史并从 输入的begin搜索
+bindkey "^[[B" down-line-or-beginning-search
 #bindkey '^P' up-history
 #bindkey '^N' down-history
 #Mode vim command up down history
@@ -51,8 +55,10 @@ bindkey "^z" undo
 bindkey "^r" redo
 
 # allow ctrl-a and ctrl-e to move to beginning/end of line
-bindkey '^[OH' beginning-of-line #Key Home"
+bindkey '^[OH' beginning-of-line #Key Home" mintty
 bindkey '^[OF' end-of-line #Key End"
+bindkey '^[[1~' beginning-of-line #Key Home" ConEmu-cmd
+bindkey '^[[4~' end-of-line #Key End"
 #bindkey '^a' beginning-of-line
 #bindkey '^e' end-of-line
 
@@ -76,10 +82,9 @@ function vi_mode_prompt_info() {
   #echo "${${KEYMAP/vicmd/$MODE_INDICATOR}/(main|viins)/}"
   #echo "${${KEYMAP/vicmd/-- NORMAL --}/(main|viins)/-- INSERT --}"
   echo "${${KEYMAP/vicmd/$MODE_INDICATOR}/(main|viins)/$MODE_INSERT}"
-
 }
 
 # define right prompt, if it wasn't defined by a theme
-if [[ "$RPS1" == "" && "$RPROMPT" == "" ]]; then
-  RPS1='$(vi_mode_prompt_info)'
-fi
+#if [[ "$RPS1" == "" && "$RPROMPT" == "" ]]; then
+  #RPS1='$(vi_mode_prompt_info)'
+#fi

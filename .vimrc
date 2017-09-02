@@ -43,9 +43,9 @@
     
     " Arrow Key Fix {
         " https://github.com/spf13/spf13-vim/issues/780
-        if &term[:4] == "xterm" || &term[:5] == 'screen' || &term[:3] == 'rxvt'
-            inoremap <silent> <C-[>OC <RIGHT>
-        endif
+        "if &term[:4] == "xterm" || &term[:5] == 'screen' || &term[:3] == 'rxvt'
+            "inoremap <silent> <C-[>OC <RIGHT>
+        "endif
     " }
 
 " }
@@ -157,75 +157,125 @@
         set rtp+=E:/0SoftInstall/msys2_64/usr/share/vim/vim80/colors
         set rtp+=E:/0SoftInstall/msys2_64/usr/share/vim/vim80
     endif
+
+
+" GUI & term Settings {
+
+    " GVIM- (here instead of .gvimrc)
+    "if has('gui_running')
+        "set lines=40                " 40 lines of text instead of 24
+        "if !exists("g:spf13_no_big_font")
+            "if LINUX() && has("gui_running")
+                "set guifont=Andale\ Mono\ Regular\ 12,Menlo\ Regular\ 11,Consolas\ Regular\ 12,Courier\ New\ Regular\ 14
+            "elseif OSX() && has("gui_running")
+                "set guifont=Andale\ Mono\ Regular:h12,Menlo\ Regular:h11,Consolas\ Regular:h12,Courier\ New\ Regular:h14
+            "elseif WINDOWS() && has("gui_running")
+                "set guifont=Andale_Mono:h10,Menlo:h10,Consolas:h10,Courier_New:h10
+            "endif
+        "endif
+    "else
+    "
+    if !has('gui')
+        set term=$TERM          " Make arrow and other keys work
+    endif
+    if &term == 'xterm' || &term == 'screen'
+        "导致cmder-vim 一片黄
+        set t_Co=256            " Enable 256 colors to stop the CSApprox warning and make xterm vim shine
+    endif
+    "set term=builtin_ansi       " Make arrow and other keys work"打开导致颜色不显示
+    "
     "Font Settings 字体的设置 {
-        "set guifont=*
-        "set guifont=Menlo_for_Powerline "该字体状态栏还是会乱码"
         set guifont=DejaVu_Sans_Mono_for_Powerline:h11:cANSI
-        "set guifont=Consolas,Menlo_for_Powerline:h9  "unuseable"
-        "set guifont=/C/Windows/Fonts/Menlo_for_Powerline:h19
-        "set guifont=C:\Windows\Fonts\Menlo for Powerline:h9:cANSI
-        "set guifont=Consolas,Menlo for Powerline:h9:cANSI  "unuseable"
-        "set guifont=Consolas,Bitstream_Vera_Sans_Mono:h9:cANSI "设置gui下的字体
-        "set gfw=Consolas:h20
-        "set guifont=Courier_New:h10:cANSI   " 设置字体  
-        "set gfw=Consolas:h10:cGB2312
-        hi CursorLine   cterm=NONE ctermbg=black guibg=black  
-        hi CursorColumn   cterm=NONE ctermbg=black guibg=black " 
-        highlight ColorColumn ctermbg=black guibg=black
+        "set cul "高亮光标所在行
+        "set cuc "高亮列"
+        "autocmd InsertEnter * se cul    " 用浅色高亮当前行
+        "autocmd InsertLeave * se nocul  " 用浅色高亮当前行
+        "black, brown, grey, blue, green, cyan, magenta, yellow, white
+        "开启高亮光标行
+        "set cursorline
+        "hi CursorLine   cterm=NONE ctermbg=darkred ctermfg=white guibg=darkred guifg=white
+        "开启高亮光标列
+        "set cursorcolumn
+        "hi CursorColumn cterm=NONE ctermbg=darkred ctermfg=white guibg=darkred guifg=white
     "}
+    if has('gui_running')
+        ""echo "is gui_runnig gvim"
+        set guioptions-=T           " 隐藏工具栏
+        set guioptions-=m           " 隐藏菜单栏
+        set lines=52 columns=99    "set win Size
+        winpos 780 0          " Set Win Position
+        "set shortmess=atI   " 启动的时候不显示那个援助乌干达儿童的提示  
+        filetype plugin indent on   " Automatically detect file types.
+        syntax on                   " Syntax highlighting
+    else
+        filetype plugin indent on   " Automatically detect file types.
+        winpos 0 0
+        set lines=42 columns=99    "set win Size
+        syntax on                   " Syntax highlighting
+        ""Allow to trigger background
+        "function! ToggleBG()
+            "let s:tbg = &background
+            "" Inversion
+            "if s:tbg == "dark"
+                "set background=light
+            "else
+                "set background=dark
+            "endif
+        "endfunction
+        "noremap <leader>bg :call ToggleBG()<CR>
+    endif
 
-    "UI {
-        if has('gui_running')
-            ""echo "is gui_runnig gvim"
-            set guioptions-=T           " 隐藏工具栏
-            set guioptions-=m           " 隐藏菜单栏
-            ""set background=dark         " Assume a dark background 背景黑色
-            set lines=52 columns=99    "set win Size
-            winpos 780 0          " Set Win Position
-            "set cul "高亮光标所在行
-            "set cuc "高亮列"
-            "autocmd InsertEnter * se cul    " 用浅色高亮当前行  
-            "set shortmess=atI   " 启动的时候不显示那个援助乌干达儿童的提示  
-            "autocmd InsertLeave * se nocul  " 用浅色高亮当前行  
-            filetype plugin indent on   " Automatically detect file types.
-            syntax on                   " Syntax highlighting
-            "colorscheme solarized   "主题黑色,很漂亮,护眼
-            "call togglebg#map("<F7>")   "switch black or light 黑色和护眼色切换"
-        else
-            ""echo "not gui or gvim"
-            ""colorscheme Zenburn
-            "syntax off
-            filetype plugin indent on   " Automatically detect file types.
-            winpos 0 0
-            set lines=42 columns=99    "set win Size
-            syntax on                   " Syntax highlighting
-            ""Allow to trigger background
-            "function! ToggleBG()
-                "let s:tbg = &background
-                "" Inversion
-                "if s:tbg == "dark"
-                    "set background=light
-                "else
-                    "set background=dark
-                "endif
-            "endfunction
-            "noremap <leader>bg :call ToggleBG()<CR>
-        endif
+
+" }
+
+        "Cursor Style 光标样式{
+            "普通模式下用块状光标，在插入模式下用条状光标（形状类似英文 "I" 的样子），然后在替换模式中使用下划线形状的光标"
+            if !empty($TERM)
+                "let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+                "let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+                "let &t_SR = "\<Esc>]50;CursorShape=2\x7"
+                let &t_EI = "\<Esc>]12;yellow\x7"
+                let &t_SI = "\<Esc>]12;blue\x7"
+                let &t_SR = "\<Esc>]12;red\x7"
+            endif
+
+            "if &term =~ "xterm"
+                "let &t_EI = "\<Esc>]12;yellow\x7"
+                "let &t_SI = "\<Esc>]12;blue\x7"
+                "let &t_SR = "\<Esc>]12;red\x7"
+                ""let &t_EI = "\<Esc>]12;yellow;CursorType=block\x7"
+                ""let &t_EI = "\<Esc>]12;CursorShape=0\x7"
+                ""let &t_SI = "\<Esc>]12;CursorShape=1\x7"
+                ""let &t_SI = "\<Esc>]12;CursorType=vertical" "unavialable"
+                ""let &t_SI = "\<Esc>]12;purple\x7"
+                ""let &t_SR = "\<Esc>]12;CursorBlinks=yes"
+            "endif
+            if &term =~ "xterm\\|rxvt\\|xterm-256color"
+                 "silent !echo -ne "\033]12;green\007"
+                 "let &t_SI = "\033]12;gray\007"
+                 let &t_SI = "\033]12;blue\007"
+                 let &t_EI = "\033]12;green\007"
+                 let &t_SR = "\033]12;red\007"
+                 "autocmd VimLeave * :!echo -ne "\033]12;green\007"
+            endif
+            if !has('gui')
+            "if empty($TMUX)
+                "echo "empty tmux"
+                "echo "no gui"
+                "let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+                "let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+                "let &t_SR = "\<Esc>]50;CursorShape=2\x7"
+            else
+                "set guicursor=n-c-v:block-nCursor "Available"
+               "set guicursor=i-ci:ver30-iCursor-blinkwait300-blinkon200-blinkoff150
+                "let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
+                "let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
+                "let &t_SR = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=2\x7\<Esc>\\"
+            endif
+         "}
+         "
+    "Others {
         "
-        if !has('gui')
-            set term=$TERM          " Make arrow and other keys work
-        endif
-    "}
-
-    "Config color solarized {
-    "if !exists('g:override_spf13_bundles') && filereadable(expand("~/.vim/bundle/vim-colors-solarized/colors/solarized.vim"))
-        "let g:solarized_termcolors=256
-        "let g:solarized_termtrans=1
-        "let g:solarized_contrast="normal"
-        "let g:solarized_visibility="normal"
-        "color solarized             " Load a colorscheme
-    "endif
-    " }
 
     set ignorecase  "搜索忽略大小写
     set tabpagemax=15               " Only show 15 tabs
@@ -277,6 +327,8 @@
     set foldenable                  " Auto fold code
     set list
     set listchars=tab:›\ ,trail:•,extends:#,nbsp:. " Highlight problematic whitespace
+
+    "}
 " }
 
 " Formatting {
@@ -337,24 +389,6 @@
     "}
     "
     "cursor &Window move 光标窗口移动 {
-        "Cursor Style 光标样式{{{
-            "普通模式下用块状光标，在插入模式下用条状光标（形状类似英文 "I" 的样子），然后在替换模式中使用下划线形状的光标"
-            if !has('gui')
-            "if empty($TMUX)
-                "echo "empty tmux"
-                "echo "no gui"
-                "let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-                "let &t_EI = "\<Esc>]50;CursorShape=0\x7"
-                "let &t_SR = "\<Esc>]50;CursorShape=2\x7"
-            else
-                "set guicursor=n-c-v:block-nCursor "Available"
-               "set guicursor=i-ci:ver30-iCursor-blinkwait300-blinkon200-blinkoff150
-                "let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
-                "let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
-                "let &t_SR = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=2\x7\<Esc>\\"
-            endif
-         "}}}
-         "
         imap <Tab> <S-Tab>
         map <CR> gg
         imap <C-h> <Left>
@@ -1347,29 +1381,6 @@
         "endif
     " }
 
-" GUI Settings {
-
-    " GVIM- (here instead of .gvimrc)
-    "if has('gui_running')
-        "set guioptions-=T           " Remove the toolbar
-        "set lines=40                " 40 lines of text instead of 24
-        "if !exists("g:spf13_no_big_font")
-            "if LINUX() && has("gui_running")
-                "set guifont=Andale\ Mono\ Regular\ 12,Menlo\ Regular\ 11,Consolas\ Regular\ 12,Courier\ New\ Regular\ 14
-            "elseif OSX() && has("gui_running")
-                "set guifont=Andale\ Mono\ Regular:h12,Menlo\ Regular:h11,Consolas\ Regular:h12,Courier\ New\ Regular:h14
-            "elseif WINDOWS() && has("gui_running")
-                "set guifont=Andale_Mono:h10,Menlo:h10,Consolas:h10,Courier_New:h10
-            "endif
-        "endif
-    "else
-        "if &term == 'xterm' || &term == 'screen'
-            "set t_Co=256            " Enable 256 colors to stop the CSApprox warning and make xterm vim shine
-        "endif
-        ""set term=builtin_ansi       " Make arrow and other keys work
-    "endif
-
-" }
 
 " Functions {
 

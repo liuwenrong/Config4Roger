@@ -30,6 +30,8 @@ REM ) ELSE (
 )
 
 call mklink "%ZSH%\themes\0Roger.zsh-theme" "%APP_PATH%\Themes\0Roger.zsh-theme"
+call mklink "%ZSH%\themes\0RogerEasy.zsh-theme" "%APP_PATH%\Themes\0RogerEasy.zsh-theme"
+call mklink "%ZSH%\themes\0RogerNoGit.zsh-theme" "%APP_PATH%\Themes\0RogerNoGit.zsh-theme"
 call mklink "%HOME%\.minttyrc" "%APP_PATH%\.minttyrc"
 call mklink "%HOME%\.zshrc" "%APP_PATH%\.zshrc"
 call mklink "%HOME%\.gitconfig" "%APP_PATH%\.gitconfig"
