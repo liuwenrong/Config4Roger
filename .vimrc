@@ -246,7 +246,7 @@
                 ""let &t_EI = "\<Esc>]12;yellow;CursorType=block\x7"
                 ""let &t_EI = "\<Esc>]12;CursorShape=0\x7"
                 ""let &t_SI = "\<Esc>]12;CursorShape=1\x7"
-                ""let &t_SI = "\<Esc>]12;CursorType=vertical" "unavialable"
+                ""let &t_SI = "\<Esc>]12;CursorType=vertical" "unavailable"
                 ""let &t_SI = "\<Esc>]12;purple\x7"
                 ""let &t_SR = "\<Esc>]12;CursorBlinks=yes"
             "endif
@@ -403,10 +403,10 @@
         imap <C-e> <Esc>$
         set scrolloff=8     " 光标移动到buffer的顶部和底部时保持3行距离 
         "map <C-w> <C-w>w
-        nmap <C-j> <C-W>j
-        nmap <C-k> <C-W>k
-        map <C-h> <C-W>h
-        nmap <C-l> <C-W>l
+        noremap <C-j> <C-W>j
+        noremap <C-k> <C-W>k
+        noremap <C-h> <C-W>h
+        noremap <C-l> <C-W>l
 
         " Visual shifting (does not exit Visual mode)
         vnoremap < <gv
@@ -437,10 +437,10 @@
         vnoremap <silent> p p`]
         nnoremap <silent> p p`]
         "在全模式中使用Shift+Insert粘贴全局剪贴板内容,选择模式先替换后粘贴
-        inoremap <C-v> <esc>:set paste<cr>mui<C-R>+<esc>mv'uV'v=:set nopaste<cr>
-        vmap <S-Insert> "-d"+p
-        map <S-Insert> "+p
-
+        "inoremap <C-v> <esc>:set paste<cr>mui<C-R>+<esc>mv'uV'v=:set nopaste<cr>
+        vmap <S-Insert> "vdh"+p
+        nmap <S-Insert> "+p
+        map! <S-Insert> <C-r>+
         "在Visual模式中使用Ctrl+Insert复制内容到全局剪贴板
         vnoremap <C-c> "+y
         map <C-y> "+y
@@ -452,7 +452,7 @@
 
         :nmap <silent> <F9> <ESC>:Tlist<RETURN>
         map! <C-Z> <Esc>zzi
-        "map! <C-O> <C-Y>,  
+        "map! <C-O> <C-Y>,
         "全选复制
         map <Leader>a ggVG$"+y
         "全屏identited 缩进
@@ -748,14 +748,12 @@
     "cmap cd. lcd %:p:h
 
     " Allow using the repeat operator with a visual selection (!)
-    " http://stackoverflow.com/a/8064607/127816
     vnoremap . :normal .<CR>
 
     " For when you forget to sudo.. Really Write the file.
     "cmap w!! w !sudo tee % >/dev/null
 
     " Some helpers to edit mode
-    " http://vimcasts.org/e/14
     cnoremap %% <C-R>=fnameescape(expand('%:h')).'/'<cr>
     map <leader>ew :e %%
     map <leader>es :sp %%
@@ -769,7 +767,6 @@
     " Easier formatting
     "nnoremap <silent> <leader>q gwip
 
-    " FIXME: Revert this f70be548
     " fullscreen mode for GVIM and Terminal, need 'wmctrl' in you PATH
     map <silent> <F11> :call system("wmctrl -ir " . v:windowid . " -b toggle,fullscreen")<CR>
 
@@ -1381,7 +1378,6 @@
         "endif
     " }
 
-
 " Functions {
 
     " Initialize directories {
@@ -1542,53 +1538,6 @@
     endif
 " }
 "
-        "auto complete()"" 自动补全括号,引号 {{{
-            "inoremap ( ()<Esc>i
-            "inoremap [ []<Esc>i
-            "inoremap { {}<Esc>i
-            ""inoremap { {<CR>}<Esc>O "{{"{{{
-            ""autocmd Syntax html,vim    "导致进入vim会弹框AutoC...
-            "inoremap < <lt>><Esc>i| 
-            "inoremap > <c-r>=ClosePair('>')<CR>
-            "inoremap ) <c-r>=ClosePair(')')<CR>
-            "inoremap ] <c-r>=ClosePair(']')<CR>
-            "inoremap } <c-r>=ClosePair('}')<CR>
-            ""inoremap } <c-r>=CloseBracket()<CR>
-            "inoremap " <c-r>=QuoteDelim('"')<CR>
-            "inoremap ' <c-r>=QuoteDelim("'")<CR>
-
-            "function! ClosePair(char)
-                "if getline('.')[col('.') - 1] == a:char
-                    "return "\<Right>"
-                "else
-                    "return a:char
-                "endif
-            "endf
-
-            "function! CloseBracket()
-                "if match(getline(line('.') + 1), '\s*}') < 0
-                    "return "\<CR>}"
-                "else
-                    "return "\<Esc>j0f}a"}
-                "endif
-            "endf
-
-            "function! QuoteDelim(char)
-                "let line = getline('.')
-                "let col = col('.')
-                "if line[col - 2] == "\\"
-                    "return a:char
-                "elseif line[col - 1] == a:char
-                    "return "\<Right>"
-                "else
-                    "return a:char.a:char."\<Esc>i"
-                "endif
-            "endf
-            "filetype plugin indent on 
-            ""打开文件类型检测, 加了这句才可以用智能补全
-            "set completeopt=longest,menu
-    "}}}
-
     " Find merge conflict markers
     "map <leader>fc /\v^[<\|=>]{7}( .*\|$)<CR>
     imap <Tab> <S-Tab>

@@ -8,13 +8,18 @@
 	editor = vim
 	trustctime = false
 	;autocrlf = input
-	autocrlf = false
+	autocrlf = input
+	longpaths = true
 [color]
 	interactive = auto
+[gui]
+    encoding = utf-8
+[i18n]
+    commitencoding = utf-8
 	[alias]
     ;g=git
 	st = status
-    gs = git status ;无效 unused
+    gs = git status ;无效 unavailable
 	ci = commit -s
 	cl = config --list
 	co = checkout

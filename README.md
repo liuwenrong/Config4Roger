@@ -16,7 +16,11 @@
 2. vim add Plugin Auto-Pairs & FuzzyFinder
 }
 
-#1709{
+#170902{
 1. fix zsh slow --> z.zsh is slow 1~2s --> autojump
 
+}
+#170907{
+1. modify ideavimrc & vimrc
+2. 修改了mintty编码,显示不乱码了
 }

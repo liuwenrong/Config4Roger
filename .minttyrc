@@ -1,7 +1,7 @@
 /*BoldAsFont=-1*/
 FontHeight=11
-Locale=zh_CN
-Language=@
+Locale=
+Language=*
 BoldAsFont=no
 Transparency=high
 /*Font 空格相连 vimrc中是下划线*/
@@ -10,7 +10,7 @@ FontIsBold=no
 FontSmoothing=default
 AllowBlinking=no
 BoldAsColour=yes
-Charset=UTF-8
+Charset=
 OpaqueWhenFocused=yes
 /*CursorType=block*/
 CursorType=vertical

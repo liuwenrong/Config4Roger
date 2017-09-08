@@ -223,9 +223,11 @@ source $ZSH/oh-my-zsh.sh #猜测会清空之前加载的插件
         alias vi='vim'
         alias javac="javac -J-Dfile.encoding=utf8"
         alias grep="grep --color=auto"
+        alias man="help2man"
         alias -s html=mate   # 在命令行直接输入后缀为 html 的文件名，会在 TextMate 中打开
         alias -s rb=mate     # 在命令行直接输入 ruby 文件，会在 TextMate 中打开
-        alias -s py=vi       # 在命令行直接输入 python 文件，会用 vim 中打开，以下类似
+        #alias -s py=vi       # 在命令行直接输入 python 文件，会用 vim 中打开，以下类似
+        #alias -s py=python2       # 在命令行直接输入 python 文件，会用 python2 中打开，以下类似
         alias -s js=vi
         alias -s c=vi
         alias -s java=vi
@@ -261,6 +263,7 @@ source $ZSH/oh-my-zsh.sh #猜测会清空之前加载的插件
     #}
     #
     # Script {
+        alias pyLog='python2 $pySrc/moveLogApk.py'
         alias ins='python2 $pySrc/ins.py'
         export bl=/d/Android/0workSpacesAS/coolyotaY3/APP_BLauncher_170627/LauncherInk
         alias insdebug='cd $bl'

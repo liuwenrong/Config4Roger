@@ -29,14 +29,14 @@
         hi CursorColumn cterm=NONE ctermbg=darkred ctermfg=white guibg=darkred guifg=white
     "}
     "
-    "光标类型{{{
+    "光标类型 Unavailable{{{
         "普通模式下用块状光标，在插入模式下用条状光标（形状类似英文 "I" 的样子），然后在替换模式中使用下划线形状的光标"
           "let &t_SI = "\<Esc>]50;CursorShape=1\x7"
           "let &t_EI = "\<Esc>]50;CursorShape=0\x7"
           "let &t_SR = "\<Esc>]50;CursorShape=2\x7"
-            let &t_EI = "\<Esc>]12;yellow\x7"
-            let &t_SI = "\<Esc>]12;blue\x7"
-            let &t_SR = "\<Esc>]12;red\x7"
+            "let &t_EI = "\<Esc>]12;yellow\x7"
+            "let &t_SI = "\<Esc>]12;blue\x7"
+            "let &t_SR = "\<Esc>]12;red\x7"
      "}}}
      "
     "KeyMap Leader 键盘命令注:注释不能在语句之后{{{
@@ -62,7 +62,7 @@
                 cnoremap <c-p> <up>
              "}}}
 
-            "光标移动{{{
+            "Cursor 光标移动{{{
                 map <CR> gg
                 imap <C-h> <Left>
                 imap <C-j> <Down>
@@ -93,20 +93,39 @@
                 "map <A-e> :browse tabnew<CR>
              "}}}
 
-             "复制相关{{{
-                "在插入模式中使用Ctrl+v粘贴全局剪贴板内容
-                "inoremap <C-v> <esc>l:set paste<cr>mui<C-R>+<esc>mv'uV'v=:set nopaste<cr>
-                "vmap <C-v> "-d"+p
-                "imap <C-v> <S-insert>
-                "map <C-v> "+p
+     "Copy & Yank & Paste & Put{{{
+        if has('clipboard')
+            if has('unnamedplus')  " When possible use + register for copy-paste
+                set clipboard=unnamed,unnamedplus
+            else         " On mac and Windows, use * register for copy-paste
+                "set clipboard=unnamed
+                set clipboard=unnamed,unnamedplus
+            endif
+        endif
+        nnoremap Y y$
+        "自动跳转到文本的最后"     "使用pppp进行多行多次粘贴操作"
+        vnoremap <silent> y y`]
+        vnoremap <silent> p p`]
+        nnoremap <silent> p p`]
 
-                "在Visual模式中使用Ctrl+c复制内容到全局剪贴板
-                vnoremap <C-c> "+y
-                map <C-y> "+y
+        "在Visual模式中使用Ctrl+c复制内容到全局剪贴板
+        vnoremap <C-c> "+y
+        map <C-y> "+y
 
-                "在Visual模式中使用Ctrl+x剪切内容到全局剪贴板
-                vnoremap <C-x> "+x
-              "}}}
+        "在Visual模式中使用Ctrl+x剪切内容到全局剪贴板
+        vnoremap <C-x> "+x
+        "在全模式中使用Shift+Insert粘贴全局剪贴板内容,选择模式先替换后粘贴
+        "inoremap <C-v> <esc>:set paste<cr>mui<C-R>+<esc>mv'uV'v=:set nopaste<cr>
+        vmap <S-Insert> "vdh"+p
+        nmap <S-Insert> "+p
+        inoremap <S-Insert> <C-r>+
+        cnoremap <S-Insert> <C-r>+
+        "在插入模式中使用Ctrl+v粘贴全局剪贴板内容
+        "inoremap <C-v> <esc>l:set paste<cr>mui<C-R>+<esc>mv'uV'v=:set nopaste<cr>
+        "vmap <C-v> "-d"+p
+        "imap <C-v> <S-insert>
+        "map <C-v> "+p
+      "}}}
 
             "缩写{{{
                 iab xdate =strftime("%Y-%m-%y")

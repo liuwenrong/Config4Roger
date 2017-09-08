@@ -220,6 +220,15 @@
 
     "}
     "
+    "trancelate 翻译插件dict{
+        Plugin 'iamcco/dict.vim'
+        let g:api_key = "1932136763"
+        let g:keyfrom = "aioiyuuko"
+        "--普通模式 & 可视化模式下，<Leader>d 即可翻译选中的文本，并在命令行回显
+        nmap <silent> <Leader>d <Plug>DictSearch
+        vmap <silent> <Leader>d <Plug>DictVSearch
+    "}
+    "
     "ConqueTerm {
         "set rtp+=$VIM/bundle/conque      "open Terminal Unavailable
         "let g:ConqueTerm_TERM ='xterm'

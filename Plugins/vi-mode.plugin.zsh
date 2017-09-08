@@ -57,7 +57,7 @@ bindkey "^r" redo
 # allow ctrl-a and ctrl-e to move to beginning/end of line
 bindkey '^[OH' beginning-of-line #Key Home" mintty
 bindkey '^[OF' end-of-line #Key End"
-bindkey '^[[1~' beginning-of-line #Key Home" ConEmu-cmd
+bindkey '^[[1~' beginning-of-line #Key Home" ConEmu-cmd AS-Terminal
 bindkey '^[[4~' end-of-line #Key End"
 #bindkey '^a' beginning-of-line
 #bindkey '^e' end-of-line
@@ -65,8 +65,10 @@ bindkey '^[[4~' end-of-line #Key End"
 # move char or word
 #bindkey "^[[C" forward-char
 #bindkey "^[[D" backward-char
-bindkey "^[[1;5C" forward-word  #Key Ctrl-Right
+bindkey "^[[1;5C" forward-word  #Key Ctrl-Right Mintty
 bindkey "^[[1;5D" backward-word
+bindkey "^[[5C" forward-word  #Key Ctrl-Right AS-Terminal
+bindkey "^[[5D" backward-word
 
 export KEYTIMEOUT=1 # default 0.4 second delay after you hit <Esc> key --> 0.1s
 
