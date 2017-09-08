@@ -118,13 +118,16 @@ sync_repo() {
 }
 
 create_symlinks() {
-    local source_path="$1"
-    local target_path="$2"
+    local source_path="$1"  #源文件
+    local target_path="$2"  #目标快捷方式
 
+    ln -s "$source_path/.profile"         "$target_path/.profile"
     lnif "$source_path/.gitconfig"         "$target_path/.gitconfig"
     lnif "$source_path/.bash_aliases"         "$target_path/.bash_aliases"
     lnif "$source_path/.bashrc"         "$target_path/.bashrc"
-    lnif "$source_path/.vimrc"         "$target_path/.vimrc"
+    lnif "$source_path/.bash_profile"         "$target_path/.bash_profile"
+    lnif "$source_path/.zshrc"         "$target_path/.zshrc"
+    lnif "$source_path/.vimrc.linux"         "$target_path/.vimrc"
     lnif "$source_path/.vimrc.bundles" "$target_path/.vimrc.bundles"
     lnif "$source_path/.vimrc.before"  "$target_path/.vimrc.before"
     #lnif "$source_path/.vim"           "$target_path/.vim"
@@ -184,9 +187,9 @@ variable_set "$HOME"
 program_must_exist "vim"
 program_must_exist "git"
 
-do_backup       "$HOME/.vim" \
-                "$HOME/.vimrc" \
-                "$HOME/.gvimrc"
+#do_backup       "$HOME/.vim" \
+                #"$HOME/.vimrc" \
+                #"$HOME/.gvimrc"
 
 #sync_repo       "$APP_PATH" \
                 #"$REPO_URI" \

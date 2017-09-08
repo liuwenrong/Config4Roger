@@ -24,3 +24,6 @@
 1. modify ideavimrc & vimrc
 2. 修改了mintty编码,显示不乱码了
 }
+#170908{
+1. add vimrc.linux & add AS Config & add .profile
+}

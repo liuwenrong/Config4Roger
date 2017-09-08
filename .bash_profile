@@ -2,3 +2,4 @@
 test -f ~/.profile && . ~/.profile
 test -f ~/.bashrc && . ~/.bashrc
 #exportPATH="$PATH:/usr/local/bin"
+exec ~/bin/zsh -l
