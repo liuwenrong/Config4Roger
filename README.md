@@ -27,3 +27,7 @@
 #170908{
 1. add vimrc.linux & add AS Config & add .profile
 }
+#170909 {
+1. Linux: modify zshrc 
+2. 区分Linux和Win的zHome路径
+}

@@ -7,6 +7,11 @@
 
     # Path to your oh-my-zsh installation.
     export ZSH=$HOME/.oh-my-zsh
+    if [[ $HOME == /home/users/liuwenrong ]] {
+        export zHome=$HOME
+    } else {
+        export zHome=Z:
+    }
     #export GIT=/e/0SoftInstall/Git/bin
     export ADB=/c/adb
     export java=/d/Java/jdk1.8.0_112/bin
@@ -201,7 +206,6 @@ source $ZSH/oh-my-zsh.sh #猜测会清空之前加载的插件
         alias b='cd ..'
         alias h='cd ~'
         alias config='cd ~/.Config4Roger'
-        export zHome=Z:
         alias zconfig='cd $zHome/.Config4Roger'
         alias zs='cd $zHome/zs_1.0'
         alias base='cd $zHome/zs_1.0/frameworks/base'
@@ -232,6 +236,7 @@ source $ZSH/oh-my-zsh.sh #猜测会清空之前加载的插件
         alias -s c=vi
         alias -s java=vi
         alias -s txt=vi
+        alias -s xz="xz -d"
         alias -s gz='tar -xzvf'
         alias -s tgz='tar -xzvf'
         alias -s zip='unzip'
