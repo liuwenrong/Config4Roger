@@ -16,5 +16,10 @@ if [ -n "$BASH_VERSION" ]; then
     fi
 fi
 
-# set PATH so it includes user's private bin directories
-PATH="$HOME/bin:$HOME/usr/bin:$HOME/.local/bin:$PATH"
+ #set PATH so it includes user's private bin directories
+export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+export JRE_HOME=$JAVA_HOME/jre
+export CLASSPATH=$CLASSPATH:.:$JAVA_HOME/lib:$JAVA_HOME/jre/lib
+#export ANDROID_JACK_VM_ARGS="-Dfile.encoding=UTF-8 -XX:+TieredCompilation -Xmx4g"
+#echo "ANDROID_JACK_VM_ARGS=$ANDROID_JACK_VM_ARGS"
+PATH="$JRE_HOME/bin:$HOME/bin:$HOME/usr/bin:$HOME/.local/bin:$PATH"

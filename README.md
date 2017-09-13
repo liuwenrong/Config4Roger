@@ -35,3 +35,7 @@
 1. Win: modify-RogerEasy,zshrc add superman --> man --> --hlep | less
 2. 修改了zshTheme-RogerEasy 提示符PROMPT显示全路径改成只显示当前目录,加入了Gvim的alias
 }
+#170913 {
+1. Linux: add vimrc.linux Plugins
+2. Linux 加了一些vim插件和配置了profile文件
+}

@@ -2,6 +2,206 @@
 " vim: set sw=4 ts=4 sts=4 et tw=78 foldmarker={,} foldlevel=0 foldmethod=marker spell:
 " }
 
+" Environment {
+    set foldmarker={,}
+    set foldlevel=0 
+    set foldmethod=marker
+    set fdm=marker      "文件折叠模式 输入zf%创建折叠"
+
+    " Leader & localLeader {
+        let mapleader = ' '
+        "let mapleader="\<Space>"
+        let maplocalleader = '\'
+"}
+"
 "Normal {
 	set nu
 "}
+"
+"Formatting {
+
+    set shiftwidth=4                " Use indents of 4 spaces
+    set expandtab                   " Tabs are spaces, not tabs
+    set tabstop=4                   " An indentation every four columns
+    set softtabstop=4               " Let backspace delete indent
+
+"}
+"
+    "Edit {
+        set autowrite   " Automatically write a file when leaving a modified buffer
+        set autoread
+        set nobackup    "禁止生成临时文件
+        set noswapfile
+        set shortmess+=filmnrxoOtT          " Abbrev. of messages (avoids 'hit enter')
+        set viewoptions=folds,options,cursor,unix,slash " Better Unix / Windows compatibility
+        set virtualedit=onemore             " Allow for cursor beyond last character
+        set history=1000                    " Store a ton of history (default is 20)
+        set spell                           " Spell checking on
+        set hidden                          " Allow buffer switching without saving
+        set iskeyword-=.                    " '.' is an end of word designator
+        set iskeyword-=#                    " '#' is an end of word designator
+        set iskeyword-=-                    " '-' is an end of word designator
+
+    "}
+    set mouse=a                 " Automatically enable mouse usage
+    set mousehide               " Hide the mouse cursor while typing
+
+    "UI {
+    " 
+        "Cursor Style 光标样式{
+            "普通模式下用块状光标，在插入模式下用条状光标（形状类似英文 "I" 的样子），然后在替换模式中使用下划线形状的光标"
+            if !empty($TERM)
+                "let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+                "let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+                "let &t_SR = "\<Esc>]50;CursorShape=2\x7"
+                "let &t_EI = "\<Esc>]12;yellow\x7"
+                "let &t_SI = "\<Esc>]12;blue\x7"
+                "let &t_SR = "\<Esc>]12;red\x7"
+            endif
+
+            if &term =~ "xterm\\|rxvt\\|xterm-256color"
+                 "silent !echo -ne "\033]12;green\007"
+                 "let &t_SI = "\033]12;gray\007"
+                 "let &t_SI = "\033]12;blue\007"
+                 "let &t_EI = "\033]12;green\007"
+                 "let &t_SR = "\033]12;red\007"
+                 "autocmd VimLeave * :!echo -ne "\033]12;green\007"
+            endif
+    "}
+    " }
+
+    "KeyMap {
+
+    " Write & Quite {
+        "保存文件"       "退出文件 但不强制退出"
+        noremap <localLeader>w :w<CR>
+        noremap! <localLeader>w <Esc>:w<CR>
+        noremap <localLeader>q :q<CR>
+    "}
+    "
+    " Copy & Put & Yank {
+        if has('clipboard')
+            if has('unnamedplus')  " When possible use + register for copy-paste
+                set clipboard=unnamed,unnamedplus
+            else         " On mac and Windows, use * register for copy-paste
+                "set clipboard=unnamed
+                set clipboard=unnamed,unnamedplus
+            endif
+        endif
+
+        " Yank from the cursor to the end of the line, to be consistent with C and D."Y复制到行尾
+        nnoremap Y y$
+        "自动跳转到文本的最后"     "使用pppp进行多行多次粘贴操作"
+        vnoremap <silent> y y`]
+        vnoremap <silent> p p`]
+        nnoremap <silent> p p`]
+    " }
+    "
+    " Cursor 跳转 {
+        map <CR> gg
+    " }
+    "
+    " Tab {
+    ""新建一个标签
+        map <A-t> :tabnew<CR>
+        map! <A-T> <Esc>:tabnew<CR>
+        noremap <Leader>h gT
+        noremap <Leader>l gt
+        map <A-e> :browse tabnew<CR>
+        map <A-c> :tabc<CR>
+
+        map <silent><A-h> :tabprev<CR>
+        map! <silent><A-h> <ESC>:tabprev<CR>
+        map <A-l> gt
+        map! <A-l> <Esc>gt
+    " }
+    "
+    "}
+    "
+    "}
+    "
+    "Plugins {
+
+        " Setup Bundle Support {
+           "The next three lines ensure that the ~/.vim/bundle/ system works
+           filetype off
+           set rtp+=~/.vim/bundle/vundle
+           call vundle#rc()
+        " }
+        "
+        Bundle 'gmarik/vundle'
+        filetype plugin indent on   " Automatically detect file types.
+        syntax on
+
+    "Theme Solarized & molokai F7 切换背景 {
+        " 主题 solarized
+        Bundle 'altercation/vim-colors-solarized'
+        "let g:solarized_termcolors=256
+        "注释后term中才能生效
+        "let g:solarized_termtrans=1
+        let g:solarized_contrast="normal"
+        let g:solarized_visibility="normal"
+        " 主题 molokai
+        "Bundle 'tomasr/molokai'
+        "let g:molokai_original = 1
+        " 配色方案
+        "set background=dark
+        "set t_Co=256
+            colorscheme solarized
+        call togglebg#map("<F7>")   "switch black or light 黑色和护眼色切换"
+    "}
+    "
+        "Comments 快速注释{
+            Plugin 'vim-scripts/The-NERD-Commenter'
+            set rtp+=$VIM/bundle/The-NERD-Commenter     "快速注释 <leader>c<SPACE> 运行 <leader>cc 注释， <leader>cu 反注释
+            nmap <Leader>/ <plug>NERDCommenterToggle
+            vmap <Leader>/ <plug>NERDCommenterToggle
+            "imap <Leader>/ <Esc><plug>NERDCommenterToggle
+            nmap <C-t> <plug>NERDCommenterToggle
+            vmap <C-t> <plug>NERDCommenterToggle
+            imap <C-t> <Esc><plug>NERDCommenterToggle
+        "}
+        
+    "Auto-Pairs 自动补全括号 {
+        Bundle 'vim-scripts/Auto-Pairs'
+    "}
+    "
+    "airLine {
+        "Bundle 'vim-airline/vim-airline'
+        "Bundle 'vim-airline/vim-airline-themes'
+        " airline 就是状态栏的箭头
+        "let g:airline_theme="dark"
+        "let g:airline_powerline_fonts = 1
+        "let g:airline#extensions#tabline#enabled = 1
+        "let g:airline#extensions#tabline#buffer_nr_show = 1    "tab show buf
+    "}
+    "
+    "EasyMotion Config {
+        Bundle 'easymotion/vim-easymotion'
+        "set rtp+=$VIM/bundle/vim-easymotion     "easymotion 快速定位跳转"
+        "快速查找单词之后的word"没有bd就是之后,有bd就是前后的单词           
+        " <Leader>f{char} to move to {char}
+        "map  <Leader>f <Plug>(easymotion-bd-f)
+        nmap <C-b> <Plug>(easymotion-overwin-f)
+        nmap <Leader>; <Plug>(easymotion-overwin-f)
+        "nmap <Leader>f <Plug>(easymotion-overwin-f)
+        nmap <Leader>w <Plug>(easymotion-overwin-w)
+        nmap <C-w> <Plug>(easymotion-overwin-w)
+
+        "s{char}{char} to move to {char}{char}
+        "nmap <Leader>f <Plug>(easymotion-overwin-f2)
+
+        " Move to line
+        nmap <Leader><leader>h <Plug>(easymotion-linebackward)
+        nmap <Leader><leader>l <Plug>(easymotion-lineforward)
+        "map <Leader>L <Plug>(easymotion-bd-jk)
+        "nmap <Leader>L <Plug>(easymotion-overwin-line)
+        "map <Leader><Leader>j <Plug>(easymotion-j)
+        "map <Leader><Leader>k <Plug>(easymotion-k)
+
+        " Move to word
+        "map  <Leader>s <Plug>(easymotion-bd-w)
+        "nmap <Leader>s <Plug>(easymotion-overwin-w)
+    "}
+        
+    "}
