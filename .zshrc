@@ -187,6 +187,7 @@ source $ZSH/oh-my-zsh.sh #猜测会清空之前加载的插件
         alias asdatop='adb shell dumpsys activity | grep top-activity'
         alias asafs='adb shell am force-stop com.android.jv.ink.launcherink'
         alias asrp='adb shell reboot -p' #关机
+        alias ass='adb start-server'
 
         alias foe='fastboot oem edl'
 
@@ -225,9 +226,10 @@ source $ZSH/oh-my-zsh.sh #猜测会清空之前加载的插件
         alias ll='ls -l'
         alias la='ls -a'
         alias vi='vim'
+        alias gv='$HOME/.vim/gvim.exe -p --remote-tab-silent'
         alias javac="javac -J-Dfile.encoding=utf8"
+        alias man='superman'
         alias grep="grep --color=auto"
-        alias man="help2man"
         alias -s html=mate   # 在命令行直接输入后缀为 html 的文件名，会在 TextMate 中打开
         alias -s rb=mate     # 在命令行直接输入 ruby 文件，会在 TextMate 中打开
         #alias -s py=vi       # 在命令行直接输入 python 文件，会用 vim 中打开，以下类似
@@ -277,4 +279,16 @@ source $ZSH/oh-my-zsh.sh #猜测会清空之前加载的插件
     # }
 
 alias o='explorer .'
+#}
+#
+#function {
+# 
+#man --help | less {
+#
+function superman (){
+    "$1" --help | less
+}
+#
+#}
+#
 #}

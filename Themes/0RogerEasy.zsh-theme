@@ -188,7 +188,8 @@ prompt_hg() {
 
 # Dir: current working directory
 prompt_dir() {
-  prompt_segment blue black '%~'
+  prompt_segment blue black '%c' #dir 当前路径
+  #prompt_segment blue black '%~' #dir 完整路径
 }
 
 # Virtualenv: current working virtualenv
@@ -233,5 +234,8 @@ build_prompt() {
   prompt_end
 }
 
+
+local ret_status="%(?:%{$fg_bold[green]%}➜ :%{$fg_bold[red]%}➜ )"
+
 #PROMPT='%~>'
-PROMPT='%{%f%b%k%}$(build_prompt)'
+PROMPT='${ret_status} %{%f%b%k%}$(build_prompt)'

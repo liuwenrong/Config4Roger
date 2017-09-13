@@ -31,3 +31,7 @@
 1. Linux: modify zshrc 
 2. 区分Linux和Win的zHome路径
 }
+#170911 {
+1. Win: modify-RogerEasy,zshrc add superman --> man --> --hlep | less
+2. 修改了zshTheme-RogerEasy 提示符PROMPT显示全路径改成只显示当前目录,加入了Gvim的alias
+}

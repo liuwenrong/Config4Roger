@@ -73,8 +73,9 @@
     "Theme Solarized & molokai F7 切换背景 {
         " 主题 solarized
         Bundle 'altercation/vim-colors-solarized'
-        let g:solarized_termcolors=256
-        let g:solarized_termtrans=1
+        "let g:solarized_termcolors=256
+        "注释 会使term中显示正常
+        "let g:solarized_termtrans=1
         let g:solarized_contrast="normal"
         let g:solarized_visibility="normal"
         " 主题 molokai
@@ -82,7 +83,7 @@
         "let g:molokai_original = 1
         " 配色方案
         "set background=dark
-        set t_Co=256
+        "set t_Co=256
             colorscheme solarized
         call togglebg#map("<F7>")   "switch black or light 黑色和护眼色切换"
         "if has('gui')
@@ -103,8 +104,6 @@
     "
     "}
     "
-    "
-    "
     "Auto-Pairs 自动补全括号 {
         Bundle 'vim-scripts/Auto-Pairs'
     "}
@@ -117,7 +116,7 @@
         let g:airline_theme="dark"
         let g:airline_powerline_fonts = 1
         let g:airline#extensions#tabline#enabled = 1
-        let g:airline#extensions#tabline#buffer_nr_show = 1
+        "let g:airline#extensions#tabline#buffer_nr_show = 1    "tab show buf
     "}
     "
     "FuzzyFinder 杀手级模糊搜索 Require L9{
