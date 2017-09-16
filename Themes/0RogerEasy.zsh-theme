@@ -188,7 +188,7 @@ prompt_hg() {
 
 # Dir: current working directory
 prompt_dir() {
-  prompt_segment blue black '%c' #dir 当前路径
+  prompt_segment green black '%c' #dir 当前路径
   #prompt_segment blue black '%~' #dir 完整路径
 }
 

@@ -5,17 +5,14 @@
 4. zshrc加了cd-alias 
 5. reg 加了注册表,右键打开mintty-zsh
 }
-
 #170831{
 1. modify ahk 统一 Comment & AceJump & EasyMotion KeyMap
 2. 自定义主题和Vim-mode样式
 }
-
 #170901 {
 1. ahk 新增vim ReadMe.md & vim lwrHotKey快捷键 
 2. vim add Plugin Auto-Pairs & FuzzyFinder
 }
-
 #170902{
 1. fix zsh slow --> z.zsh is slow 1~2s --> autojump
 
@@ -38,4 +35,7 @@
 #170913 {
 1. Linux: add vimrc.linux Plugins
 2. Linux 加了一些vim插件和配置了profile文件
+}
+#170916 {
+1. 配置zsh-Theme-RogerEasy的软链接,blue-->green
 }

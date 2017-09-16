@@ -17,6 +17,7 @@
 ############################  SETUP PARAMETERS
 app_name='Config4Roger'
 [ -z "$APP_PATH" ] && APP_PATH="$HOME/.Config4Roger"
+[ -z "$ZSH" ] && ZSH='$HOME/.oh-my-zsh'
 [ -z "$REPO_URI" ] && REPO_URI='https://github.com/liuwenrong/Config4Roger'
 [ -z "$REPO_BRANCH" ] && REPO_BRANCH='master'
 debug_mode='0'
@@ -121,6 +122,7 @@ create_symlinks() {
     local source_path="$1"  #源文件
     local target_path="$2"  #目标快捷方式
 
+    ln -s "$source_path/Themes/0RogerEasy.zsh-theme" "$ZSH/themes/0RogerEasy.zsh-theme"
     ln -s "$source_path/.profile"         "$target_path/.profile"
     lnif "$source_path/.gitconfig"         "$target_path/.gitconfig"
     lnif "$source_path/.bash_aliases"         "$target_path/.bash_aliases"
