@@ -186,6 +186,7 @@ source $ZSH/oh-my-zsh.sh #猜测会清空之前加载的插件
         alias asasl='adb shell am stack list'
         alias asdatop='adb shell dumpsys activity | grep top-activity'
         alias asafs='adb shell am force-stop com.android.jv.ink.launcherink'
+        alias asik='adb shell input keyevent'
         alias asrp='adb shell reboot -p' #关机
         alias ass='adb start-server'
 
@@ -210,6 +211,7 @@ source $ZSH/oh-my-zsh.sh #猜测会清空之前加载的插件
         alias zconfig='cd $zHome/.Config4Roger'
         alias zs='cd $zHome/zs_1.0'
         alias base='cd $zHome/zs_1.0/frameworks/base'
+        alias data='cd $zHome/zs_1.0/vendor/coolyota/frameworks/DataStatistics'
         alias sui='cd $zHome/zs_1.0/frameworks/base/packages/SystemUI'
         alias common='cd $zHome/zs_1.0/device/zeusis/common'
         alias 3app='cd $zHome/zs_1.0/vendor/coolyota/ThridApp'
@@ -217,6 +219,7 @@ source $ZSH/oh-my-zsh.sh #猜测会清空之前加载的插件
         alias log='cd $zHome/zs_1.0/vendor/coolyota/app/CY_Log_Reporter'
         alias theme='cd $zHome/zs_1.0/vendor/zeusis/app/ZsThemeManager'
         alias mart='cd $zHome/zs_1.0/vendor/zeusis/prebuilt/coolmart'
+        alias out='cd $zHome/zs_1.0/out/target/product/Y3'
         alias priv='cd $zHome/zs_1.0/out/target/product/Y3/system/priv-app'
         alias sett='cd $zHome/zs_1.0/packages/apps/Settings'
     #}
@@ -247,7 +250,8 @@ source $ZSH/oh-my-zsh.sh #猜测会清空之前加载的插件
         alias szsh="source ~/.zshrc"
     #}
 
-    # Git alias {
+    #Git alias {
+        alias git='LANG=en_GB git'  #能将提示的中文改成英文
         alias gst='git status'
         alias st='status'
         alias ga='git add .'

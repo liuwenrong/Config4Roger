@@ -125,7 +125,14 @@ return
 ;需要 其他加注释的软件把注释快捷键改成Ctrl+t 和Ctrl+Shift+t
 >!/::Send, ^t
 +>!/::Send, ^+t
-CapsLock & /::Send, ^t
+CapsLock & /::
+if GetKeyState("alt") = 0
+{
+    Send, ^t
+} else {
+    Send, ^+t
+}
+return
 
 ;Ace Jump & EasyMotion Ctrl+b 查字符 Ctrl+w 查单词 按行
 >!;::Send, ^b
