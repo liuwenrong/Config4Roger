@@ -12,6 +12,7 @@
     } else {
         export zHome=Z:
     }
+    export srcPath=$zHome/zs_1.0
     #export GIT=/e/0SoftInstall/Git/bin
     export ADB=/c/adb
     export java=/d/Java/jdk1.8.0_112/bin
@@ -212,8 +213,8 @@ source $ZSH/oh-my-zsh.sh #猜测会清空之前加载的插件
         alias config='cd ~/.Config4Roger'
         alias zconfig='cd $zHome/.Config4Roger'
         #alias zs='cd $zHome/zs_1.0'
-        alias zs='export srcPath=$zHome/zs_1.0'
-        alias y4='export srcPath=$zHome/Y4'
+        #alias zs='export srcPath=$zHome/zs_1.0'
+        #alias y4='export srcPath=$zHome/Y4'
         alias sp='cd $srcPath'
         alias base='cd $srcPath/frameworks/base'
         alias bl='cd $srcPath/vendor/coolyota/app/CY_BLauncher'
@@ -304,6 +305,12 @@ alias o='explorer .'
 #
 function superman (){
     "$1" --help | less
+}
+function zs (){
+     export srcPath=$zHome/zs_1.0 && cd $srcPath
+}
+function y4 (){
+     export srcPath=$zHome/Y4 && cd $srcPath
 }
 #
 #}
