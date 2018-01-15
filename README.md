@@ -1,5 +1,15 @@
 # Config4Roger
 
+## 180115 {
+    1. 增加了一些alias,增加了y4
+##  }
+
+## 170916 - 171012{
+    1. 配置zsh-Theme-RogerEasy的软链接,blue-->green
+    2. git config prompt CN --> EN
+    3. alias cd out目录 dataStatistics目录
+## }
+
 ## 170828{
     1. modify ahk mintty's cursor & zshrc
     2. ahk 加了一些快捷键, 删除,Home,End
@@ -7,7 +17,7 @@
     4. zshrc加了cd-alias 
     5. reg 加了注册表,右键打开mintty-zsh
 
-}
+##}
 
 ## 170831{
     1. modify ahk 统一 Comment & AceJump & EasyMotion KeyMap
@@ -43,12 +53,6 @@
 ## 170913 {
     1. Linux: add vimrc.linux Plugins
     2. Linux 加了一些vim插件和配置了profile文件
-## }
-## 170916 - 171012{
-    1. 配置zsh-Theme-RogerEasy的软链接,blue-->green
-    2. git config prompt CN --> EN
-    3. alias cd out目录 dataStatistics目录
-
 ## }
 
 

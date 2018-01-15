@@ -3,10 +3,10 @@
 " }
 "
 " Environment {
-    set foldmarker={,}
+    "set foldmarker={,}
     set foldlevel=0 
     set foldmethod=marker
-    set fdm=marker      "文件折叠模式 输入zf%创建折叠"
+    "set fdm=marker      "文件折叠模式 输入zf%创建折叠"
 
     " Leader & localLeader {
         let mapleader = ' '
@@ -209,7 +209,7 @@
         syntax on                   " Syntax highlighting
     else
         filetype plugin indent on   " Automatically detect file types.
-        winpos 0 0
+        "winpos 0 0
         set lines=42 columns=99    "set win Size
         syntax on                   " Syntax highlighting
         ""Allow to trigger background
