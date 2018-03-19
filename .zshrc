@@ -309,8 +309,8 @@ function superman (){
 function zs (){
      export srcPath=$zHome/zs_1.0 && cd $srcPath
 }
-function y4 (){
-     export srcPath=$zHome/Y4 && cd $srcPath
+function t6 (){
+     export srcPath=$zHome/0T6 && cd $srcPath
 }
 #
 #}

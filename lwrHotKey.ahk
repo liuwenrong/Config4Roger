@@ -80,17 +80,14 @@ return
 ;}
 
 #s::
-;!s::打开SecureCRT {
-SecureCRTPortable=E:\0Soft\1705\securcrt.pc141.com\SecureCRSecureFXPortable64\SecureCRTPortable.exe
-Run, %SecureCRTPortable%
-;clipboard = 试试
-;Send, ^v
-;Send, jyl19558+5
-;Send, {+5}
-;send, {shift}5
-;MsgBox 按下Win+s显示此消息
+; 搜狗搜索 {
+Run, E:\0SoftInstall\QQBrowser\QQBrowser.exe https://www.sogou.com
 return
-;}
+
+;#s::
+;SecureCRTPortable=E:\0Soft\1705\securcrt.pc141.com\SecureCRSecureFXPortable64\SecureCRTPortable.exe
+;Run, %SecureCRTPortable%
+;return
 
 #v::
 ;win+v 用vim打开_vimrc文件 {
