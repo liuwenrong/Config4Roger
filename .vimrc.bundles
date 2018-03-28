@@ -180,7 +180,7 @@
 
     "Config python-mode{
             if has('gui_running')
-                set rtp+=$VIM/bundle/python-mode      "强大的python编辑器"
+                "set rtp+=$VIM/bundle/python-mode      "强大的python编辑器"
                 let g:pymod = 1 "Turn on the whole plugin"
                 let g:pymode_warnings = 1   "When =1, Turn off plugin's warnigs"
                 let g:pymod_paths = []      "add paths to sys.path"
@@ -213,6 +213,7 @@
                 let g:pymode_syntax_indent_errors = g:pymode_syntax_all
                 "高亮空格错误
                 let g:pymode_syntax_space_errors = g:pymode_syntax_all
+                let g:pydiction_location = '~/.vim/bundle/pydiction/complete-dict'
             else
                 syntax off
             endif

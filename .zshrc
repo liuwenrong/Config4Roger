@@ -226,6 +226,8 @@ source $ZSH/oh-my-zsh.sh #猜测会清空之前加载的插件
         alias Y3='cd $srcPath/device/zeusis/Y3'
         alias log='cd $srcPath/vendor/coolyota/app/CY_Log_Reporter'
         alias theme='cd $srcPath/vendor/zeusis/app/ZsThemeManager'
+        alias ci='cd $srcPath/vendor/zeusis/app/Cloneit'
+        alias cm='cd $srcPath/vendor/zeusis/app/ZsCamera'
         alias dl='cd $srcPath/vendor/zeusis/app/Dialer'
         alias ts='cd $srcPath/vendor/zeusis/app/TeleService'
         alias tc='cd $srcPath/vendor/zeusis/app/Telecomm'
