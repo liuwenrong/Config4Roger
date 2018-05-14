@@ -15,7 +15,8 @@ if [ -n "$BASH_VERSION" ]; then
 	. "$HOME/.bashrc"
     fi
 fi
-
+# 解决git log中文乱码的问题
+export LESSCHARSET=utf-8
  #set PATH so it includes user's private bin directories
 export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 export JRE_HOME=$JAVA_HOME/jre

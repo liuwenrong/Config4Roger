@@ -12,8 +12,9 @@
     } else {
         export zHome=Z:
     }
-    export srcPath=$zHome/zs_1.0
-    #export GIT=/e/0SoftInstall/Git/bin
+    export srcPath=$zHome/0YT
+    export target=YT
+#export GIT=/e/0SoftInstall/Git/bin
     export ADB=/c/adb
     export java=/d/Java/jdk1.8.0_112/bin
     export gradle=/d/Android/Android_Studio/gradle/gradle-2.14.1/bin
@@ -219,24 +220,28 @@ source $ZSH/oh-my-zsh.sh #猜测会清空之前加载的插件
         alias base='cd $srcPath/frameworks/base'
         alias bl='cd $srcPath/vendor/coolyota/app/CY_BLauncher'
         alias data='cd $srcPath/vendor/coolyota/frameworks/DataStatistics'
+        alias du='cd $srcPath/packages/apps/DocumentsUI'
         alias ft='cd $srcPath/vendor/zeusis/packages/apps/FactoryTest'
         alias sui='cd $srcPath/frameworks/base/packages/SystemUI'
         alias common='cd $srcPath/device/zeusis/common'
         alias 3app='cd $srcPath/vendor/coolyota/ThridApp'
-        alias Y3='cd $srcPath/device/zeusis/Y3'
         alias log='cd $srcPath/vendor/coolyota/app/CY_Log_Reporter'
-        alias theme='cd $srcPath/vendor/zeusis/app/ZsThemeManager'
         alias ci='cd $srcPath/vendor/zeusis/app/Cloneit'
         alias cm='cd $srcPath/vendor/zeusis/app/ZsCamera'
         alias dl='cd $srcPath/vendor/zeusis/app/Dialer'
+        alias ds='cd $srcPath/vendor/zeusis/app/ZsDualSettings'
+        alias dz='cd $srcPath/device/zeusis'
+        alias sett='cd $srcPath/packages/apps/Settings'
+        alias sw='cd $srcPath/vendor/zeusis/app/ZsSetupWizard'
+        alias sc='cd $srcPath/packages/apps/SnapdragonCamera'
+        alias sg='cd $srcPath/packages/apps/SnapdragonGallery'
         alias ts='cd $srcPath/vendor/zeusis/app/TeleService'
         alias tc='cd $srcPath/vendor/zeusis/app/Telecomm'
         alias pp='cd $srcPath/vendor/zeusis/app/PNInfoProvider'
-        alias ds='cd $srcPath/vendor/zeusis/app/ZsDualSettings'
         alias mart='cd $srcPath/vendor/zeusis/prebuilt/coolmart'
-        alias out='cd $srcPath/out/target/product/Y3'
-        alias priv='cd $srcPath/out/target/product/Y3/system/priv-app'
-        alias sett='cd $srcPath/packages/apps/Settings'
+        alias out='cd $srcPath/out/target/product'
+        alias priv='cd $srcPath/out/target/product/$target/system/priv-app'
+        alias theme='cd $srcPath/vendor/zeusis/app/ZsThemeManager'
     #}
     #
     # aliase {
@@ -314,9 +319,17 @@ function superman (){
 }
 function zs (){
      export srcPath=$zHome/zs_1.0 && cd $srcPath
+     export target=Y3
 }
 function t6 (){
      export srcPath=$zHome/0T6 && cd $srcPath
+}
+function y3o () {
+    export srcPath=$zHome/0Y3o && cd $srcPath
+}
+function yt () {
+    export srcPath=$zHome/0YT && cd $srcPath
+    export target=YT
 }
 #
 #}
