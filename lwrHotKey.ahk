@@ -149,8 +149,10 @@ SetCapsLockState , AlwaysOff
 ;Ctrl+Shift+h = Alt <--左箭头
 ^+h::SendInput !{Left}
 ^+l::SendInput !{Right}
+
 CapsLock & h::
 ;if GetKeyState("control") = 0
+CapsLock & s::
 if GetKeyState("alt") = 0
 {
     Send, {Left}
@@ -158,6 +160,9 @@ if GetKeyState("alt") = 0
     Send, ^{Left}
 }
 return
+
+!e::Send, {Up}
+
 CapsLock & k::
 if GetKeyState("alt") = 0
 {
@@ -167,7 +172,10 @@ if GetKeyState("alt") = 0
 }
 return
 
-SendInput {Up}
+;SendInput {Up}
+
+!d::Send, {Down}
+
 CapsLock & j::
 if GetKeyState("alt") = 0
 {
@@ -178,6 +186,7 @@ if GetKeyState("alt") = 0
 return
 
 CapsLock & l::
+CapsLock & f::
 if GetKeyState("alt") = 0
 {
     Send, {Right}
@@ -185,11 +194,68 @@ if GetKeyState("alt") = 0
     Send, ^{Right}
 }
 return
+
+;MouseMove, X, Y [, Speed, R] speed 0(最快)~100  
+;鼠标右移
+!f::
+if GetKeyState("W") = 0
+{
+    MouseMove, 50, 0, 1, r
+} else {
+    MouseMove, 10, 0, 1, r
+}
+return
+
+!s::MouseMove, -50, 0, 1, r
+return
+
+CapsLock & e::
+if GetKeyState("W") = 0
+{
+    MouseMove, 0, -50, 1, r
+} else {
+    MouseMove, 0, -10, 1, r
+}
+return
+
+CapsLock & d::MouseMove, 0, 50, 1, r
+return
+
+!a::Send {LButton}
+
+; 鼠标手势  
+rbutton::      
+  minGap  = 30 ; 设定的识别阈值，大于此阈值，说明在某方向上有移动  
+  mousegetpos xpos1,ypos1  
+  Keywait, RButton, U  
+  mousegetpos xpos2, ypos2  
+  if (abs(xpos1-xpos2) < minGap and abs(ypos1-ypos2)<minGap) ; nothing 没有运动，直接输出rbutton   
+  send, {rbutton}  
+  ;else if (xpos1-xpos2 > minGap and abs(ypos1-ypos2)<minGap) ; left  delete(对于文件或选定的字符有效)  
+   ;send, {delete}  
+  ;else if (xpos2-xpos1 > minGap and abs(ypos1-ypos2)<minGap) ; right ctrl+z 恢复    
+   ;send, ^z  
+  else if (abs(xpos1-xpos2)< minGap and (ypos1-ypos2)>minGap) ; up 最大化窗口， win+up  
+    send, #{up}  
+  else if (abs(xpos1-xpos2)< minGap and (ypos2-ypos1)>minGap) ; down 显示桌面， win+d  
+    send, #d  
+  ;else if (ypos2-ypos1 > minGap and (xpos1-xpos2) > minGap) ; down and left , ctrl+shift+T  
+    ;send, ^+t  
+  ;else if (ypos2-ypos1 > minGap and (xpos2-xpos1) > minGap) ; down and right, ctrl+w  
+    ;send, ^w  
+  ;else if (ypos1-ypos2 > minGap and (xpos2-xpos1) > minGap) ; up and right alt+f4  
+   ;send, !{F4}  
+  ;else if (ypos1-ypos2 > minGap and (xpos1-xpos2) > minGap) ; up and left nothing  
+   ;send, {rbutton}  
+  else    
+    send, {rbutton}  
+  return  
+
 CapsLock & a::SendInput {Home}
 CapsLock & 0::SendInput {Home}
-CapsLock & e::SendInput {End}
+;CapsLock & e::SendInput {End}
 CapsLock & 4::SendInput {End}
-CapsLock & d::SendInput {Delete}
+;CapsLock & d::SendInput {Delete}
 CapsLock & u::SendInput {PgUp}
 CapsLock & p::SendInput {PgDn}
 ;Shift & CapsLock::SendInput, {Shift Down}{Blind}{Esc}{Shift Up}

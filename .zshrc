@@ -266,7 +266,11 @@ source $ZSH/oh-my-zsh.sh #猜测会清空之前加载的插件
     #}
 
     #Git alias {
-        alias git='LANG=en_GB git'  #能将提示的中文改成英文
+    if [[ $TERM == cygwin ]] {
+        echo cygwin -- terminal
+    } else {
+        alias git='LANG=en_GB git'  #能将提示的中文改成英文 #但会导致AS的Terminal执行git log中文乱码
+    }
         alias gst='git status'
         alias st='status'
         alias ga='git add .'
