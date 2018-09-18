@@ -1,4 +1,9 @@
 # Config4Roger
+## 180918 {
+    1. EasyJump & AceJump 修改了字符跳转的快捷键
+    2. AS设置和浏览器书签
+    3. 合并Android.jar的脚本
+## }
 
 ## 180328 {
     1. 阅读翻页的Python脚本

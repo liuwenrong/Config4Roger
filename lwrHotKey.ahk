@@ -131,15 +131,15 @@ if GetKeyState("alt") = 0
 }
 return
 
-;Ace Jump & EasyMotion Ctrl+b 查字符 Ctrl+w 查单词 按行
->!;::Send, ^b
-+>!;::Send, ^w
+;Ace Jump & EasyMotion Ctrl+w 查字符 Ctrl+b 查单词 按行 大小写键+;映射
+;>!;::Send, ^b
+;+>!;::Send, ^w
 CapsLock & `;::
 if GetKeyState("alt") = 0
 {
-    Send, ^b
-} else {
     Send, ^w
+} else {
+    Send, ^b
 }
 return
 
@@ -161,7 +161,7 @@ if GetKeyState("alt") = 0
 }
 return
 
-!e::Send, {Up}
+!w::Send, {Up}
 
 CapsLock & k::
 if GetKeyState("alt") = 0
@@ -174,7 +174,7 @@ return
 
 ;SendInput {Up}
 
-!d::Send, {Down}
+!s::Send, {Down}
 
 CapsLock & j::
 if GetKeyState("alt") = 0
@@ -206,8 +206,8 @@ if GetKeyState("W") = 0
 }
 return
 
-!s::MouseMove, -50, 0, 1, r
-return
+;!s::MouseMove, -50, 0, 1, r
+;return
 
 CapsLock & e::
 if GetKeyState("W") = 0
@@ -221,7 +221,8 @@ return
 CapsLock & d::MouseMove, 0, 50, 1, r
 return
 
-!a::Send {LButton}
+;!a::Send {LButton}
+!a::Send {enter}
 
 ; 鼠标手势  
 rbutton::      

@@ -156,11 +156,11 @@
         "快速查找单词之后的word"没有bd就是之后,有bd就是前后的单词           
         " <Leader>f{char} to move to {char}
         "map  <Leader>f <Plug>(easymotion-bd-f)
-        nmap <C-b> <Plug>(easymotion-overwin-f)
+        nmap <C-w> <Plug>(easymotion-overwin-f)
         nmap <Leader>; <Plug>(easymotion-overwin-f)
         "nmap <Leader>f <Plug>(easymotion-overwin-f)
         nmap <Leader>w <Plug>(easymotion-overwin-w)
-        nmap <C-w> <Plug>(easymotion-overwin-w)
+        nmap <C-b> <Plug>(easymotion-overwin-w)
 
         "s{char}{char} to move to {char}{char}
         "nmap <Leader>f <Plug>(easymotion-overwin-f2)

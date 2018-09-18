@@ -43,7 +43,8 @@ while True:
     if (random.randint(0,1) == 0):
         swipePage()
     else:
-        click()
+        swipePage()
+        #click()
     intervalTime = random.randint(1, 5)
     print 'intervalTime = ' + str(intervalTime)
     time.sleep(intervalTime)
