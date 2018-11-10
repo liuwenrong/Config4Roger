@@ -6,7 +6,8 @@
     # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
     # Path to your oh-my-zsh installation.
-    export ZSH=$HOME/.oh-my-zsh
+    #export ZSH=$HOME/.oh-my-zsh
+	export ZSH=$babunHOME/.oh-my-zsh
     if [[ $HOME == /home/users/liuwenrong ]] {
         export zHome=$HOME
     } else {
@@ -15,7 +16,7 @@
     export srcPath=$zHome/0YT
     export target=YT
 #export GIT=/e/0SoftInstall/Git/bin
-    export ADB=/c/adb
+    #export ADB=$ADB
     export java=/d/Java/jdk1.8.0_112/bin
     export gradle=/d/Android/Android_Studio/gradle/gradle-2.14.1/bin
     export pySrc=/d/pythonSrc
@@ -37,7 +38,7 @@
 #ZSH_THEME="agnoster" #oneLine
 #ZSH_THEME="amuse"   #doubleLine
 #ZSH_THEME="0Roger"
-ZSH_THEME="0RogerEasy"
+#ZSH_THEME="0RogerEasy"
 #ZSH_THEME="0RogerNoGit"
 #ZSH_THEME="avit"
 #ZSH_THEME="random"

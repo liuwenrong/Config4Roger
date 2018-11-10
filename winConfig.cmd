@@ -17,7 +17,7 @@ REM    limitations under the License.
 @if not exist "%HOME%" @set HOME=%USERPROFILE%
 
 @set APP_PATH=%HOME%\.Config4Roger
-@set ZSH=%HOME%\.oh-my-zsh
+@set ZSH=%babunHOME%\.oh-my-zsh
 IF NOT EXIST "%APP_PATH%" (
     call git clone -b 3.0 https://github.com/liuwenrong/Config4Roger.git "%APP_PATH%"
 REM ) ELSE (
