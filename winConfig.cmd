@@ -17,7 +17,10 @@ REM    limitations under the License.
 @if not exist "%HOME%" @set HOME=%USERPROFILE%
 
 @set APP_PATH=%HOME%\.Config4Roger
-@set ZSH=%babunHOME%\.oh-my-zsh
+@set sublimePath=%HOME%\AppData\Roaming\Sublim~1\Packages\User\
+@set sublimePath64=D:\0SoftInstall\sublimetext3\Sublime64\Data\Packages\User\
+@set toPowerShellPath=%HOME%\Documents\WindowsPowerShell\
+@set ZSH=%HOME%\.oh-my-zsh
 IF NOT EXIST "%APP_PATH%" (
     call git clone -b 3.0 https://github.com/liuwenrong/Config4Roger.git "%APP_PATH%"
 REM ) ELSE (
@@ -32,20 +35,26 @@ REM ) ELSE (
 call mklink "%ZSH%\themes\0Roger.zsh-theme" "%APP_PATH%\Themes\0Roger.zsh-theme"
 call mklink "%ZSH%\themes\0RogerEasy.zsh-theme" "%APP_PATH%\Themes\0RogerEasy.zsh-theme"
 call mklink "%ZSH%\themes\0RogerNoGit.zsh-theme" "%APP_PATH%\Themes\0RogerNoGit.zsh-theme"
+call mklink "%HOME%\Desktop\lwrHotKey.ahk" "%APP_PATH%\lwrHotKey.ahk"
 call mklink "%HOME%\.minttyrc" "%APP_PATH%\.minttyrc"
 call mklink "%HOME%\.zshrc" "%APP_PATH%\.zshrc"
 call mklink "%HOME%\.gitconfig" "%APP_PATH%\.gitconfig"
 call mklink "%HOME%\.bash_aliases" "%APP_PATH%\.bash_aliases"
 call mklink "%HOME%\.bashrc" "%APP_PATH%\.bashrc"
+call mklink "%HOME%\.profile" "%APP_PATH%\.profile"
 REM call mklink "%HOME%\.vimrc" "%APP_PATH%\.vimrc"
 call mklink "%HOME%\.ideavimrc" "%APP_PATH%\.ideavimrc"
-call mklink "%HOME%\_vimrc" "%APP_PATH%\.vimrc"
+::call mklink "%HOME%\_vimrc" "%APP_PATH%\.vimrc"
 call mklink "%HOME%\.vimrc.fork" "%APP_PATH%\.vimrc.fork"
 call mklink "%HOME%\.vimrc.bundles" "%APP_PATH%\.vimrc.bundles"
 call mklink "%HOME%\.vimrc.bundles.fork" "%APP_PATH%\.vimrc.bundles.fork"
 call mklink "%HOME%\.vimrc.before" "%APP_PATH%\.vimrc.before"
 call mklink "%HOME%\.vimrc.before.fork" "%APP_PATH%\.vimrc.before.fork"
 REM call mklink /J "%HOME%\.vim" "%APP_PATH%\.vim"
+call mklink "%sublimePath64%Preferences.sublime-settings" "%APP_PATH%\Settings\SubLime\Preferences.sublime-settings"
+call mklink "%sublimePath64%Default (Windows).sublime-keymap" "%APP_PATH%\Settings\SubLime\Default (Windows).sublime-keymap"
+call mklink "%toPowerShellPath%Microsoft.PowerShell_profile.psl" "%APP_PATH%\Settings\PowerShell\Microsoft.PowerShell_profile.psl"
+::call mklink "%sublimePath%Preferences.sublime-settings" "%APP_PATH%\Settings\SubLime\Preferences.sublime-settings"
 
 REM IF NOT EXIST "%APP_PATH%\.vim\bundle" (
     REM call mkdir "%APP_PATH%\.vim\bundle"

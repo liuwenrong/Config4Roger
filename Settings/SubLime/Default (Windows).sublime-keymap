@@ -1,0 +1,7 @@
+[
+	//切换左右tabView
+	{ "keys": ["alt+l"], "command": "next_view" },
+	{ "keys": ["alt+h"], "command": "prev_view" },
+
+	{ "keys": ["alt+c"], "command": "close" },
+]

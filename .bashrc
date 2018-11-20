@@ -7,6 +7,15 @@
 #if [ -x /bin/zsh ]; then
     #exec /bin/zsh
 #fi
+export _T=${_T//\\//}   # replace backslash to fowardslash  
+export _T="/${_T/:/}"
+echo "cd $_T"
+if [[ $_T == "" ]] || [[ $_T == "/" ]] || [[ $_T == "//" ]]; then    
+    #export _T="/c/"    
+    echo "no _T Roger liuwenrong"
+else
+    cd "$_T"
+fi     
 
 # If not running interactively, don't do anything
 case $- in

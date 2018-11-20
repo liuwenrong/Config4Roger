@@ -1,7 +1,7 @@
 [color]
 	ui = auto
 [user]
-	email = Roger.Liu@lit-smart.net
+	email = liuwenrong@zhangyue.com
 	name = liuwenrong
 [core]
 	filemode = false
@@ -19,6 +19,7 @@
     logoutputencoding = utf-8
 	[alias]
     ;g=git
+    ;log = log less -S;unavailable
 	st = status
     gs = git status ;无效 unavailable
 	ci = commit -s

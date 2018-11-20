@@ -1,4 +1,8 @@
 # Config4Roger
+## 181120 {
+    1. powerShell和sublime配置
+    2. msys2环境配置
+## }
 ## 180918 {
     1. EasyJump & AceJump 修改了字符跳转的快捷键
     2. AS设置和浏览器书签

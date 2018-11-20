@@ -11,9 +11,9 @@ lwrAHK=%HOME%\.Config4Roger\lwrHotKey.ahk
 Run, %vim% %lwrAHK%
 ;Run, E:\0SoftInstall\AS_2.3.3\bin\studio64.exe
 return
-
 #b::
-Run, https://www.baidu.com
+QQBrowser=D:\0Work\0SoftInstall\QQBrowser\QQBrowser.exe
+Run, %QQBrowser% https://www.baidu.com
 return
 
 #c::
@@ -30,7 +30,7 @@ return
 
 #f::
 ; З­вы {
-Run, E:\0SoftInstall\QQBrowser\QQBrowser.exe fanyi.baidu.com
+Run, D:\0Work\0SoftInstall\QQBrowser\QQBrowser.exe fanyi.baidu.com
 return
 ;#f::
 ;sogouExplorer=E:\Program Files\SogouExplorer\SogouExplorer.exe

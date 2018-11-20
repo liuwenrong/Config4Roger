@@ -18,11 +18,12 @@ fi
 # 解决git log中文乱码的问题
 export LESSCHARSET=utf-8
  #set PATH so it includes user's private bin directories
-export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
-export JRE_HOME=$JAVA_HOME/jre
+#export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+#export JRE_HOME=$JAVA_HOME/jre
 #export LIBS="$HOME/lib"
-export LD_LIBRARY_PATH="$HOME/lib/:$HOME"
-export CLASSPATH=$CLASSPATH:.:$JAVA_HOME/lib:$JAVA_HOME/jre/lib
+#export LD_LIBRARY_PATH="$HOME/lib/:$HOME"
+#export CLASSPATH=$CLASSPATH:.:$JAVA_HOME/lib:$JAVA_HOME/jre/lib
 #export ANDROID_JACK_VM_ARGS="-Dfile.encoding=UTF-8 -XX:+TieredCompilation -Xmx4g"
 #echo "ANDROID_JACK_VM_ARGS=$ANDROID_JACK_VM_ARGS"
-PATH="$JRE_HOME/bin:$HOME/bin:$HOME/usr/bin:$HOME/.local/bin:$PATH"
+export PATH="$gitPaht:$PATH"
+#PATH="$gitPaht:$JRE_HOME/bin:$HOME/bin:$HOME/usr/bin:$HOME/.local/bin:$PATH"

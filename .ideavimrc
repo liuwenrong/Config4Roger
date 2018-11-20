@@ -41,7 +41,7 @@
      "
     "KeyMap Leader 键盘命令注:注释不能在语句之后{{{
         "使用的时候要按住空格\<Space>不可用,可用 空可用 不放"
-        let mapleader=" "
+        "let mapleader=" "
         let localleader="\"
     "}}}
 
@@ -64,6 +64,7 @@
 
             "Cursor 光标移动{{{
                 map <CR> gg
+                map <Space> <C-f>
                 imap <C-h> <Left>
                 imap <C-j> <Down>
                 imap <C-k> <Up>

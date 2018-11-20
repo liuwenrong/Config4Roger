@@ -6,8 +6,8 @@
     # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
     # Path to your oh-my-zsh installation.
-    #export ZSH=$HOME/.oh-my-zsh
-	export ZSH=$babunHOME/.oh-my-zsh
+    export ZSH=$HOME/.oh-my-zsh
+	#export ZSH=$babunHOME/.oh-my-zsh
     if [[ $HOME == /home/users/liuwenrong ]] {
         export zHome=$HOME
     } else {
@@ -23,9 +23,10 @@
     export ASSDK=/d/Android/AS_SDK/platform-tools
     export Windows=/d/Windows
     export System32=/d/Windows/System32
+    export gitPath="/D/0SoftInstall/Git/bin"
     #export PATH=$HOME:$System32:$gradle:$java:$ASSDK:$pySrc:$GIT:$ADB:$PATH
     #export PATH=$HOME:$gradle:$java:$ASSDK:$pySrc:$GIT:$ADB:$PATH
-    export PATH=$HOME:$Windows:$System32:$gradle:$java:$ASSDK:$pySrc:$GIT:$ADB:$PATH
+    export PATH=$HOME:$Windows:$System32:$gradle:$java:$ASSDK:$pySrc:$gitPath:$ADB:$PATH
     #export PATH=E:/0SoftInstall/Git/bin #导致很多命令找不到
 #}
 # Theme {
@@ -38,7 +39,7 @@
 #ZSH_THEME="agnoster" #oneLine
 #ZSH_THEME="amuse"   #doubleLine
 #ZSH_THEME="0Roger"
-#ZSH_THEME="0RogerEasy"
+ZSH_THEME="0RogerEasy"
 #ZSH_THEME="0RogerNoGit"
 #ZSH_THEME="avit"
 #ZSH_THEME="random"
