@@ -1,4 +1,9 @@
 # Config4Roger
+## 181204 {
+    1. Win10此电脑视频、图片等7个文件夹去除 add reg
+    2. 重新配置powerShell的配置文件
+    3. AS配置，reg移除注册表win10的一些快捷方式
+## }
 ## 181120 {
     1. powerShell和sublime配置
     2. msys2环境配置

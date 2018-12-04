@@ -42,7 +42,8 @@
     "KeyMap Leader 键盘命令注:注释不能在语句之后{{{
         "使用的时候要按住空格\<Space>不可用,可用 空可用 不放"
         "let mapleader=" "
-        let localleader="\"
+        "let localleader="\"
+        let mapleader="\"
     "}}}
 
             "vimrc和保存退出{{{
@@ -50,7 +51,7 @@
                 nmap <silent> <leader>sv :so $MYVIMRC<CR>
                 nmap <A-w> :w<CR>
                 nmap <A-q> :q<CR>
-                nmap <localLeader>q :q<CR>
+                nmap <leader>q :q<CR>
             "}}}
 
             "便捷{{{
@@ -73,7 +74,7 @@
                 "inoremap fj <C-o>       
                 imap <C-i> <Esc>
                 "map <F2> i{<Esc>ea}<Esc>
-                map <F1> i + "--1703"<Esc>i
+                "map <F1> i + "--1703"<Esc>i
                "回到句首"   "回到句末"
                 imap <C-a> <Esc>^
                 imap <C-e> <Esc>$
@@ -82,6 +83,16 @@
                 "nmap, <C-Space> ?
                 " useable
                 map J j
+                " KJump 配置"
+"Name           Action              Desc
+"KJump          KJumpAction         Input 1 character and jump to any same character.
+"KJump Word 0   KJumpAction.Word0   Jump to any word.
+"KJump Word 1   KJumpAction.Word1   Input 1 character and jump to any word start with this character.
+"KJump Line     KJumpAction.Line    Jump to any line.
+
+                map <leader>f :action KJumpAction<cr>
+                map <leader>w :action KJumpAction.Word0<cr>
+                map <leader>l :action KJumpAction.Line<cr>
              "}}}
 
             "窗口移动{{{

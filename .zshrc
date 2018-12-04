@@ -5,6 +5,16 @@
     # If you come from bash you might have to change your $PATH.
     # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
+export _T=${_T//\\//}   # replace backslash to fowardslash  
+export _T="/${_T/:/}"
+echo "cd $_T exec .zshrc"
+if [[ $_T == "" ]] || [[ $_T == "/" ]] || [[ $_T == "//" ]]; then    
+    #export _T="/c/"    
+    echo "no _T Roger liuwenrong"
+else
+    cd "$_T"
+fi     
+
     # Path to your oh-my-zsh installation.
     export ZSH=$HOME/.oh-my-zsh
 	#export ZSH=$babunHOME/.oh-my-zsh
@@ -17,16 +27,18 @@
     export target=YT
 #export GIT=/e/0SoftInstall/Git/bin
     #export ADB=$ADB
-    export java=/d/Java/jdk1.8.0_112/bin
-    export gradle=/d/Android/Android_Studio/gradle/gradle-2.14.1/bin
-    export pySrc=/d/pythonSrc
-    export ASSDK=/d/Android/AS_SDK/platform-tools
+    export java=/c/0Android/Java/bin
+    export gradle=/c/0Android/0SoftInstall/AS3/gradle/gradle-2.14.1/bin
+    export pySrc=$HOME/.Config4Roger/Script/py2Src
+    export ASSDK=/c/0Android/AS_SDK/platform-tools
     export Windows=/d/Windows
     export System32=/d/Windows/System32
-    export gitPath="/D/0SoftInstall/Git/bin"
+    export gitPath=/D/0SoftInstall/Git/bin
+    export Py2=/d/0SoftInstall/Python27
+    #export autojumpPath=$HOME/AppData/Local/autojump/ # 不可用 无效
     #export PATH=$HOME:$System32:$gradle:$java:$ASSDK:$pySrc:$GIT:$ADB:$PATH
     #export PATH=$HOME:$gradle:$java:$ASSDK:$pySrc:$GIT:$ADB:$PATH
-    export PATH=$HOME:$Windows:$System32:$gradle:$java:$ASSDK:$pySrc:$gitPath:$ADB:$PATH
+    export PATH=$HOME:$Py2:$Windows:$System32:$gradle:$java:$ASSDK:$pySrc:$gitPath:$ADB:$PATH
     #export PATH=E:/0SoftInstall/Git/bin #导致很多命令找不到
 #}
 # Theme {

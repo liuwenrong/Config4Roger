@@ -20,6 +20,9 @@ REM    limitations under the License.
 @set sublimePath=%HOME%\AppData\Roaming\Sublim~1\Packages\User\
 @set sublimePath64=D:\0SoftInstall\sublimetext3\Sublime64\Data\Packages\User\
 @set toPowerShellPath=%HOME%\Documents\WindowsPowerShell\
+@set toPowerShellSystemPath=C:\Windows\System32\WindowsPowerShell\v1.0\
+@set toHistoryAutojumpFile=%HOME%\AppData\Roaming\autojump\autojump.txt
+@set srcHistoryPath=%APP_PATH%\0History
 @set ZSH=%HOME%\.oh-my-zsh
 IF NOT EXIST "%APP_PATH%" (
     call git clone -b 3.0 https://github.com/liuwenrong/Config4Roger.git "%APP_PATH%"
@@ -53,7 +56,11 @@ call mklink "%HOME%\.vimrc.before.fork" "%APP_PATH%\.vimrc.before.fork"
 REM call mklink /J "%HOME%\.vim" "%APP_PATH%\.vim"
 call mklink "%sublimePath64%Preferences.sublime-settings" "%APP_PATH%\Settings\SubLime\Preferences.sublime-settings"
 call mklink "%sublimePath64%Default (Windows).sublime-keymap" "%APP_PATH%\Settings\SubLime\Default (Windows).sublime-keymap"
-call mklink "%toPowerShellPath%Microsoft.PowerShell_profile.psl" "%APP_PATH%\Settings\PowerShell\Microsoft.PowerShell_profile.psl"
+::call mklink "%toPowerShellSystemPath%profile.ps1" "%APP_PATH%\Settings\PowerShell\profile.ps1"
+call mklink "%toPowerShellPath%profile.ps1" "%APP_PATH%\Settings\PowerShell\profile.ps1"
+call mklink "%toPowerShellPath%Microsoft.PowerShell_profile.ps1" "%APP_PATH%\Settings\PowerShell\Microsoft.PowerShell_profile.ps1"
+call mklink "%toHistoryAutojumpFile%" "%srcHistoryPath%\autojump\autojump.txt"
+call mklink "%toHistoryAutojumpFile%.bak" "%srcHistoryPath%\autojump\autojump.txt.bak"
 ::call mklink "%sublimePath%Preferences.sublime-settings" "%APP_PATH%\Settings\SubLime\Preferences.sublime-settings"
 
 REM IF NOT EXIST "%APP_PATH%\.vim\bundle" (
