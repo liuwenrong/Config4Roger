@@ -4,4 +4,7 @@
 	{ "keys": ["alt+h"], "command": "prev_view" },
 
 	{ "keys": ["alt+c"], "command": "close" },
+	{ "keys": ["alt+t"], "command": "transpose" },
+	{ "keys": ["ctrl+t"], "command": "toggle_comment", "args": { "block": false } },
+	{ "keys": ["ctrl+shift+t"], "command": "toggle_comment", "args": { "block": true } },
 ]

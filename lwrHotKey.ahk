@@ -24,12 +24,12 @@ Run,%cmder%
 return
 
 ;#d::
-;everEdit=E:\Program Files\everedit_4226&ÆÆ½âÎÄ¼ş\everedit_win32_4226_portable\EverEdit.exe
+;everEdit=E:\Program Files\everedit_4226&Ã†Ã†Â½Ã¢ÃÃ„Â¼Ã¾\everedit_win32_4226_portable\EverEdit.exe
 ;Run,%everEdit%
 ;return
 
 #f::
-; ·­Òë {
+; Â·Â­Ã’Ã« {
 Run, D:\0Work\0SoftInstall\QQBrowser\QQBrowser.exe fanyi.baidu.com
 return
 ;#f::
@@ -54,14 +54,14 @@ Run, %npp%
 return
 
 #p::
-;´ò¿ªputty,²¢ÊäÈëµØÖ·,ÕË»§ÃÜÂë {
+;Â´Ã²Â¿Âªputty,Â²Â¢ÃŠÃ¤ÃˆÃ«ÂµÃ˜Ã–Â·,Ã•Ã‹Â»Â§ÃƒÃœÃ‚Ã« {
 putty=D:\putty\putty.exe
 Run, %putty%
-WinWait, PuTTY ÅäÖÃ
+WinWait, PuTTY Ã…Ã¤Ã–Ãƒ
 Sleep, 100
 ;Send, 10.1.20.35
 Send, 172.16.7.56
-ControlClick, ´ò¿ª, PuTTY ÅäÖÃ
+ControlClick, Â´Ã²Â¿Âª, PuTTY Ã…Ã¤Ã–Ãƒ
 ;Send, {enter}
 Sleep, 1000
 Send, liuwenrong 
@@ -80,7 +80,7 @@ return
 ;}
 
 #s::
-; ËÑ¹·ËÑË÷ {
+; Ã‹Ã‘Â¹Â·Ã‹Ã‘Ã‹Ã· {
 Run, E:\0SoftInstall\QQBrowser\QQBrowser.exe https://www.sogou.com
 return
 
@@ -90,7 +90,7 @@ return
 ;return
 
 #v::
-;win+v ÓÃvim´ò¿ª_vimrcÎÄ¼ş {
+;win+v Ã“ÃƒvimÂ´Ã²Â¿Âª_vimrcÃÃ„Â¼Ã¾ {
 ;vim=E:\0SoftInstall\msys2_64\usr\share\vim\vim80\gvim.exe -p --remote-tab-silent
 ;HOME=C:\Users\liuwenrong.CCDOMAIN
 ;MsgBox %HOME%
@@ -99,9 +99,9 @@ Run, %vim% %vimrc%
 return
 ;}
 
-;Ctrl+Shift ÏÔÊ¾²âÊÔÏûÏ¢
+;Ctrl+Shift ÃÃ”ÃŠÂ¾Â²Ã¢ÃŠÃ”ÃÃ»ÃÂ¢
 ^+w::
-MsgBox ²âÊÔÏÔÊ¾ÏûÏ¢
+MsgBox Â²Ã¢ÃŠÃ”ÃÃ”ÃŠÂ¾ÃÃ»ÃÂ¢
 return
 
 #z::
@@ -118,8 +118,8 @@ return
 
 ;}
 
-;Right Alt+/ = Ctrl+t ToggleCommenter ¿ª¹Ø×¢ÊÍ AS¼ÓÉÏShift ¾ÍÊÇ¶àĞĞ×¢ÊÍ
-;ĞèÒª ÆäËû¼Ó×¢ÊÍµÄÈí¼ş°Ñ×¢ÊÍ¿ì½İ¼ü¸Ä³ÉCtrl+t ºÍCtrl+Shift+t
+;Right Alt+/ = Ctrl+t ToggleCommenter Â¿ÂªÂ¹Ã˜Ã—Â¢ÃŠÃ ASÂ¼Ã“Ã‰ÃShift Â¾ÃÃŠÃ‡Â¶Ã ÃÃÃ—Â¢ÃŠÃ
+;ÃÃ¨Ã’Âª Ã†Ã¤Ã‹Ã»Â¼Ã“Ã—Â¢ÃŠÃÂµÃ„ÃˆÃ­Â¼Ã¾Â°Ã‘Ã—Â¢ÃŠÃÂ¿Ã¬Â½ÃÂ¼Ã¼Â¸Ã„Â³Ã‰Ctrl+t ÂºÃCtrl+Shift+t
 >!/::Send, ^t
 +>!/::Send, ^+t
 CapsLock & /::
@@ -131,7 +131,7 @@ if GetKeyState("alt") = 0
 }
 return
 
-;Ace Jump & EasyMotion Ctrl+w ²é×Ö·û Ctrl+b ²éµ¥´Ê °´ĞĞ ´óĞ¡Ğ´¼ü+;Ó³Éä
+;Ace Jump & EasyMotion Ctrl+w Â²Ã©Ã—Ã–Â·Ã» Ctrl+b Â²Ã©ÂµÂ¥Â´ÃŠ Â°Â´ÃÃ Â´Ã³ÃÂ¡ÃÂ´Â¼Ã¼+;Ã“Â³Ã‰Ã¤
 ;>!;::Send, ^b
 ;+>!;::Send, ^w
 CapsLock & `;::
@@ -143,21 +143,24 @@ if GetKeyState("alt") = 0
 }
 return
 
-;CapsLock-Esc»¥»» & Move {
+;CapsLock-EscÂ»Â¥Â»Â» & Move {
 SetCapsLockState , AlwaysOff
 ;CapsLock & h::SendInput {Left}
-;Ctrl+Shift+h = Alt <--×ó¼ıÍ·
+;Ctrl+Shift+h = Alt <--Ã—Ã³Â¼Ã½ÃÂ·
 ^+h::SendInput !{Left}
 ^+l::SendInput !{Right}
 
+;CapsLock & s::
 CapsLock & h::
-;if GetKeyState("control") = 0
-CapsLock & s::
 if GetKeyState("alt") = 0
 {
-    Send, {Left}
+if GetKeyState("ctrl") = 0 {
+  Send, {Left}
 } else {
     Send, ^{Left}
+}
+} else {
+    Send, !{Left}
 }
 return
 
@@ -168,7 +171,7 @@ if GetKeyState("alt") = 0
 {
     Send, {Up}
 } else {
-    Send, {Home}
+    Send, {PgUp}
 }
 return
 
@@ -181,30 +184,38 @@ if GetKeyState("alt") = 0
 {
     Send, {Down}
 } else {
-    Send, {End}
+    Send, {PgDn}
 }
 return
 
+;CapsLock & f::
 CapsLock & l::
-CapsLock & f::
 if GetKeyState("alt") = 0
 {
-    Send, {Right}
+if GetKeyState("ctrl") = 0 {
+    Send, {Right} ;Cap+l -> å³ç§»ä¸€ä¸ªå­—æ¯
 } else {
-    Send, ^{Right}
+    Send, ^{Right} ;Cap+Ctrl+l -> Ctrl+å³ï¼šå³ç§»ä¸€ä¸ªword
+}
+} else {
+if GetKeyState("ctrl") = 0 {
+    Send, !{Right} ;Alt+å³ CamelHumps Mode
+} else {
+    Send, ^!{Right} ;Ctrl+Alt+å³ CamelHumps Mode
+}
 }
 return
 
-;MouseMove, X, Y [, Speed, R] speed 0(×î¿ì)~100  
-;Êó±êÓÒÒÆ
-!f::
-if GetKeyState("W") = 0
-{
-    MouseMove, 50, 0, 1, r
-} else {
-    MouseMove, 10, 0, 1, r
-}
-return
+;MouseMove, X, Y [, Speed, R] speed 0(Ã—Ã®Â¿Ã¬)~100  
+;ÃŠÃ³Â±ÃªÃ“Ã’Ã’Ã†,Alt+fÂ»Ã¡Â¸ÃºASÂ¿Ã¬Â½ÃÂ¼Ã¼Â³Ã¥ÃÂ»
+;!f::
+;if GetKeyState("W") = 0
+;{
+;   MouseMove, 50, 0, 1, r
+;} else {
+;    MouseMove, 10, 0, 1, r
+;}
+;return
 
 ;!s::MouseMove, -50, 0, 1, r
 ;return
@@ -224,21 +235,21 @@ return
 ;!a::Send {LButton}
 !a::Send {enter}
 
-; Êó±êÊÖÊÆ  
+; ÃŠÃ³Â±ÃªÃŠÃ–ÃŠÃ†  
 rbutton::      
-  minGap  = 30 ; Éè¶¨µÄÊ¶±ğãĞÖµ£¬´óÓÚ´ËãĞÖµ£¬ËµÃ÷ÔÚÄ³·½ÏòÉÏÓĞÒÆ¶¯  
+  minGap  = 30 ; Ã‰Ã¨Â¶Â¨ÂµÃ„ÃŠÂ¶Â±Ã°Ã£ÃÃ–ÂµÂ£Â¬Â´Ã³Ã“ÃšÂ´Ã‹Ã£ÃÃ–ÂµÂ£Â¬Ã‹ÂµÃƒÃ·Ã”ÃšÃ„Â³Â·Â½ÃÃ²Ã‰ÃÃ“ÃÃ’Ã†Â¶Â¯  
   mousegetpos xpos1,ypos1  
   Keywait, RButton, U  
   mousegetpos xpos2, ypos2  
-  if (abs(xpos1-xpos2) < minGap and abs(ypos1-ypos2)<minGap) ; nothing Ã»ÓĞÔË¶¯£¬Ö±½ÓÊä³örbutton   
+  if (abs(xpos1-xpos2) < minGap and abs(ypos1-ypos2)<minGap) ; nothing ÃƒÂ»Ã“ÃÃ”Ã‹Â¶Â¯Â£Â¬Ã–Â±Â½Ã“ÃŠÃ¤Â³Ã¶rbutton   
   send, {rbutton}  
-  ;else if (xpos1-xpos2 > minGap and abs(ypos1-ypos2)<minGap) ; left  delete(¶ÔÓÚÎÄ¼ş»òÑ¡¶¨µÄ×Ö·ûÓĞĞ§)  
+  ;else if (xpos1-xpos2 > minGap and abs(ypos1-ypos2)<minGap) ; left  delete(Â¶Ã”Ã“ÃšÃÃ„Â¼Ã¾Â»Ã²Ã‘Â¡Â¶Â¨ÂµÃ„Ã—Ã–Â·Ã»Ã“ÃÃÂ§)  
    ;send, {delete}  
-  ;else if (xpos2-xpos1 > minGap and abs(ypos1-ypos2)<minGap) ; right ctrl+z »Ö¸´    
+  ;else if (xpos2-xpos1 > minGap and abs(ypos1-ypos2)<minGap) ; right ctrl+z Â»Ã–Â¸Â´    
    ;send, ^z  
-  else if (abs(xpos1-xpos2)< minGap and (ypos1-ypos2)>minGap) ; up ×î´ó»¯´°¿Ú£¬ win+up  
+  else if (abs(xpos1-xpos2)< minGap and (ypos1-ypos2)>minGap) ; up Ã—Ã®Â´Ã³Â»Â¯Â´Â°Â¿ÃšÂ£Â¬ win+up  
     send, #{up}  
-  else if (abs(xpos1-xpos2)< minGap and (ypos2-ypos1)>minGap) ; down ÏÔÊ¾×ÀÃæ£¬ win+d  
+  else if (abs(xpos1-xpos2)< minGap and (ypos2-ypos1)>minGap) ; down ÃÃ”ÃŠÂ¾Ã—Ã€ÃƒÃ¦Â£Â¬ win+d  
     send, #d  
   ;else if (ypos2-ypos1 > minGap and (xpos1-xpos2) > minGap) ; down and left , ctrl+shift+T  
     ;send, ^+t  
@@ -268,33 +279,44 @@ if  GetKeyState("shift") = 0
     Send, {End}
 }
 return
+;å¤§å°å†™å’ŒEscå¯¹æ¢
 CapsLock::SendInput {Esc}
 Esc::CapsLock
++CapsLock::SendInput +{Esc}
 ;}
 
 ;Delete & BackSpace{
 ;=====================================================================o
 ;                           CapsLock Deletor                         ;|
 ;-----------------------------------o---------------------------------o
-;                     CapsLock + m  |  Delete                        ;|
-;                     Caps +Alt+ m  |  Ctrl + Delete (Delete a Word) ;|
-;                     CapsLock + ,  |  BackSpace                     ;|
-;                     Caps+Alt + ,  |  Ctrl + BackSpace              ;|
+;                     CapsLock + m  |  BackSpace                     ;|
+;                     Caps +Ctrl+m  |  Ctrl+ BackSpace               ;|
+;                     Caps +Alt+ m  |  Alt + BackSpace(CamelHumps BS);|
+;                     CapsLock + ,  |  Delete (Delete a Word)        ;|
+;                     Caps+Alt + ,  |  Alt  + Delete (Delete a Word) ;|
 ;-----------------------------------o---------------------------------o
 CapsLock & m::
 if GetKeyState("alt") = 0
 {
+if GetKeyState("ctrl") = 0 {
     Send, {BS}
-} else {
+} else{
     Send, ^{BS}
+}
+} else {
+    Send, !{BS}   ;é©¼å³°å¼åˆ é™¤ CamelHumps Mode
 }
 return
 CapsLock & ,::
 if GetKeyState("alt") = 0
 {
+  if GetKeyState("ctrl") = 0 {
     Send, {Del}
-} else {
+  } else {
     Send, ^{Del}
+  }
+} else {
+    Send, !{Del}
 }
 return
 ;}

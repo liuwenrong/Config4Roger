@@ -15,7 +15,7 @@ r = cmd.system('adb shell system/bin/screencap -p sdcard/' + fileName + '.png')
 if (r == 0) :
     print 'screenCap success!'
     # from sdcard to  E:\0Pic\0screenCap
-    pullPath = 'E:/0Pic/0screenCap/'
+    pullPath = 'D:/0Pic/0screenCap/'
     r = cmd.system('adb pull sdcard/' + fileName + '.png ' + pullPath)
     if (r == 0) :
         print 'pull success!'
