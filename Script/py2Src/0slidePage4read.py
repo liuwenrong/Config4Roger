@@ -8,22 +8,86 @@ import threading
 import random
 import json,re
 
+def printGreen(str) :
+    print ('\033[1;32;40m ' + str)
+    printNormal('')
+
+def Green(string) :
+    return ('\033[1;32;40m ' + str(string))
+    
+def printRed(str) :
+    print ('\033[1;31;40m ' + str)
+    printNormal('')
+
+def printNormal(str) :
+    print ('\033[1;37;40m ' + str)
+
+def isWindows() :
+    if 'win32' in sys.platform :
+        return True
+    else :
+        return False
+
+deviceslist = []
+def searchDevice():
+    print('adb devcies -l')
+    command = 'adb devices'
+    r = os.system(command)
+    os.system('adb devices -l')
+    output = os.popen(command).read()
+    if 'List of devices attached' in output:
+        global deviceslist
+        deviceslist = [device.split('\t')[0] for device in output.split('\r\n')[1:] if device != '']
+        print(deviceslist)
+        count = len(deviceslist)
+        printGreen(str(count))
+        return count
+    else :
+            return 0
+
+deviceId = '0'
+def getDeviceId():
+    r = searchDevice()
+    if r == 0 :
+        printRed('\n failed : no devices\n')
+        exit(1)
+    if r == 1 :
+        global deviceId 
+        deviceId = deviceslist[0]
+    if r > 1 :
+        print(deviceId)
+        if deviceId == '0' :
+            printGreen('\n more than one device\n')
+            deviceIdIndexStr = input(Green("please selecte device by input num Index,eg 0,1,2,3\n"))
+            deviceIdIndex = 1
+            # deviceIdIndex = int(deviceIdIndexStr)
+            print(deviceIdIndex)
+            # deviceId = deviceslist[deviceIdIndex]
+            deviceId = deviceslist[deviceIdIndex]
+        # if deviceIdIndex >= r : 
+        #     print('\nInstall failed : not exist this device\n')
+        # else :
+        #     deviceId = deviceslist[deviceIdIndex]
+
+
 def swipePage() :
-    cmd.system('adb shell input swipe 500 500 50 500')
+    getDeviceId()
+    cmd.system('adb -s ' + deviceId + ' shell input swipe 500 500 50 500')
     print 'adb swipe !'
 
 def click():
     y = random.randint(0, 1280)
     x = random.randint(900, 1070)
     #x = random.randint(700, 720)
-    cmd.system('adb shell input tap ' + str(x) + ' ' + str(y))
+    cmd.system('adb -s ' + deviceId + ' shell input tap ' + str(x) + ' ' + str(y))
     print 'adb tap !'
 
 print 'adb swipe !'
 #s = threading.Timer(2, swipePage())
 #s.start()
 def getScreenSize():
-    size_str = os.popen('adb shell wm size').read()
+    getDeviceId()
+    size_str = os.popen('adb -s ' + deviceId + ' shell wm size').read()
     if not size_str:
         sys.exit()
     m = re.search(r'(\d+)x(\d+)', size_str)
@@ -45,7 +109,8 @@ while True:
     else:
         swipePage()
         #click()
-    intervalTime = random.randint(1, 5)
+    # intervalTime = random.randint(1, 5)
+    intervalTime = random.randint(8, 12)
+    # intervalTime = random.randint(10, 15)
     print 'intervalTime = ' + str(intervalTime)
     time.sleep(intervalTime)
-

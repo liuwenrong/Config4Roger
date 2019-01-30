@@ -3,3 +3,8 @@ test -f ~/.profile && . ~/.profile
 test -f ~/.bashrc && . ~/.bashrc
 #exportPATH="$PATH:/usr/local/bin"
 exec ~/bin/zsh -l
+# Add this line into ~/.bash_profile or ~/.zshrc 解决AS Terminal乱码问题
+# export LANG=C.UTF-8
+export LANG=zh_CN.UTF-8
+# export LANG=en_US.UTF-8
+export LESSHARESET=utf-8

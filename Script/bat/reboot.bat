@@ -1,0 +1,1 @@
+C:\WINDOWS\system32\shutdown.exe -r -f -t 0

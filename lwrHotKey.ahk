@@ -100,9 +100,9 @@ return
 ;}
 
 ;Ctrl+Shift ÏÔÊ¾²âÊÔÏûÏ¢
-^+w::
-MsgBox ²âÊÔÏÔÊ¾ÏûÏ¢
-return
+;^+w::
+;MsgBox ²âÊÔÏÔÊ¾ÏûÏ¢
+;return
 
 #z::
 Run, https://www.zhihu.com
