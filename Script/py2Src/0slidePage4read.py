@@ -15,6 +15,9 @@ def printGreen(str) :
 def Green(string) :
     return ('\033[1;32;40m ' + str(string))
     
+def normal(string) :
+    return('\033[1;37;40m ' + str(string))
+
 def printRed(str) :
     print ('\033[1;31;40m ' + str)
     printNormal('')
@@ -40,7 +43,7 @@ def searchDevice():
         deviceslist = [device.split('\t')[0] for device in output.split('\r\n')[1:] if device != '']
         print(deviceslist)
         count = len(deviceslist)
-        printGreen(str(count))
+        # printGreen(str(count))
         return count
     else :
             return 0
@@ -55,14 +58,17 @@ def getDeviceId():
         global deviceId 
         deviceId = deviceslist[0]
     if r > 1 :
-        print(deviceId)
+        # global deviceId
+        printGreen(deviceId)
         if deviceId == '0' :
             printGreen('\n more than one device\n')
-            deviceIdIndexStr = input(Green("please selecte device by input num Index,eg 0,1,2,3\n"))
-            deviceIdIndex = 1
-            # deviceIdIndex = int(deviceIdIndexStr)
+            printGreen("please selecte device by input num Index,eg 0,1,2,3\n")
+            deviceIdIndexStr = input(normal(''))
+            # deviceIdIndex = 1
+            deviceIdIndex = int(deviceIdIndexStr)
             print(deviceIdIndex)
             # deviceId = deviceslist[deviceIdIndex]
+            global deviceId
             deviceId = deviceslist[deviceIdIndex]
         # if deviceIdIndex >= r : 
         #     print('\nInstall failed : not exist this device\n')
@@ -72,6 +78,7 @@ def getDeviceId():
 
 def swipePage() :
     getDeviceId()
+    global deviceId
     cmd.system('adb -s ' + deviceId + ' shell input swipe 500 500 50 500')
     print 'adb swipe !'
 
@@ -110,7 +117,8 @@ while True:
         swipePage()
         #click()
     # intervalTime = random.randint(1, 5)
-    intervalTime = random.randint(8, 12)
+    # intervalTime = random.randint(8, 12)
     # intervalTime = random.randint(10, 15)
+    intervalTime = random.randint(18, 20)
     print 'intervalTime = ' + str(intervalTime)
     time.sleep(intervalTime)

@@ -146,6 +146,15 @@ source $ZSH/oh-my-zsh.sh #猜测会清空之前加载的插件
         #bindkey '^a' beginning-of-line
         #bindkey '^e' end-of-line
 
+        bindkey -s '\eo'   'cd ..\n'    # 按下ALT+O 就执行 cd .. 命令
+        bindkey -s '\e;'   'ls -l\n'    # 按下 ALT+; 就执行 ls -l 命令
+        bindkey '\e[1;3D' backward-word       # ALT+左键：向后跳一个单词
+        bindkey '\e[1;3C' forward-word        # ALT+右键：前跳一个单词
+        bindkey '\e[1;3A' beginning-of-line   # ALT+上键：跳到行首
+        bindkey '\e[1;3B' end-of-line         # ALT+下键：调到行尾
+        bindkey '^Q' cdlast                 # 按Ctrl+Q，跳回上一次所在的目录
+
+
         #VIMODE='-- INSERT --'
         #function zle-line-init zle-keymap-select {
         #VIMODE="${${KEYMAP/vicmd/-- NORMAL --}/(main|viins)/-- INSERT --}"

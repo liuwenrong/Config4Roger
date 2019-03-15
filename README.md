@@ -1,4 +1,7 @@
 # Config4Roger
+## 190315 {
+    1. 增加快捷键zsh,左右跳单词
+}
 ## 190130 {
     1. 可以多台设备同时翻页阅读了,详见Script\py2Src\0SlidePage4reade.py
 }
