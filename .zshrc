@@ -301,6 +301,7 @@ source $ZSH/oh-my-zsh.sh #猜测会清空之前加载的插件
     }
         alias gst='git status'
         alias st='status'
+        alias gs='git show'
         alias ga='git add .'
         alias gamend='git commit --amend -C HEAD'
         alias gba='git branch -a'

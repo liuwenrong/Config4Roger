@@ -1,10 +1,13 @@
 # Config4Roger
+## 190425 {
+    1. AS Settings 3.3.1版本
+}
 ## 190315 {
     1. 增加快捷键zsh,左右跳单词
-}
+## }
 ## 190130 {
     1. 可以多台设备同时翻页阅读了,详见Script\py2Src\0SlidePage4reade.py
-}
+## }
 ## 181204 {
     1. Win10此电脑视频、图片等7个文件夹去除 add reg
     2. 重新配置powerShell的配置文件

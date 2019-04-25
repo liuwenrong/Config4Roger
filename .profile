@@ -25,5 +25,8 @@ export LESSCHARSET=utf-8
 #export CLASSPATH=$CLASSPATH:.:$JAVA_HOME/lib:$JAVA_HOME/jre/lib
 #export ANDROID_JACK_VM_ARGS="-Dfile.encoding=UTF-8 -XX:+TieredCompilation -Xmx4g"
 #echo "ANDROID_JACK_VM_ARGS=$ANDROID_JACK_VM_ARGS"
-export PATH="$gitPaht:$PATH"
+export PATH="$gitPath:$PATH"
 #PATH="$gitPaht:$JRE_HOME/bin:$HOME/bin:$HOME/usr/bin:$HOME/.local/bin:$PATH"
+# flutter代理
+export PUB_HOSTED_URL=https://pub.flutter-io.cn
+export FLUTTER_STORAGE_BASE_URL=https://storage.flutter-io.cn
